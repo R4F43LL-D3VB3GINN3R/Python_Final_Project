@@ -1,10 +1,10 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-from tkinter import *   # importa a biblioteca tkinter
-from tkinter import ttk # importa mais funcionalidades do tkinter
-from menu import MenuScreen
-from database import Database
-import sqlite3
+from tkinter import *         # importa a biblioteca tkinter
+from tkinter import ttk       # importa mais funcionalidades do tkinter
+from menu import MenuScreen   # importa a classe do menu
+from database import Database # importa a classe do banco de dados
+import sqlite3                # importa a biblioteca sqlite
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
