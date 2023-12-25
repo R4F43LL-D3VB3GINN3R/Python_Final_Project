@@ -3,6 +3,7 @@
 from tkinter import *   # importa a biblioteca tkinter
 from tkinter import ttk # importa mais funcionalidades do tkinter
 from menu import MenuScreen
+from database import Database
 import sqlite3
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -15,11 +16,12 @@ class Login(): # inicializa a classe Login
     
     def __init__(self): # inicializa os objetos da classe ao invocá-la
 
-        self.login = root    # o objeto recebe a raiz da aplicacao
-        self.login_screen()  # invoca o metodo de criacao e configuracao da tela de login
-        self.login_frame()   # invoca o metodo de criacao e configuracao do frame de tela
-        self.login_widgets() # invoca o metodo de criacao e configuracao de widgets
-        root.mainloop()      # funcao para rodar o tkinter
+        self.login = root          # o objeto recebe a raiz da aplicacao
+        self.database = Database() # instancia do banco de dados
+        self.login_screen()        # invoca o metodo de criacao e configuracao da tela de login
+        self.login_frame()         # invoca o metodo de criacao e configuracao do frame de tela
+        self.login_widgets()       # invoca o metodo de criacao e configuracao de widgets
+        root.mainloop()            # funcao para rodar o tkinter
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
@@ -96,14 +98,22 @@ class Login(): # inicializa a classe Login
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def pressed_login(self):
+    def pressed_login(self): # método para verificar senha e login de usuário
 
-        self.login.destroy() # fecha a tela de login
-        menu = MenuScreen()  # cria instancia do menu 
-        menu.run()           # roda o a tela de menu
+        username = self.id.get()       # obtém a entrada do nome de usuário
+        password = self.password.get() # obtém a entrada da senha
+
+        if self.database.verify_user_credentials(username, password): # se credenciais usando o método do banco de dados for verdadeiro...
+            self.login.destroy()                                      # fecha a tela de login
+            menu = MenuScreen()                                       # cria uma instância do menu
+            menu.run()                                                # roda a tela do menu
+        elif username == "" or password == "":                        # se os campos estiverem vazios...
+            print("Preencha os campos")                               # exibe mensagem no terminal
+        else:                                                         # do contrario...
+            print("Credenciais inválidas. Acesso negado.")            # exibe mensagem no terminal
         
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
         
-Login()           
+Login() # chama a instancia da classe 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
