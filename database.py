@@ -50,11 +50,24 @@ class Database(): # classe para o banco de dados
             self.cursor.execute(insert_query, user_data) # executa a query na tupla
 
         self.conn.commit() # insere o comando SQL
-        self.close_conn()  # chama o método para encerrar a conexao
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-        
-db = Database()
+        self.close_conn()   
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def verify_user_credentials(self, username, password): # método para verificar usuário e senha
+
+        self.open_conn() # chama o método de conexao com o banco de dados
+
+        query = "SELECT username, password FROM tab_admins WHERE username = ? AND password = ?" # string de query
+
+        self.cursor.execute(query, (username, password)) # executa a query na tupla
+
+        result = self.cursor.fetchone() # obtém resultado da próxima linha do comando SQL
+
+        self.close_conn() # chama o método para encerrar a conexao
+
+        # Retorna True se o resultado não for None (ou seja, se um usuário foi encontrado),
+        # e False caso contrário (nenhum usuário correspondente)
+        return result is not None
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
