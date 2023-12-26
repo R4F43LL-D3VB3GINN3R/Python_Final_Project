@@ -1,10 +1,11 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-from tkinter import *         # importa a biblioteca tkinter
-from tkinter import ttk       # importa mais funcionalidades do tkinter
-from menu import MenuScreen   # importa a classe do menu
-from database import Database # importa a classe do banco de dados
-import sqlite3                # importa a biblioteca sqlite
+from tkinter import *          # importa a biblioteca tkinter
+from tkinter import ttk        # importa mais funcionalidades do tkinter
+from menu import MenuScreen    # importa a classe do menu
+from database import Database  # importa a classe do banco de dados
+import sqlite3                 # importa a biblioteca sqlite
+from tkinter import messagebox # importa a caixa de mensagens do tkinter
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -103,14 +104,18 @@ class Login(): # inicializa a classe Login
         username = self.id.get()       # obtém a entrada do nome de usuário
         password = self.password.get() # obtém a entrada da senha
 
-        if self.database.verify_user_credentials(username, password): # se credenciais usando o método do banco de dados for verdadeiro...
-            self.login.destroy()                                      # fecha a tela de login
-            menu = MenuScreen()                                       # cria uma instância do menu
-            menu.run()                                                # roda a tela do menu
-        elif username == "" or password == "":                        # se os campos estiverem vazios...
-            print("Preencha os campos")                               # exibe mensagem no terminal
-        else:                                                         # do contrario...
-            print("Credenciais inválidas. Acesso negado.")            # exibe mensagem no terminal
+        if self.database.verify_user_credentials(username, password):                        # se credenciais usando o método do banco de dados for verdadeiro...
+            self.login.destroy()                                                             # fecha a tela de login
+            menu = MenuScreen()                                                              # cria uma instância do menu
+            menu.run()                                                                       # roda a tela do menu
+        elif username == "" and password == "":                                              # se os campos estiverem vazios...
+            messagebox.showinfo("Aviso", "Preencha os campos.")                              # exibe pop-up com aviso
+        elif username == "":                                                                 # se o campo estiver vazio
+            messagebox.showinfo("Aviso", "Preencha o campo Username.")                       # exibe pop-up com aviso
+        elif password == "":                                                                 # se o campo estiver vazio
+            messagebox.showinfo("Aviso", "Preencha o campo Password.")                       # exibe pop-up com aviso
+        else:                                                                                # do contrario...
+            messagebox.showwarning("Acesso Negado", "Credenciais inválidas. Acesso negado.") # exibe pop-up com aviso de acesso negado
         
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
         
