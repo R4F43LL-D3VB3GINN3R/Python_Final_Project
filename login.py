@@ -22,6 +22,7 @@ class Login(): # inicializa a classe Login
         self.login_screen()        # invoca o metodo de criacao e configuracao da tela de login
         self.login_frame()         # invoca o metodo de criacao e configuracao do frame de tela
         self.login_widgets()       # invoca o metodo de criacao e configuracao de widgets
+        self.count = 3
         root.mainloop()            # funcao para rodar o tkinter
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -56,10 +57,10 @@ class Login(): # inicializa a classe Login
 
         # Botões
         self.bt_login = Button(self.login, text='Login', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.pressed_login) # setup 
-        self.bt_login.place(relx=0.38, rely=0.8, relwidth=0.25, relheight=0.07)                                                                                         # posicao
+        self.bt_login.place(relx=0.38, rely=0.8, relwidth=0.25, relheight=0.07)                                                                                                                     # posicao
 
-        self.bt_exit = Button(self.login, text='Exit', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
-        self.bt_exit.place(relx=0.38, rely=0.9, relwidth=0.25, relheight=0.07)                                                                                        # posicao
+        self.bt_exit = Button(self.login, text='Exit', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.login.destroy) # setup 
+        self.bt_exit.place(relx=0.38, rely=0.9, relwidth=0.25, relheight=0.07)                                                                                                                    # posicao
 
         #--------------------------------------
 
@@ -104,18 +105,30 @@ class Login(): # inicializa a classe Login
         username = self.id.get()       # obtém a entrada do nome de usuário
         password = self.password.get() # obtém a entrada da senha
 
-        if self.database.verify_user_credentials(username, password):                        # se credenciais usando o método do banco de dados for verdadeiro...
-            self.login.destroy()                                                             # fecha a tela de login
-            menu = MenuScreen()                                                              # cria uma instância do menu
-            menu.run()                                                                       # roda a tela do menu
-        elif username == "" and password == "":                                              # se os campos estiverem vazios...
-            messagebox.showinfo("Aviso", "Preencha os campos.")                              # exibe pop-up com aviso
-        elif username == "":                                                                 # se o campo estiver vazio
-            messagebox.showinfo("Aviso", "Preencha o campo Username.")                       # exibe pop-up com aviso
-        elif password == "":                                                                 # se o campo estiver vazio
-            messagebox.showinfo("Aviso", "Preencha o campo Password.")                       # exibe pop-up com aviso
-        else:                                                                                # do contrario...
-            messagebox.showwarning("Acesso Negado", "Credenciais inválidas. Acesso negado.") # exibe pop-up com aviso de acesso negado
+        if self.database.verify_user_credentials(username, password):                                           # se credenciais usando o método do banco de dados for verdadeiro...
+            self.login.destroy()                                                                                # fecha a tela de login
+            menu = MenuScreen()                                                                                 # cria uma instância do menu
+            menu.run()                                                                                          # roda a tela do menu
+        elif username == "" and password == "":                                                                 # se os campos estiverem vazios...
+            messagebox.showinfo("Aviso", "Preencha os campos.")                                                 # exibe pop-up com aviso
+            self.count -= 1                                                                                     # decrementa o contador
+            messagebox.showwarning("Tentativas Restantes", "Você ainda tem " + str(self.count) + " tentativas") # exibe pop-up com aviso
+        elif username == "":                                                                                    # se o campo estiver vazio
+            messagebox.showinfo("Aviso", "Preencha o campo Username.")                                          # exibe pop-up com aviso
+            self.count -= 1                                                                                     # decrementa o contador
+            messagebox.showwarning("Tentativas Restantes", "Você ainda tem " + str(self.count) + " tentativas") # exibe pop-up com aviso
+        elif password == "":                                                                                    # se o campo estiver vazio
+            messagebox.showinfo("Aviso", "Preencha o campo Password.")                                          # exibe pop-up com aviso
+            self.count -= 1                                                                                     # decrementa o contador
+            messagebox.showwarning("Tentativas Restantes", "Você ainda tem " + str(self.count) + " tentativas") # exibe pop-up com aviso
+        else:                                                                                                   # do contrario...
+            messagebox.showwarning("Acesso Negado", "Credenciais inválidas. Acesso negado.")                    # exibe pop-up com aviso de acesso negado
+            self.count -= 1                                                                                     # decrementa o contador
+            messagebox.showwarning("Tentativas Restantes", "Você ainda tem " + str(self.count) + " tentativas") # exibe pop-up com aviso
+
+        if self.count == 0:                                                                                            # se o contador chegar a zero...
+            messagebox.showwarning("Tentativas Restantes", "Número de tentativas esgotado, o programa será encerrado") # exibe pop-up com aviso
+            self.login.destroy()                                                                                       # fecha a tela de login
         
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------# 
         
