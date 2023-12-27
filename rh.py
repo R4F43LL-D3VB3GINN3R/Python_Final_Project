@@ -70,46 +70,101 @@ class RHScreen(): # inicializa a classe RH
             self.frame2 = Frame(self.rhroot, bd = 4, bg='white', highlightbackground='black', highlightthickness=3) # setup 
             self.frame2.place(relx=0.2, rely=0.001, relwidth=0.8, relheight=1)                                      # posicao
 
-            # Widgets
+            #--------------------------------------
 
-            self.lb_name = Label(self.frame2, text = 'Name:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_name.place(relx=0.001, rely=0.01, relwidth=0.1, relheight=0.1)                                   # posicao
+            # Widgets - [Molduras]
 
-            self.lb_birth = Label(self.frame2, text = 'Birth:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_birth.place(relx=0.015, rely=0.07, relwidth=0.1, relheight=0.1)                                    # posicao
+            self.canvas_bt = Canvas(self.frame2, bd = 4, bg = 'grey', highlightbackground = 'black', highlightthickness = 3) # objeto recebe uma moldura
+            self.canvas_bt.place(relx = 0.01, rely = 0.01, relwidth = 0.98, relheight = 0.65)                                # posiciona a moldura
 
-            self.lb_nif = Label(self.frame2, text = 'NIF:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_nif.place(relx=0.015, rely=0.013, relwidth=0.1, relheight=0.1)                                 # posicao
+            self.canvas_bt = Canvas(self.frame2, bd = 4, bg = 'grey', highlightbackground = 'black', highlightthickness = 3) # objeto recebe uma moldura
+            self.canvas_bt.place(relx = 0.01, rely = 0.67, relwidth = 0.98, relheight = 0.32)                                # posiciona a moldura
 
-            self.lb_marital = Label(self.frame2, text = 'Marital Status:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_marital(relx=0.015, rely=0.019, relwidth=0.1, relheight=0.1)                                                  # posicao
+            #--------------------------------------
 
-            self.lb_nationality = Label(self.frame2, text = 'Nationality:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_nationality.place(relx=0.025, rely=0.07, relwidth=0.1, relheight=0.1)                                          # posicao
+            # Widgets - [Labels]
 
-            self.lb_sex = Label(self.frame2, text = 'Sex:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_sex.place(relx=0.015, rely=0.031, relwidth=0.1, relheight=0.1)                                 # posicao
+            self.lb_title1 = Label(self.frame2, text = 'Personal Info', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
+            self.lb_title1.place(relx=0.33, rely=0.027, relwidth=0.3, relheight=0.05)                                         # posicao
 
-            self.lb_address = Label(self.frame2, text = 'Address:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_address.place(relx=0.015, rely=0.037, relwidth=0.1, relheight=0.1)                                     # posicao
+            self.lb_name = Label(self.frame2, text = 'Name:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_name.place(relx=0.14, rely=0.1, relwidth=0.09, relheight=0.05)                                  # posicao
 
-            self.lb_phone = Label(self.frame2, text = 'Phone:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_phone.place(relx=0.015, rely=0.043, relwidth=0.1, relheight=0.1)                                   # posicao
+            self.lb_birth = Label(self.frame2, text = 'Age:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_birth.place(relx=0.16, rely=0.16, relwidth=0.07, relheight=0.05)                                # posicao
 
-            self.lb_email = Label(self.frame2, text = 'Email:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_email.place(relx=0.015, rely=0.049, relwidth=0.1, relheight=0.1)                                   # posicao
+            self.lb_sex = Label(self.frame2, text = 'Sex:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_sex.place(relx=0.16, rely=0.22, relwidth=0.06, relheight=0.05)                                # posicao
 
-            self.lb_pos = Label(self.frame2, text = 'Employee Position:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_pos.place(relx=0.015, rely=0.055, relwidth=0.1, relheight=0.1)                                               # posicao
+            self.lb_address = Label(self.frame2, text = 'Address:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_address.place(relx=0.11, rely=0.28, relwidth=0.11, relheight=0.05)                                    # posicao
 
-            self.lb_date_adm = Label(self.frame2, text = 'Admission Date:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_date_adm(relx=0.015, rely=0.061, relwidth=0.1, relheight=0.1)                                                  # posicao
+            self.lb_phone = Label(self.frame2, text = 'Phone:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_phone.place(relx=0.13, rely=0.34, relwidth=0.09, relheight=0.05)                                  # posicao
 
-            self.lb_salary = Label(self.frame2, text = 'Salary:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_salary.place(relx=0.015, rely=0.067, relwidth=0.1, relheight=0.1)                                    # posicao
+            self.lb_marital = Label(self.frame2, text = 'Marital Status:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_marital.place(relx=0.05, rely=0.4, relwidth=0.17, relheight=0.05)                                            # posicao
 
-            self.lb_turn = Label(self.frame2, text = 'Work Shift:', bg='white', font=('comic-sans', 10, 'bold', 'italic')) # setup
-            self.lb_turn.place(relx=0.015, rely=0.073, relwidth=0.1, relheight=0.1)                                        # posicao
+            self.lb_sons = Label(self.frame2, text = 'Dependents:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_sons.place(relx=0.07, rely=0.46, relwidth=0.15, relheight=0.05)                                       # posicao    
+
+            self.lb_nationality = Label(self.frame2, text = 'Nationality:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_nationality.place(relx=0.08, rely=0.52, relwidth=0.14, relheight=0.05)                                        # posicao 
+
+            self.lb_city = Label(self.frame2, text = 'City:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_city.place(relx=0.16, rely=0.58, relwidth=0.065, relheight=0.05)                                # posicao    
+
+            self.lb_title2 = Label(self.frame2, text = 'Job Info', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
+            self.lb_title2.place(relx=0.33, rely=0.69, relwidth=0.3, relheight=0.05)                                      # posicao 
+
+            self.lb_pos = Label(self.frame2, text = 'Job Position:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_pos.place(relx=0.065, rely=0.77, relwidth=0.16, relheight=0.05)                                          # posicao 
+
+            self.lb_salary = Label(self.frame2, text = 'Salary:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_salary.place(relx=0.12, rely=0.83, relwidth=0.1, relheight=0.05)                                    # posicao    
+
+            self.lb_turn = Label(self.frame2, text = 'Work Shift:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_turn.place(relx=0.08, rely=0.9, relwidth=0.14, relheight=0.05)                                       # posicao 
+
+            #--------------------------------------
+
+            # Widgets - [Entradas]
+
+            self.in_name = Entry(self.frame2, bd=4)                               # setup
+            self.in_name.place(relx=0.23, rely=0.1, relwidth=0.7, relheight=0.05) # posicao
+
+            self.in_birth = Entry(self.frame2, bd=4)                                 # setup
+            self.in_birth.place(relx=0.23, rely=0.16, relwidth=0.05, relheight=0.05) # posicao
+
+            self.in_sex = Entry(self.frame2, bd=4)                                 # setup
+            self.in_sex.place(relx=0.23, rely=0.22, relwidth=0.04, relheight=0.05) # posicao
+
+            self.in_address = Entry(self.frame2, bd=4)                                # setup
+            self.in_address.place(relx=0.23, rely=0.28, relwidth=0.7, relheight=0.05) # posicao
+
+            self.in_phone = Entry(self.frame2, bd=4)                                 # setup
+            self.in_phone.place(relx=0.23, rely=0.34, relwidth=0.12, relheight=0.05) # posicao
+
+            self.in_marital = Entry(self.frame2, bd=4)                               # setup
+            self.in_marital.place(relx=0.23, rely=0.4, relwidth=0.2, relheight=0.05) # posicao
+
+            self.in_sons = Entry(self.frame2, bd=4)                                 # setup
+            self.in_sons.place(relx=0.23, rely=0.46, relwidth=0.04, relheight=0.05) # posicao    
+
+            self.in_nationality = Entry(self.frame2, bd=4)                                # setup
+            self.in_nationality.place(relx=0.23, rely=0.52, relwidth=0.2, relheight=0.05) # posicao 
+
+            self.in_city = Entry(self.frame2, bd=4)                                # setup
+            self.in_city.place(relx=0.23, rely=0.58, relwidth=0.2, relheight=0.05) # posicao    
+
+            self.in_pos = Entry(self.frame2, bd=4)                                # setup
+            self.in_pos.place(relx=0.23, rely=0.77, relwidth=0.2, relheight=0.05) # posicao 
+
+            self.in_salary = Entry(self.frame2, bd=4)                                # setup
+            self.in_salary.place(relx=0.23, rely=0.83, relwidth=0.1, relheight=0.05) # posicao    
+
+            self.in_turn = Entry(self.frame2, bd=4)                                # setup
+            self.in_turn.place(relx=0.23, rely=0.9, relwidth=0.04, relheight=0.05) # posicao 
 
             #--------------------------------------
 
@@ -141,4 +196,5 @@ class RHScreen(): # inicializa a classe RH
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
 RHScreen()
+
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
