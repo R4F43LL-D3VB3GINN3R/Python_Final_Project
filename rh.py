@@ -17,7 +17,8 @@ class RHScreen(): # inicializa a classe RH
     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def rh_mainscreen(self):
+    def rh_mainscreen(self): # método de configuracao de tela principal
+
         self.rhroot.title("Human Resources")                                            # título 
         screen_width = self.rhroot.winfo_screenwidth()                                  # coordenada da largura    
         screen_height = self.rhroot.winfo_screenheight()                                # coordenada da altura
@@ -62,7 +63,6 @@ class RHScreen(): # inicializa a classe RH
         self.bt_exitmenu = Button(self.frame1, text='Exit', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.rhroot.destroy) # setup 
         self.bt_exitmenu.place(relx=0.01, rely=0.33, relwidth=1, relheight=0.07)                                                                                                                        # posicao
 
-        #--------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
     def frame_insert(self): # método de criacao de frame
@@ -72,20 +72,17 @@ class RHScreen(): # inicializa a classe RH
 
         #--------------------------------------
 
-        # Widgets - [Subtela]
-
-        
-        # Widgets - [Molduras]
+        # Widgets - [Molduras] 
 
         self.canvas_bt = Canvas(self.frame2, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
-        self.canvas_bt.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.65)  # posiciona a moldura
+        self.canvas_bt.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.65)                                                # posiciona a moldura
 
         self.canvas_bt = Canvas(self.frame2, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
-        self.canvas_bt.place(relx=0.01, rely=0.67, relwidth=0.98, relheight=0.32)  # posiciona a moldura        
+        self.canvas_bt.place(relx=0.01, rely=0.67, relwidth=0.98, relheight=0.32)                                                # posiciona a moldura        
 
         #--------------------------------------
 
-        # Widgets - [Labels]
+        # Widgets - [Labels] 
 
         self.lb_title1 = Label(self.frame2, text = 'Personal Info', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
         self.lb_title1.place(relx=0.33, rely=0.03, relwidth=0.3, relheight=0.05)                                          # posicao
@@ -96,11 +93,11 @@ class RHScreen(): # inicializa a classe RH
         self.lb_id = Label(self.frame2, text = 'ID:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
         self.lb_id.place(relx=0.16, rely=0.16, relwidth=0.07, relheight=0.05)                               # posicao
 
-        self.lb_code = Label(self.frame2, text = 'Code:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
-        self.lb_code.place(relx=0.3, rely=0.16, relwidth=0.07, relheight=0.05)                                  # posicao
+        self.lb_idc = Label(self.frame2, text = 'IDC:', bg='grey', font=('comic-sans', 10, 'bold', 'italic'))  # setup
+        self.lb_idc.place(relx=0.3, rely=0.16, relwidth=0.07, relheight=0.05)                                  # posicao
 
         self.lb_age = Label(self.frame2, text = 'Age:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
-        self.lb_age.place(relx=0.46, rely=0.16, relwidth=0.07, relheight=0.05)                                  # posicao
+        self.lb_age.place(relx=0.3, rely=0.22, relwidth=0.07, relheight=0.05)                                # posicao
 
         self.lb_sex = Label(self.frame2, text = 'Sex:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
         self.lb_sex.place(relx=0.16, rely=0.22, relwidth=0.06, relheight=0.05)                                # posicao
@@ -124,16 +121,16 @@ class RHScreen(): # inicializa a classe RH
         self.lb_city.place(relx=0.16, rely=0.58, relwidth=0.065, relheight=0.05)                                # posicao    
 
         self.lb_title2 = Label(self.frame2, text = 'Job Info', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
-        self.lb_title2.place(relx=0.33, rely=0.69, relwidth=0.3, relheight=0.05)                                      # posicao 
+        self.lb_title2.place(relx=0.33, rely=0.69, relwidth=0.3, relheight=0.05)                                     # posicao 
 
         self.lb_pos = Label(self.frame2, text = 'Job Position:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
-        self.lb_pos.place(relx=0.065, rely=0.77, relwidth=0.16, relheight=0.05)                                          # posicao 
+        self.lb_pos.place(relx=0.065, rely=0.77, relwidth=0.16, relheight=0.05)                                        # posicao 
 
         self.lb_salary = Label(self.frame2, text = 'Salary:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
         self.lb_salary.place(relx=0.13, rely=0.83, relwidth=0.1, relheight=0.05)                                    # posicao    
 
         self.lb_turn = Label(self.frame2, text = 'Work Shift:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
-        self.lb_turn.place(relx=0.081, rely=0.89, relwidth=0.14, relheight=0.05)                                        # posicao 
+        self.lb_turn.place(relx=0.081, rely=0.89, relwidth=0.14, relheight=0.05)                                      # posicao 
 
         #--------------------------------------
 
@@ -145,14 +142,14 @@ class RHScreen(): # inicializa a classe RH
         self.in_id = Entry(self.frame2, bd=4)                                 # setup
         self.in_id.place(relx=0.23, rely=0.16, relwidth=0.05, relheight=0.05) # posicao
 
-        self.in_code = Entry(self.frame2, bd=4)                                 # setup
-        self.in_code.place(relx=0.39, rely=0.16, relwidth=0.05, relheight=0.05) # posicao
+        self.in_idc = Entry(self.frame2, bd=4)                                 # setup
+        self.in_idc.place(relx=0.37, rely=0.16, relwidth=0.11, relheight=0.05) # posicao
 
         self.in_age = Entry(self.frame2, bd=4)                                 # setup
-        self.in_age.place(relx=0.54, rely=0.16, relwidth=0.05, relheight=0.05) # posicao
+        self.in_age.place(relx=0.37, rely=0.22, relwidth=0.05, relheight=0.05) # posicao
 
         self.in_sex = Entry(self.frame2, bd=4)                                 # setup
-        self.in_sex.place(relx=0.23, rely=0.22, relwidth=0.04, relheight=0.05) # posicao
+        self.in_sex.place(relx=0.23, rely=0.22, relwidth=0.05, relheight=0.05) # posicao
 
         self.in_address = Entry(self.frame2, bd=4)                                # setup
         self.in_address.place(relx=0.23, rely=0.28, relwidth=0.7, relheight=0.05) # posicao
@@ -178,10 +175,76 @@ class RHScreen(): # inicializa a classe RH
         self.in_salary = Entry(self.frame2, bd=4)                                # setup
         self.in_salary.place(relx=0.23, rely=0.83, relwidth=0.1, relheight=0.05) # posicao    
 
-        self.in_turn = Entry(self.frame2, bd=4)                                # setup
+        self.in_turn = Entry(self.frame2, bd=4)                                 # setup
         self.in_turn.place(relx=0.23, rely=0.89, relwidth=0.04, relheight=0.05) # posicao 
 
         #--------------------------------------
+
+        # Widgets - [Botões]
+        self.bt_show_employee = Button(self.frame2, text='Show', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees) # setup 
+        self.bt_show_employee.place(relx=0.55, rely=0.9, relwidth=0.2, relheight=0.07)  # posicao
+
+        self.bt_save_employee = Button(self.frame2, text='Save', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
+        self.bt_save_employee.place(relx=0.77, rely=0.9, relwidth=0.2, relheight=0.07)  # posicao
+                                                                                                                    
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def show_employees(self):
+         
+        # Widgets 
+        self.subframe2 = Toplevel(self.rhroot)
+        self.subframe2.title("Employee Details")
+        self.subframe2.geometry("1500x500")
+
+        #--------------------------------------
+
+        # Treeview
+        self.listEmpl = ttk.Treeview(self.subframe2, height = 3, column = ("col0","col1", "col2'", "col3", "col4", "col5", "col6'", "col7", "col8", "col9", "col10'", "col11", "col12", "col3")) # objeto treeview criado na tela2
+
+        #--------------------------------------
+
+        # Cabecalhos
+        self.listEmpl.heading("#0", text="ID")             # texto de cabecalho
+        self.listEmpl.heading("#1", text="IDC")            # texto de cabecalho
+        self.listEmpl.heading("#2", text="Name")           # texto de cabecalho
+        self.listEmpl.heading("#3", text="Age")            # texto de cabecalho
+        self.listEmpl.heading("#4", text="Sex")            # texto de cabecalho
+        self.listEmpl.heading("#5", text="Address")        # texto de cabecalho
+        self.listEmpl.heading("#6", text="Phone")          # texto de cabecalho
+        self.listEmpl.heading("#7", text="Marital Status") # texto de cabecalho
+        self.listEmpl.heading("#8", text="Dependents")     # texto de cabecalho
+        self.listEmpl.heading("#9", text="City")           # texto de cabecalho
+        self.listEmpl.heading("#10", text="Job Position")  # texto de cabecalho
+        self.listEmpl.heading("#11", text="Salary")        # texto de cabecalho
+        self.listEmpl.heading("#12", text="Work Shift")    # texto de cabecalho
+
+        #--------------------------------------
+
+        # Colunas
+        self.listEmpl.column("#0", width=50)  # tamanho da coluna
+        self.listEmpl.column("#1", width=50)  # tamanho da coluna
+        self.listEmpl.column("#2", width=265)  # tamanho da coluna
+        self.listEmpl.column("#3", width=50)  # tamanho da coluna
+        self.listEmpl.column("#4", width=50)  # tamanho da coluna
+        self.listEmpl.column("#5", width=265)  # tamanho da coluna
+        self.listEmpl.column("#6", width=100)  # tamanho da coluna
+        self.listEmpl.column("#7", width=100)  # tamanho da coluna
+        self.listEmpl.column("#8", width=100)  # tamanho da coluna
+        self.listEmpl.column("#9", width=100)  # tamanho da coluna
+        self.listEmpl.column("#10", width=100) # tamanho da coluna
+        self.listEmpl.column("#11", width=100) # tamanho da coluna
+        self.listEmpl.column("#12", width=100) # tamanho da coluna
+
+        #--------------------------------------
+
+        # Treeview Configuracoes
+        self.listEmpl.place(relx = 0.01, rely = 0.05, relwidth = 0.95, relheight = 0.85)    # insere a treeview com posicao e tamanho desejado
+
+        vsb = ttk.Scrollbar(self.subframe2, orient="vertical", command=self.listEmpl.yview) # objeto barra de rolagem criado na tela2
+        vsb.place(relx = 0.96, rely = 0.05, relheight = 0.85)                               # insere a barra de rolagem com posicao e tamanho desejado
+        self.listEmpl.configure(yscrollcommand=vsb.set)                                     # configuracao da barra de rolagem
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def frame_remove(self): # método de criacao de frame
          
