@@ -113,7 +113,7 @@ class Database(): # classe para o banco de dados
         
         return rows # retorna as linhas da tabela
 
-    # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
+        # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
         table_name = 'tab_admins'
         result = view_rows(table_name)
 
@@ -125,25 +125,20 @@ class Database(): # classe para o banco de dados
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def fetch_column_names(table_name):
-        conn = sqlite3.connect('DB000')
+        conn = sqlite3.connect('DB000') # cria um conexao com o sqlite3
         cursor = conn.cursor()
         
-        # Consulta para obter os nomes das colunas da tabela
-        query = f"PRAGMA table_info({table_name});"
+        query = f"PRAGMA table_info({table_name});" # string de conexao que recebe um argumento
         
-        # Executa a consulta
-        cursor.execute(query)
+        cursor.execute(query) # Executa a consulta
         
-        # Recupera todas as linhas (cada linha contém informações sobre uma coluna)
-        rows = cursor.fetchall()
+        rows = cursor.fetchall() # Recupera todas as linhas (cada linha contém informações sobre uma coluna) 
+
+        conn.close() # chama o método para encerrar a conexao
         
-        # Fecha a conexão com o banco de dados
-        conn.close()
+        column_names = [row[1] for row in rows] # Extrai os nomes das colunas da primeira posição de cada tupla
         
-        # Extrai os nomes das colunas da primeira posição de cada tupla
-        column_names = [row[1] for row in rows]
-        
-        return column_names
+        return column_names # retorna os nomes das colunas
 
         # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
         table_name = 'tab_employees'
