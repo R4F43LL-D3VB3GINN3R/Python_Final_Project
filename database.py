@@ -5,6 +5,12 @@ import sqlite3 # importa a biblioteca de banco de dados
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 class Database(): # classe para o banco de dados
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+    
+    def __init__(self):
+
+        pass
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
     def open_conn(self): # método para conectar ao banco de dados
 
@@ -30,6 +36,26 @@ class Database(): # classe para o banco de dados
                             """)
         
         self.conn.commit() # insere o comando SQL
+
+        self.cursor.execute("""CREATE TABLE IF NOT EXISTS tab_employees (
+                            ID INTEGER PRIMARY KEY,
+                            IDC TEXT,
+                            name TEXT, 
+                            age INTEGER,
+                            sex TEXT,
+                            address TEXT,
+                            phone INTEGER,
+                            marital_status TEXT,
+                            dependents INTEGER,
+                            city TEXT,
+                            job_position TEXT,
+                            salary DECIMAL (5,2),
+                            work_shift TEXT
+                            );
+                            """)
+        
+        self.conn.commit() # insere o comando SQL
+
         self.close_conn()  # chama o método para encerrar a conexao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -69,5 +95,61 @@ class Database(): # classe para o banco de dados
         # Retorna True se o resultado não for None (ou seja, se um usuário foi encontrado),
         # e False caso contrário (nenhum usuário correspondente)
         return result is not None
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+    
+    def view_rows(table_name): # método para verificar o conteudo das tabelas
+
+        conn = sqlite3.connect('DB000') # cria um conexao com o sqlite3
+        cursor = conn.cursor()          
+        
+        query = f"SELECT * FROM {table_name};" # string de conexao que recebe um argumento
+        
+        cursor.execute(query) # executa a query 
+        
+        rows = cursor.fetchall() # recupera todas as linhas
+        
+        conn.close() # chama o método para encerrar a conexao
+        
+        return rows # retorna as linhas da tabela
+
+    # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
+        table_name = 'tab_admins'
+        result = view_rows(table_name)
+
+        # Exibe o resultado
+        print(f"Conteúdo da tabela {table_name}:")
+        for row in result:
+            print(row)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def fetch_column_names(table_name):
+        conn = sqlite3.connect('DB000')
+        cursor = conn.cursor()
+        
+        # Consulta para obter os nomes das colunas da tabela
+        query = f"PRAGMA table_info({table_name});"
+        
+        # Executa a consulta
+        cursor.execute(query)
+        
+        # Recupera todas as linhas (cada linha contém informações sobre uma coluna)
+        rows = cursor.fetchall()
+        
+        # Fecha a conexão com o banco de dados
+        conn.close()
+        
+        # Extrai os nomes das colunas da primeira posição de cada tupla
+        column_names = [row[1] for row in rows]
+        
+        return column_names
+
+        # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
+        table_name = 'tab_employees'
+        columns = fetch_column_names(table_name)
+
+        # Exibe o resultado
+        print(f"Colunas da tabela {table_name}: {columns}")
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
