@@ -1,7 +1,8 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-from tkinter import *   # importa a biblioteca tkinter
-from tkinter import ttk # importa mais funcionalidades do tkinter
+from tkinter import *         # importa a biblioteca tkinter
+from tkinter import ttk       # importa mais funcionalidades do tkinter
+from database import Database # importa a biblioteca de base de dados
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 class RHScreen(): # inicializa a classe RH
@@ -10,6 +11,7 @@ class RHScreen(): # inicializa a classe RH
     def __init__(self):
   
         self.rhroot = Tk()      # o objeto recebe a raiz da aplicacao 
+        self.database = Database() # instancia do banco de dados
         self.rh_mainscreen()    # invoca o metodo de criacao e configuracao da tela de login
         self.rh_frame()         # invoca o metodo de criacao e configuracao do frame de tela
         self.rh_widgets()       # invoca o metodo de criacao e configuracao de widgets
@@ -182,10 +184,13 @@ class RHScreen(): # inicializa a classe RH
 
         # Widgets - [Botões]
         self.bt_show_employee = Button(self.frame2, text='Show', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees) # setup 
-        self.bt_show_employee.place(relx=0.55, rely=0.9, relwidth=0.2, relheight=0.07)  # posicao
+        self.bt_show_employee.place(relx=0.77, rely=0.7, relwidth=0.2, relheight=0.07)                                                                                                                        # posicao
 
-        self.bt_save_employee = Button(self.frame2, text='Save', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
-        self.bt_save_employee.place(relx=0.77, rely=0.9, relwidth=0.2, relheight=0.07)  # posicao
+        self.bt_save_employee = Button(self.frame2, text='Save', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.insert_client) # setup 
+        self.bt_save_employee.place(relx=0.77, rely=0.8, relwidth=0.2, relheight=0.07)                                                                                                                         # posicao
+
+        self.bt_clear_employee = Button(self.frame2, text='Clear', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.clear_fields) # setup 
+        self.bt_clear_employee.place(relx=0.77, rely=0.9, relwidth=0.2, relheight=0.07)                                                                                                                       # posicao
                                                                                                                     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
@@ -199,33 +204,34 @@ class RHScreen(): # inicializa a classe RH
         #--------------------------------------
 
         # Treeview
-        self.listEmpl = ttk.Treeview(self.subframe2, height = 3, column = ("col0","col1", "col2'", "col3", "col4", "col5", "col6'", "col7", "col8", "col9", "col10'", "col11", "col12", "col3")) # objeto treeview criado na tela2
-
+        self.listEmpl = ttk.Treeview(self.subframe2, height = 3, column = ("col0","col1", "col2'", "col3", "col4", "col5", "col6'", "col7", "col8", "col9", "col10'", "col11", "col12", "col13")) # objeto treeview criado na tela2
+        self.insert_treeview() # método para exibir os dados dentro da treeview
         #--------------------------------------
 
         # Cabecalhos
-        self.listEmpl.heading("#0", text="ID")             # texto de cabecalho
-        self.listEmpl.heading("#1", text="IDC")            # texto de cabecalho
-        self.listEmpl.heading("#2", text="Name")           # texto de cabecalho
-        self.listEmpl.heading("#3", text="Age")            # texto de cabecalho
-        self.listEmpl.heading("#4", text="Sex")            # texto de cabecalho
-        self.listEmpl.heading("#5", text="Address")        # texto de cabecalho
-        self.listEmpl.heading("#6", text="Phone")          # texto de cabecalho
-        self.listEmpl.heading("#7", text="Marital Status") # texto de cabecalho
-        self.listEmpl.heading("#8", text="Dependents")     # texto de cabecalho
-        self.listEmpl.heading("#9", text="City")           # texto de cabecalho
-        self.listEmpl.heading("#10", text="Job Position")  # texto de cabecalho
-        self.listEmpl.heading("#11", text="Salary")        # texto de cabecalho
-        self.listEmpl.heading("#12", text="Work Shift")    # texto de cabecalho
+        self.listEmpl.heading("#0", text="")               # texto de cabecalho
+        self.listEmpl.heading("#1", text="ID")             # texto de cabecalho
+        self.listEmpl.heading("#2", text="IDC")            # texto de cabecalho
+        self.listEmpl.heading("#3", text="Name")           # texto de cabecalho
+        self.listEmpl.heading("#4", text="Age")            # texto de cabecalho
+        self.listEmpl.heading("#5", text="Sex")            # texto de cabecalho
+        self.listEmpl.heading("#6", text="Address")        # texto de cabecalho
+        self.listEmpl.heading("#7", text="Phone")          # texto de cabecalho
+        self.listEmpl.heading("#8", text="Marital Status") # texto de cabecalho
+        self.listEmpl.heading("#9", text="Dependents")     # texto de cabecalho
+        self.listEmpl.heading("#10", text="City")          # texto de cabecalho
+        self.listEmpl.heading("#11", text="Job Position")  # texto de cabecalho
+        self.listEmpl.heading("#12", text="Salary")        # texto de cabecalho
+        self.listEmpl.heading("#13", text="Work Shift")    # texto de cabecalho
 
         #--------------------------------------
 
         # Colunas
-        self.listEmpl.column("#0", width=50)  # tamanho da coluna
-        self.listEmpl.column("#1", width=50)  # tamanho da coluna
+        self.listEmpl.column("#0", width=50)   # tamanho da coluna
+        self.listEmpl.column("#1", width=50)   # tamanho da coluna
         self.listEmpl.column("#2", width=265)  # tamanho da coluna
-        self.listEmpl.column("#3", width=50)  # tamanho da coluna
-        self.listEmpl.column("#4", width=50)  # tamanho da coluna
+        self.listEmpl.column("#3", width=50)   # tamanho da coluna
+        self.listEmpl.column("#4", width=50)   # tamanho da coluna
         self.listEmpl.column("#5", width=265)  # tamanho da coluna
         self.listEmpl.column("#6", width=100)  # tamanho da coluna
         self.listEmpl.column("#7", width=100)  # tamanho da coluna
@@ -234,6 +240,7 @@ class RHScreen(): # inicializa a classe RH
         self.listEmpl.column("#10", width=100) # tamanho da coluna
         self.listEmpl.column("#11", width=100) # tamanho da coluna
         self.listEmpl.column("#12", width=100) # tamanho da coluna
+        self.listEmpl.column("#13", width=100) # tamanho da coluna
 
         #--------------------------------------
 
@@ -245,6 +252,78 @@ class RHScreen(): # inicializa a classe RH
         self.listEmpl.configure(yscrollcommand=vsb.set)                                     # configuracao da barra de rolagem
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def clear_fields(self):
+
+        self.in_name.delete(0, END)        # limpa a entrada 
+        self.in_id.delete(0, END)          # limpa a entrada
+        self.in_idc.delete(0, END)         # limpa a entrada
+        self.in_age.delete(0, END)         # limpa a entrada
+        self.in_sex.delete(0, END)         # limpa a entrada
+        self.in_address.delete(0, END)     # limpa a entrada   
+        self.in_phone.delete(0, END)       # limpa a entrada
+        self.in_marital.delete(0, END)     # limpa a entrada
+        self.in_sons.delete(0, END)        # limpa a entrada
+        self.in_nationality.delete(0, END) # limpa a entrada      
+        self.in_city.delete(0, END)        # limpa a entrada
+        self.in_pos.delete(0, END)         # limpa a entrada
+        self.in_salary.delete(0, END)      # limpa a entrada
+        self.in_turn.delete(0, END)        # limpa a entrada
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def get_client(self):
+         
+        self.id = self.in_id.get()                   # objeto criado recebe o que for digitado na entrada
+        self.idc = self.in_idc.get()                 # objeto criado recebe o que for digitado na entrada
+        self.name = self.in_name.get()               # objeto criado recebe o que for digitado na entrada
+        self.age = self.in_age.get()                 # objeto criado recebe o que for digitado na entrada
+        self.sex = self.in_sex.get()                 # objeto criado recebe o que for digitado na entrada
+        self.address = self.in_address.get()         # objeto criado recebe o que for digitado na entrada
+        self.phone = self.in_phone.get()             # objeto criado recebe o que for digitado na entrada
+        self.marital = self.in_marital.get()         # objeto criado recebe o que for digitado na entrada
+        self.sons = self.in_sons.get()               # objeto criado recebe o que for digitado na entrada
+        self.nationality = self.in_nationality.get() # objeto criado recebe o que for digitado na entrada
+        self.city = self.in_city.get()               # objeto criado recebe o que for digitado na entrada
+        self.pos = self.in_pos.get()                 # objeto criado recebe o que for digitado na entrada
+        self.salary = self.in_salary.get()           # objeto criado recebe o que for digitado na entrada
+        self.turn = self.in_salary.get()             # objeto criado recebe o que for digitado na entrada
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def insert_client(self):
+         
+        self.get_client()
+        self.database.open_conn()
+
+        self.database.cursor.execute(""" INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift)
+                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", (self.idc, self.name, self.age, self.sex, self.address, self.phone, self.marital, self.sons, self.nationality, self.city, self.pos, self.salary, self.turn)
+                                     )
+
+        self.database.conn.commit()
+        self.database.close_conn()
+        self.insert_treeview()
+        self.clear_fields()
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def insert_treeview(self):
+
+         
+        self.listEmpl.delete(*self.listEmpl.get_children()) # o objeto deleta os elementos desempacotados da lista por getchildren
+
+        self.database.open_conn() # abre conexão com banco de dados
+
+        lista = self.database.cursor.execute(""" SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift FROM tab_employees ORDER BY name ASC; """)
+        # seleciona todos os campos da tabela na lista e os ordena pelos nomes dos empregados em ordem alfabetica
+
+        for i in lista:                              # percorre todos os itens da lista que guarda os resultados da consulta ao banco de dados 
+             self.listEmpl.insert("", END, values=i) # os itens serão inseridos a lista do topo ao final
+
+        self.database.close_conn() # fecha conexão com o banco de dados
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
 
     def frame_remove(self): # método de criacao de frame
          
