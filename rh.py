@@ -219,28 +219,30 @@ class RHScreen(): # inicializa a classe RH
         self.listEmpl.heading("#7", text="Phone")          # texto de cabecalho
         self.listEmpl.heading("#8", text="Marital Status") # texto de cabecalho
         self.listEmpl.heading("#9", text="Dependents")     # texto de cabecalho
-        self.listEmpl.heading("#10", text="City")          # texto de cabecalho
-        self.listEmpl.heading("#11", text="Job Position")  # texto de cabecalho
-        self.listEmpl.heading("#12", text="Salary")        # texto de cabecalho
-        self.listEmpl.heading("#13", text="Work Shift")    # texto de cabecalho
+        self.listEmpl.heading("#10", text="Nationality")          # texto de cabecalho
+        self.listEmpl.heading("#11", text="City")          # texto de cabecalho
+        self.listEmpl.heading("#12", text="Job Position")  # texto de cabecalho
+        self.listEmpl.heading("#13", text="Salary")        # texto de cabecalho
+        self.listEmpl.heading("#14", text="Work Shift")    # texto de cabecalho
 
         #--------------------------------------
 
         # Colunas
-        self.listEmpl.column("#0", width=50)   # tamanho da coluna
+        self.listEmpl.column("#0", width=10)   # tamanho da coluna
         self.listEmpl.column("#1", width=50)   # tamanho da coluna
-        self.listEmpl.column("#2", width=265)  # tamanho da coluna
-        self.listEmpl.column("#3", width=50)   # tamanho da coluna
+        self.listEmpl.column("#2", width=50)  # tamanho da coluna
+        self.listEmpl.column("#3", width=150)   # tamanho da coluna
         self.listEmpl.column("#4", width=50)   # tamanho da coluna
-        self.listEmpl.column("#5", width=265)  # tamanho da coluna
-        self.listEmpl.column("#6", width=100)  # tamanho da coluna
-        self.listEmpl.column("#7", width=100)  # tamanho da coluna
+        self.listEmpl.column("#5", width=50)  # tamanho da coluna
+        self.listEmpl.column("#6", width=150)  # tamanho da coluna
+        self.listEmpl.column("#7", width=50)  # tamanho da coluna
         self.listEmpl.column("#8", width=100)  # tamanho da coluna
-        self.listEmpl.column("#9", width=100)  # tamanho da coluna
+        self.listEmpl.column("#9", width=50)  # tamanho da coluna
         self.listEmpl.column("#10", width=100) # tamanho da coluna
         self.listEmpl.column("#11", width=100) # tamanho da coluna
         self.listEmpl.column("#12", width=100) # tamanho da coluna
-        self.listEmpl.column("#13", width=100) # tamanho da coluna
+        self.listEmpl.column("#13", width=50) # tamanho da coluna
+        self.listEmpl.column("#14", width=50) # tamanho da coluna
 
         #--------------------------------------
 
