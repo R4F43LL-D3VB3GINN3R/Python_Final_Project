@@ -3,6 +3,7 @@
 from tkinter import *         # importa a biblioteca tkinter
 from tkinter import ttk       # importa mais funcionalidades do tkinter
 from database import Database # importa a biblioteca de base de dados
+from tkinter import messagebox # importa a caixa de mensagens do tkinter
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 class RHScreen(): # inicializa a classe RH
@@ -53,17 +54,11 @@ class RHScreen(): # inicializa a classe RH
         self.bt_insert = Button(self.frame1, text='Insert', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_insert) # setup 
         self.bt_insert.place(relx=0.01, rely=0.01, relwidth=1, relheight=0.07)                                                                                                                        # posicao
 
-        self.bt_remove = Button(self.frame1, text='Remove', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_remove) # setup 
+        self.bt_remove = Button(self.frame1, text='Search', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_search) # setup 
         self.bt_remove.place(relx=0.01, rely=0.09, relwidth=1, relheight=0.07)                                                                                                                        # posicao
 
-        self.bt_change = Button(self.frame1, text='Change', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_change) # setup 
-        self.bt_change.place(relx=0.01, rely=0.17, relwidth=1, relheight=0.07)                                                                                                                        # posicao
-
-        self.bt_search = Button(self.frame1, text='Search', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_search) # setup 
-        self.bt_search.place(relx=0.01, rely=0.25, relwidth=1, relheight=0.07)                                                                                                                        # posicao
-
         self.bt_exitmenu = Button(self.frame1, text='Exit', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.rhroot.destroy) # setup 
-        self.bt_exitmenu.place(relx=0.01, rely=0.33, relwidth=1, relheight=0.07)                                                                                                                        # posicao
+        self.bt_exitmenu.place(relx=0.01, rely=0.17, relwidth=1, relheight=0.07)                                                                                                                        # posicao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
@@ -177,8 +172,8 @@ class RHScreen(): # inicializa a classe RH
         self.in_salary = Entry(self.frame2, bd=4)                                # setup
         self.in_salary.place(relx=0.23, rely=0.83, relwidth=0.1, relheight=0.05) # posicao    
 
-        self.in_turn = Entry(self.frame2, bd=4)                                 # setup
-        self.in_turn.place(relx=0.23, rely=0.89, relwidth=0.04, relheight=0.05) # posicao 
+        self.in_turn = Entry(self.frame2, bd=4)                                # setup
+        self.in_turn.place(relx=0.23, rely=0.89, relwidth=0.1, relheight=0.05) # posicao 
 
         #--------------------------------------
 
@@ -219,7 +214,7 @@ class RHScreen(): # inicializa a classe RH
         self.listEmpl.heading("#7", text="Phone")          # texto de cabecalho
         self.listEmpl.heading("#8", text="Marital Status") # texto de cabecalho
         self.listEmpl.heading("#9", text="Dependents")     # texto de cabecalho
-        self.listEmpl.heading("#10", text="Nationality")          # texto de cabecalho
+        self.listEmpl.heading("#10", text="Nationality")   # texto de cabecalho
         self.listEmpl.heading("#11", text="City")          # texto de cabecalho
         self.listEmpl.heading("#12", text="Job Position")  # texto de cabecalho
         self.listEmpl.heading("#13", text="Salary")        # texto de cabecalho
@@ -230,19 +225,19 @@ class RHScreen(): # inicializa a classe RH
         # Colunas
         self.listEmpl.column("#0", width=10)   # tamanho da coluna
         self.listEmpl.column("#1", width=50)   # tamanho da coluna
-        self.listEmpl.column("#2", width=50)  # tamanho da coluna
-        self.listEmpl.column("#3", width=150)   # tamanho da coluna
+        self.listEmpl.column("#2", width=50)   # tamanho da coluna
+        self.listEmpl.column("#3", width=150)  # tamanho da coluna
         self.listEmpl.column("#4", width=50)   # tamanho da coluna
-        self.listEmpl.column("#5", width=50)  # tamanho da coluna
+        self.listEmpl.column("#5", width=50)   # tamanho da coluna
         self.listEmpl.column("#6", width=150)  # tamanho da coluna
-        self.listEmpl.column("#7", width=50)  # tamanho da coluna
+        self.listEmpl.column("#7", width=50)   # tamanho da coluna
         self.listEmpl.column("#8", width=100)  # tamanho da coluna
-        self.listEmpl.column("#9", width=50)  # tamanho da coluna
+        self.listEmpl.column("#9", width=50)   # tamanho da coluna
         self.listEmpl.column("#10", width=100) # tamanho da coluna
         self.listEmpl.column("#11", width=100) # tamanho da coluna
         self.listEmpl.column("#12", width=100) # tamanho da coluna
-        self.listEmpl.column("#13", width=50) # tamanho da coluna
-        self.listEmpl.column("#14", width=50) # tamanho da coluna
+        self.listEmpl.column("#13", width=50)  # tamanho da coluna
+        self.listEmpl.column("#14", width=50)  # tamanho da coluna
 
         #--------------------------------------
 
@@ -293,23 +288,24 @@ class RHScreen(): # inicializa a classe RH
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def insert_client(self):
+    def insert_client(self): # metodo para inserir o cliente na tabela.
          
-        self.get_client()
-        self.database.open_conn()
+        self.get_client()         # invoca o metodo para receber os dados inseridos na entrada
+        self.database.open_conn() # abre a conexao com a base de dados
 
         self.database.cursor.execute(""" INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift)
                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", (self.idc, self.name, self.age, self.sex, self.address, self.phone, self.marital, self.sons, self.nationality, self.city, self.pos, self.salary, self.turn)
                                      )
+        # executa a string da query
 
-        self.database.conn.commit()
-        self.database.close_conn()
-        self.insert_treeview()
-        self.clear_fields()
+        self.database.conn.commit() # executa a query SQL
+        self.database.close_conn()  # encerra a conexao
+        self.insert_treeview()      # invoca o método para povoar a treeview
+        self.clear_fields()         # invoca o metodo para limpar os campos
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-        
-    def insert_treeview(self):
+         
+    def insert_treeview(self): # método para inserir os dados das entradas na treeview
 
          
         self.listEmpl.delete(*self.listEmpl.get_children()) # o objeto deleta os elementos desempacotados da lista por getchildren
@@ -325,26 +321,140 @@ class RHScreen(): # inicializa a classe RH
         self.database.close_conn() # fecha conexão com o banco de dados
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-        
-
-    def frame_remove(self): # método de criacao de frame
-         
-            self.frame3 = Frame(self.rhroot, bd = 4, bg='yellow', highlightbackground='black', highlightthickness=3) # setup 
-            self.frame3.place(relx=0.2, rely=0.001, relwidth=0.8, relheight=1)                                       # posicao
-
-            #--------------------------------------
-
-    def frame_change(self): # método de criacao de frame
-         
-            self.frame4 = Frame(self.rhroot, bd = 4, bg='green', highlightbackground='black', highlightthickness=3) # setup 
-            self.frame4.place(relx=0.2, rely=0.001, relwidth=0.8, relheight=1)                                      # posicao
-
-            #--------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def frame_search(self): # método de criacao de frame
          
-            self.frame5 = Frame(self.rhroot, bd = 4, bg='blue', highlightbackground='black', highlightthickness=3) # setup 
-            self.frame5.place(relx=0.2, rely=0.001, relwidth=0.8, relheight=1)                                     # posicao
+            self.frame3 = Frame(self.rhroot, bd = 4, bg='white', highlightbackground='black', highlightthickness=3) # setup 
+            self.frame3.place(relx=0.2, rely=0.001, relwidth=0.8, relheight=1)                                      # posicao
+
+            #--------------------------------------
+
+            # Widgets - [Molduras] 
+
+            self.canvas_frame3 = Canvas(self.frame3, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+            self.canvas_frame3.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.3)                                                 # posiciona a moldura 
+
+            self.canvas2_frame3 = Canvas(self.frame3, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+            self.canvas2_frame3.place(relx=0.01, rely=0.33, relwidth=0.98, relheight=0.66)                                                # posiciona a moldura      
+
+            #--------------------------------------
+
+            # Widgets - [Labels] 
+
+            self.lb_title1 = Label(self.frame3, text = 'Search Employee', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
+            self.lb_title1.place(relx=0.33, rely=0.03, relwidth=0.3, relheight=0.05)                                            # posicao
+
+            self.lb_idsearch = Label(self.frame3, text = 'ID:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_idsearch.place(relx=0.06, rely=0.1, relwidth=0.1, relheight=0.05)                                 # posicao
+
+            self.lb_or = Label(self.frame3, text = 'Name:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+            self.lb_or.place(relx=0.24, rely=0.1, relwidth=0.1, relheight=0.05)                                   # posicao
+
+            #--------------------------------------
+
+            # Widgets - [Entradas]
+
+            self.in_idsearch = Entry(self.frame3, bd=4)                               # setup
+            self.in_idsearch.place(relx=0.14, rely=0.1, relwidth=0.1, relheight=0.05) # posicao
+
+            self.in_namesearch = Entry(self.frame3, bd=4)                               # setup
+            self.in_namesearch.place(relx=0.34, rely=0.1, relwidth=0.6, relheight=0.05) # posicao
+
+            #--------------------------------------
+
+            # Widgets - [Botões]
+            self.bt_show_employee = Button(self.frame3, text='Start', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.insert_treeview_search) # setup 
+            self.bt_show_employee.place(relx=0.4, rely=0.2, relwidth=0.2, relheight=0.07)                                                                                                                          # posicao
+            
+            #--------------------------------------                                                                                                                       
+            
+            # Treeview
+            self.listEmplSearch = ttk.Treeview(self.frame3, height = 3, column = ("col0","col1", "col2'", "col3", "col4", "col5", "col6'", "col7", "col8", "col9", "col10'", "col11", "col12", "col13")) # objeto treeview criado na tela
+            #--------------------------------------
+
+            # Cabecalhos
+            self.listEmplSearch.heading("#0", text="")               # texto de cabecalho
+            self.listEmplSearch.heading("#1", text="ID")             # texto de cabecalho
+            self.listEmplSearch.heading("#2", text="IDC")            # texto de cabecalho
+            self.listEmplSearch.heading("#3", text="Name")           # texto de cabecalho
+            self.listEmplSearch.heading("#4", text="Age")            # texto de cabecalho
+            self.listEmplSearch.heading("#5", text="Sex")            # texto de cabecalho
+            self.listEmplSearch.heading("#6", text="Address")        # texto de cabecalho
+            self.listEmplSearch.heading("#7", text="Phone")          # texto de cabecalho
+            self.listEmplSearch.heading("#8", text="Marital Status") # texto de cabecalho
+            self.listEmplSearch.heading("#9", text="Dependents")     # texto de cabecalho
+            self.listEmplSearch.heading("#10", text="Nationality")   # texto de cabecalho
+            self.listEmplSearch.heading("#11", text="City")          # texto de cabecalho
+            self.listEmplSearch.heading("#12", text="Job Position")  # texto de cabecalho
+            self.listEmplSearch.heading("#13", text="Salary")        # texto de cabecalho
+            self.listEmplSearch.heading("#14", text="Work Shift")    # texto de cabecalho
+
+            #--------------------------------------
+
+            # Colunas
+            self.listEmplSearch.column("#0", width=0)   # tamanho da coluna
+            self.listEmplSearch.column("#1", width=50)   # tamanho da coluna
+            self.listEmplSearch.column("#2", width=50)   # tamanho da coluna
+            self.listEmplSearch.column("#3", width=150)  # tamanho da coluna
+            self.listEmplSearch.column("#4", width=50)   # tamanho da coluna
+            self.listEmplSearch.column("#5", width=50)   # tamanho da coluna
+            self.listEmplSearch.column("#6", width=150)  # tamanho da coluna
+            self.listEmplSearch.column("#7", width=50)   # tamanho da coluna
+            self.listEmplSearch.column("#8", width=100)  # tamanho da coluna
+            self.listEmplSearch.column("#9", width=50)   # tamanho da coluna
+            self.listEmplSearch.column("#10", width=100) # tamanho da coluna
+            self.listEmplSearch.column("#11", width=100) # tamanho da coluna
+            self.listEmplSearch.column("#12", width=100) # tamanho da coluna
+            self.listEmplSearch.column("#13", width=50)  # tamanho da coluna
+            self.listEmplSearch.column("#14", width=50)  # tamanho da coluna
+
+            #--------------------------------------
+
+            # Treeview Configuracoes
+            self.listEmplSearch.place(relx = 0.02, rely = 0.35, relwidth = 0.95, relheight = 0.6)    # insere a treeview com posicao e tamanho desejado
+
+            hsb = ttk.Scrollbar(self.frame3, orient="horizontal", command=self.listEmplSearch.xview)
+            hsb.place(relx=0.02, rely=0.88, relwidth=0.94)  # Posiciona a barra de rolagem horizontal
+
+            self.listEmplSearch.configure(xscrollcommand=hsb.set)  # Configura o comando de rolagem horizontal
+                                                                                                                    
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+            
+    def insert_treeview_search(self):
+        
+        self.listEmplSearch.delete(*self.listEmplSearch.get_children()) # Limpa os itens existentes na Treeview
+        
+        self.in_namesearch.insert(END, '%') # Insere '%' na entrada de nome para procurar qualquer correspondência
+        nome = self.in_namesearch.get()     # o nome recebe a entrada do nome
+
+        self.database.open_conn() # Conecta ao banco de dados
+
+        if self.in_idsearch.get(): # Executa a consulta com base no ID ou no nome
+            lista = self.database.cursor.execute(
+                """SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents,
+                        nationality, city, job_position, salary, work_shift
+                FROM tab_employees
+                WHERE ID = ?""",
+                (self.in_idsearch.get(),)
+            ).fetchall() # Busca apenas pelo ID se fornecido
+        else: # Busca pelo ID ou pelo nome com correspondência parcial
+            lista = self.database.cursor.execute(
+                """SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents,
+                        nationality, city, job_position, salary, work_shift
+                FROM tab_employees
+                WHERE ID = ? OR name LIKE ?""",
+                (self.in_idsearch.get(), f'%{nome}%')
+            ).fetchall()
+
+        for i in lista: # ciclo for para correr a pesquisa
+            self.listEmplSearch.insert("", END, values=i) # insere cada item achado da pesquisa na lista
+
+        if not lista: # Exibe uma mensagem se nenhum registro for encontrado
+            messagebox.showinfo("Info", "No records found for the search criteria.")
+
+        self.database.close_conn() # Fecha a conexão com o banco de dados
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
