@@ -6,7 +6,7 @@ import sqlite3 # importa a biblioteca de banco de dados
 class Database(): # classe para o banco de dados
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
-    def __init__(self):
+    def __init__(self): # inicia os objetos da classe
 
         pass
 
@@ -25,7 +25,7 @@ class Database(): # classe para o banco de dados
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def create_table(self): # método de manipulacao e criacao de tabelas
+    def create_table(self): # método de criacao de tabelas
 
         self.open_conn() # chama o método de conexao com o banco de dados
 
@@ -38,7 +38,27 @@ class Database(): # classe para o banco de dados
         self.conn.commit() # insere o comando SQL
 
         self.cursor.execute("""CREATE TABLE IF NOT EXISTS tab_employees (
-                            ID INTEGER PRIMARY KEY AUTO_INCREMENT,
+                            ID INTEGER PRIMARY KEY,
+                            IDC TEXT,
+                            name TEXT, 
+                            age INTEGER,
+                            sex TEXT,
+                            address TEXT,
+                            phone INTEGER,
+                            marital_status TEXT,
+                            dependents INTEGER,
+                            nationality TEXT,
+                            city TEXT,
+                            job_position TEXT,
+                            salary DECIMAL (5,2),
+                            work_shift TEXT
+                            );
+                            """)
+        
+        self.conn.commit() # insere o comando SQL
+
+        self.cursor.execute("""CREATE TABLE IF NOT EXISTS tab_exemployees (
+                            ID INTEGER PRIMARY KEY,
                             IDC TEXT,
                             name TEXT, 
                             age INTEGER,
@@ -77,15 +97,15 @@ class Database(): # classe para o banco de dados
             self.cursor.execute(insert_query, user_data) # executa a query na tupla
 
         self.conn.commit() # insere o comando SQL
-        self.close_conn()   
+        self.close_conn()  # encerra a conexao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def fill_employees(self):
+    def fill_employees(self): # métodeo para encher a tabela com dados
 
-        self.open_conn()
+        self.open_conn() # abre a conexao
 
-        employees_list = [
+        employees_list = [ # lista criada com os dados a serem inseridos
             ('IDC1', 'John Doe', 30, 'Male', '123 Main St', 5551234, 'Single', 0, 'American', 'New York', 'Manager', 5000.00, 'Day'),
             ('IDC2', 'Jane Smith', 25, 'Female', '456 Oak St', 5555678, 'Married', 2, 'Canadian', 'Toronto', 'Developer', 4000.00, 'Night'),
             ('IDC3', 'Bob Johnson', 40, 'Male', '789 Pine St', 5559012, 'Divorced', 1, 'British', 'London', 'Analyst', 3500.00, 'Day'),
@@ -104,12 +124,15 @@ class Database(): # classe para o banco de dados
         ]
     
         insert_query = "INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        # string da query
 
-        for user_data in employees_list:
-            self.cursor.execute(insert_query, user_data)
+        for user_data in employees_list:                 # ciclo para iterar sobre a lista de dados
+            self.cursor.execute(insert_query, user_data) # executa a query enquanto itera sobre a lista
 
-        self.conn.commit()
-        self.close_conn()
+        self.conn.commit() # insere o comando SQL
+        self.close_conn()  # encerra a conexao~
+
+        print('aaa')
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -146,18 +169,18 @@ class Database(): # classe para o banco de dados
         
         return rows # retorna as linhas da tabela
 
-    # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
-    table_name = 'tab_employees'
-    result = view_rows(table_name)
+        # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
+        table_name = 'tab_employees'
+        result = view_rows(table_name)
 
-    # Exibe o resultado
-    print(f"Conteúdo da tabela {table_name}:")
-    for row in result:
-        print(row)
+        # Exibe o resultado
+        print(f"Conteúdo da tabela {table_name}:")
+        for row in result:
+            print(row)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def fetch_column_names(table_name):
+    def fetch_column_names(table_name): # metodo para verificar os campos de uma tabela
 
         conn = sqlite3.connect('DB000') # cria um conexao com o sqlite3
         cursor = conn.cursor()
@@ -174,35 +197,35 @@ class Database(): # classe para o banco de dados
         
         return column_names # retorna os nomes das colunas
 
-        # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
-        table_name = 'tab_employees'
-        columns = fetch_column_names(table_name)
+    # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
+    table_name = 'tab_exemployees'
+    columns = fetch_column_names(table_name)
 
-        # Exibe o resultado
-        print(f"Colunas da tabela {table_name}: {columns}")
+    # Exibe o resultado
+    print(f"Colunas da tabela {table_name}: {columns}")
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
     def drop_table(self, table_name): # metodo para deletar uma tabela
 
-        self.open_conn()
+        self.open_conn() # abre a conexao
         
-        query = f"DROP TABLE IF EXISTS {table_name};"
-        self.cursor.execute(query)
+        query = f"DROP TABLE IF EXISTS {table_name};" # string da query
+        self.cursor.execute(query)                    # executa a string
 
-        self.conn.commit()
-        self.close_conn()
+        self.conn.commit() # executa o comando sql
+        self.close_conn()  # encerra a conexao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
     def delete_table(self, table_name): # metodo para deletar o conteudo de uma tabela
 
-        self.open_conn()
+        self.open_conn() # abre a conexao
         
-        query = f"DELETE FROM {table_name};"
-        self.cursor.execute(query)
+        query = f"DELETE FROM {table_name};" # string da query
+        self.cursor.execute(query)           # executa a string
 
-        self.conn.commit()
-        self.close_conn()
+        self.conn.commit() # executa o comando sql
+        self.close_conn()  # encerra a conexao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
