@@ -293,10 +293,32 @@ class RHScreen(): # inicializa a classe RH
         self.get_client()         # invoca o metodo para receber os dados inseridos na entrada
         self.database.open_conn() # abre a conexao com a base de dados
 
-        self.database.cursor.execute(""" INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift)
-                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", (self.idc, self.name, self.age, self.sex, self.address, self.phone, self.marital, self.sons, self.nationality, self.city, self.pos, self.salary, self.turn)
-                                     )
-        # executa a string da query
+        # Verifica se o empregado já existe na tabela
+        existing_employee = self.database.cursor.execute(
+            """SELECT ID FROM tab_employees WHERE IDC = ?""",
+            (self.idc,)
+        ).fetchone()
+
+        if existing_employee:
+            # Empregado já existe, então execute uma operação de UPDATE
+            self.database.cursor.execute(
+                """UPDATE tab_employees
+                SET name = ?, age = ?, sex = ?, address = ?, phone = ?, marital_status = ?, dependents = ?,
+                    nationality = ?, city = ?, job_position = ?, salary = ?, work_shift = ?
+                WHERE IDC = ?""",
+                (self.name, self.age, self.sex, self.address, self.phone, self.marital, self.sons, self.nationality,
+                self.city, self.pos, self.salary, self.turn, self.idc)
+            )
+            messagebox.showinfo("Info", "Employee with IDC {} updated.".format(self.idc))
+        else:
+            # Empregado não existe, proceda com a inserção
+            self.database.cursor.execute(
+                """INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (self.idc, self.name, self.age, self.sex, self.address, self.phone, self.marital, self.sons, self.nationality,
+                self.city, self.pos, self.salary, self.turn)
+            )
+            messagebox.showinfo("Info", "Employee with IDC {} added.".format(self.idc))
 
         self.database.conn.commit() # executa a query SQL
         self.database.close_conn()  # encerra a conexao
@@ -394,7 +416,7 @@ class RHScreen(): # inicializa a classe RH
             #--------------------------------------
 
             # Colunas
-            self.listEmplSearch.column("#0", width=0)   # tamanho da coluna
+            self.listEmplSearch.column("#0", width=0)    # tamanho da coluna
             self.listEmplSearch.column("#1", width=50)   # tamanho da coluna
             self.listEmplSearch.column("#2", width=50)   # tamanho da coluna
             self.listEmplSearch.column("#3", width=150)  # tamanho da coluna
@@ -413,10 +435,10 @@ class RHScreen(): # inicializa a classe RH
             #--------------------------------------
 
             # Treeview Configuracoes
-            self.listEmplSearch.place(relx = 0.02, rely = 0.35, relwidth = 0.95, relheight = 0.6)    # insere a treeview com posicao e tamanho desejado
+            self.listEmplSearch.place(relx = 0.02, rely = 0.35, relwidth = 0.95, relheight = 0.4)    # insere a treeview com posicao e tamanho desejado
 
             hsb = ttk.Scrollbar(self.frame3, orient="horizontal", command=self.listEmplSearch.xview)
-            hsb.place(relx=0.02, rely=0.88, relwidth=0.94)  # Posiciona a barra de rolagem horizontal
+            hsb.place(relx=0.02, rely=0.7, relwidth=0.94)  # Posiciona a barra de rolagem horizontal
 
             self.listEmplSearch.configure(xscrollcommand=hsb.set)  # Configura o comando de rolagem horizontal
                                                                                                                     
@@ -439,6 +461,11 @@ class RHScreen(): # inicializa a classe RH
                 WHERE ID = ?""",
                 (self.in_idsearch.get(),)
             ).fetchall() # Busca apenas pelo ID se fornecido
+            if lista:
+                self.bt_remove = Button(self.frame3, text='Remove', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'))
+                self.bt_remove.place(relx=0.03, rely=0.9, relwidth=0.2, relheight=0.07)
+                self.bt_change = Button(self.frame3, text='Change', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.changebutton)
+                self.bt_change.place(relx=0.03, rely=0.82, relwidth=0.2, relheight=0.07)
         else: # Busca pelo ID ou pelo nome com correspondência parcial
             lista = self.database.cursor.execute(
                 """SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents,
@@ -447,6 +474,11 @@ class RHScreen(): # inicializa a classe RH
                 WHERE ID = ? OR name LIKE ?""",
                 (self.in_idsearch.get(), f'%{nome}%')
             ).fetchall()
+            if lista:
+                self.bt_remove = Button(self.frame3, text='Remove', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'))
+                self.bt_remove.place(relx=0.03, rely=0.9, relwidth=0.2, relheight=0.07)
+                self.bt_change = Button(self.frame3, text='Change', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.changebutton)
+                self.bt_change.place(relx=0.03, rely=0.82, relwidth=0.2, relheight=0.07)
 
         for i in lista: # ciclo for para correr a pesquisa
             self.listEmplSearch.insert("", END, values=i) # insere cada item achado da pesquisa na lista
@@ -455,6 +487,65 @@ class RHScreen(): # inicializa a classe RH
             messagebox.showinfo("Info", "No records found for the search criteria.")
 
         self.database.close_conn() # Fecha a conexão com o banco de dados
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def changebutton(self): # método do botâo change guarda dois métodos
+
+        self.frame_insert()   # método para chamar a tela de cadastro de funcionários
+        self.insert_entries() # método para transportar os dados da Treeview para as entradas da tela de cadastro de funcionários
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+         
+    def insert_entries(self): # método para inserir os dados das entradas na treeview
+
+         
+        self.listEmplSearch.delete(*self.listEmplSearch.get_children()) # o objeto deleta os elementos desempacotados da lista por getchildren
+
+        nome = self.in_namesearch.get()     # o nome recebe a entrada do nome
+
+        self.database.open_conn() # abre conexão com banco de dados
+
+        lista = self.database.cursor.execute(""" SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift FROM tab_employees WHERE ID = ? or name LIKE ? ORDER BY name ASC; """, (self.in_idsearch.get(), f'%{nome}%')
+            ).fetchall()
+        # seleciona todos os campos da tabela na lista e os ordena pelos nomes dos empregados em ordem alfabetica
+
+        for i in lista:                              # percorre todos os itens da lista que guarda os resultados da consulta ao banco de dados 
+             self.listEmplSearch.insert("", END, values=i) # os itens serão inseridos a lista do topo ao final
+
+        self.database.close_conn() # fecha conexão com o banco de dados
+
+        # Preenche as entradas com os valores do primeiro item da Treeview
+        first_item = self.listEmplSearch.item(self.listEmplSearch.get_children()[0], "values")
+
+        self.in_id.delete(0, END)
+        self.in_id.insert(0, first_item[0])  # ID
+        self.in_idc.delete(0, END)
+        self.in_idc.insert(0, first_item[1])  # IDC
+        self.in_name.delete(0, END)
+        self.in_name.insert(0, first_item[2])  # Name
+        self.in_age.delete(0, END)
+        self.in_age.insert(0, first_item[3])  # Age
+        self.in_sex.delete(0, END)
+        self.in_sex.insert(0, first_item[4])  # Sex
+        self.in_address.delete(0, END)
+        self.in_address.insert(0, first_item[5])  # Address
+        self.in_phone.delete(0, END)
+        self.in_phone.insert(0, first_item[6])  # Phone
+        self.in_marital.delete(0, END)
+        self.in_marital.insert(0, first_item[7])  # Marital Status
+        self.in_sons.delete(0, END)
+        self.in_sons.insert(0, first_item[8])  # Dependents
+        self.in_nationality.delete(0, END)
+        self.in_nationality.insert(0, first_item[9])  # Nationality
+        self.in_city.delete(0, END)
+        self.in_city.insert(0, first_item[10])  # City
+        self.in_pos.delete(0, END)
+        self.in_pos.insert(0, first_item[11])  # Job Position
+        self.in_salary.delete(0, END)
+        self.in_salary.insert(0, first_item[12])  # Salary
+        self.in_turn.delete(0, END)
+        self.in_turn.insert(0, first_item[13])  # Work Shift 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
