@@ -57,8 +57,11 @@ class RHScreen(): # inicializa a classe RH
         self.bt_remove = Button(self.frame1, text='Search', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_search) # setup 
         self.bt_remove.place(relx=0.01, rely=0.09, relwidth=1, relheight=0.07)                                                                                                                        # posicao
 
+        self.bt_exitmenu = Button(self.frame1, text='Paycheck', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_paycheck) # setup 
+        self.bt_exitmenu.place(relx=0.01, rely=0.17, relwidth=1, relheight=0.07)                                                                                                                            # posicao
+        
         self.bt_exitmenu = Button(self.frame1, text='Exit', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.rhroot.destroy) # setup 
-        self.bt_exitmenu.place(relx=0.01, rely=0.17, relwidth=1, relheight=0.07)                                                                                                                        # posicao
+        self.bt_exitmenu.place(relx=0.01, rely=0.25, relwidth=1, relheight=0.07)                                                                                                                        # posicao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
@@ -673,6 +676,20 @@ class RHScreen(): # inicializa a classe RH
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def frame_paycheck(self):
+
+        self.frame4 = Frame(self.rhroot, bd = 4, bg='white', highlightbackground='black', highlightthickness=3) # setup 
+        self.frame4.place(relx=0.2, rely=0.001, relwidth=0.8, relheight=1)                                    # posicao
+
+        #--------------------------------------
+
+        # Widgets - [Molduras] 
+
+        self.canvas_bt = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas_bt.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.98)                                                # posiciona a moldura
+    
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
     def run(self): # metodo para rodar o loop do form
