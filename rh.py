@@ -1,8 +1,8 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-from tkinter import *         # importa a biblioteca tkinter
-from tkinter import ttk       # importa mais funcionalidades do tkinter
-from database import Database # importa a biblioteca de base de dados
+from tkinter import *          # importa a biblioteca tkinter
+from tkinter import ttk        # importa mais funcionalidades do tkinter
+from database import Database  # importa a biblioteca de base de dados
 from tkinter import messagebox # importa a caixa de mensagens do tkinter
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -11,11 +11,11 @@ class RHScreen(): # inicializa a classe RH
     
     def __init__(self):
   
-        self.rhroot = Tk()      # o objeto recebe a raiz da aplicacao 
+        self.rhroot = Tk()         # o objeto recebe a raiz da aplicacao 
         self.database = Database() # instancia do banco de dados
-        self.rh_mainscreen()    # invoca o metodo de criacao e configuracao da tela de login
-        self.rh_frame()         # invoca o metodo de criacao e configuracao do frame de tela
-        self.rh_widgets()       # invoca o metodo de criacao e configuracao de widgets
+        self.rh_mainscreen()       # invoca o metodo de criacao e configuracao da tela de login
+        self.rh_frame()            # invoca o metodo de criacao e configuracao do frame de tela
+        self.rh_widgets()          # invoca o metodo de criacao e configuracao de widgets
         self.rhroot.mainloop()
     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -484,6 +484,10 @@ class RHScreen(): # inicializa a classe RH
                 self.bt_remove.place(relx=0.03, rely=0.9, relwidth=0.2, relheight=0.07)
                 self.bt_change = Button(self.frame3, text='Change', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.changebutton)
                 self.bt_change.place(relx=0.03, rely=0.82, relwidth=0.2, relheight=0.07)
+                self.bt_show = Button(self.frame3, text='Show', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees)
+                self.bt_show.place(relx=0.77, rely=0.82, relwidth=0.2, relheight=0.07)
+                self.bt_removed = Button(self.frame3, text='Deleted', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_exemployees)
+                self.bt_removed.place(relx=0.77, rely=0.9, relwidth=0.2, relheight=0.07)
 
         for i in lista: # ciclo for para correr a pesquisa
             self.listEmplSearch.insert("", END, values=i) # insere cada item achado da pesquisa na lista
