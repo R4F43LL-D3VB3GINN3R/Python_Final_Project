@@ -51,7 +51,8 @@ class Database(): # classe para o banco de dados
                             city TEXT,
                             job_position TEXT,
                             salary DECIMAL (5,2),
-                            work_shift TEXT
+                            work_shift TEXT,
+                            pay_situation TEXT
                             );
                             """)
         
@@ -71,7 +72,28 @@ class Database(): # classe para o banco de dados
                             city TEXT,
                             job_position TEXT,
                             salary DECIMAL (5,2),
-                            work_shift TEXT
+                            work_shift TEXT,
+                            pay_situation TEXT
+                            );
+                            """)
+        
+        self.conn.commit() # insere o comando SQL
+
+        self.cursor.execute("""CREATE TABLE IF NOT EXISTS tab_payment (
+                            ID INTEGER PRIMARY KEY,
+                            brutesal DECIMAL (5.2),
+                            saliq DECIMAL (5.2), 
+                            plan_health TEXT,
+                            sindicate TEXT,
+                            transticket TEXT,
+                            foodticket TEXT,
+                            extra_hour DECIMAL (5.2),
+                            deductions DECIMAL (5.2),
+                            secsocial DECIMAL (5.2),
+                            irs DECIMAL (5.2),
+                            salbonus DECIMAL (5.2),  
+                            nopay_leave DECIMAL (5.2),
+                            subdec DECIMAL (5.2)
                             );
                             """)
         
@@ -106,24 +128,24 @@ class Database(): # classe para o banco de dados
         self.open_conn() # abre a conexao
 
         employees_list = [ # lista criada com os dados a serem inseridos
-            ('IDC1', 'John Doe', 30, 'Male', '123 Main St', 5551234, 'Single', 0, 'American', 'New York', 'Manager', 5000.00, 'Day'),
-            ('IDC2', 'Jane Smith', 25, 'Female', '456 Oak St', 5555678, 'Married', 2, 'Canadian', 'Toronto', 'Developer', 4000.00, 'Night'),
-            ('IDC3', 'Bob Johnson', 40, 'Male', '789 Pine St', 5559012, 'Divorced', 1, 'British', 'London', 'Analyst', 3500.00, 'Day'),
-            ('IDC4', 'Alice Brown', 28, 'Female', '101 Cedar St', 5553456, 'Single', 0, 'Australian', 'Sydney', 'Designer', 4500.00, 'Night'),
-            ('IDC5', 'Mike Miller', 35, 'Male', '202 Elm St', 5557890, 'Married', 3, 'German', 'Berlin', 'Engineer', 6000.00, 'Day'),
-            ('IDC6', 'Sara Davis', 32, 'Female', '303 Birch St', 5552345, 'Single', 0, 'French', 'Paris', 'Manager', 5500.00, 'Night'),
-            ('IDC7', 'Tom Wilson', 45, 'Male', '404 Maple St', 5556789, 'Married', 2, 'Spanish', 'Madrid', 'Developer', 4200.00, 'Day'),
-            ('IDC8', 'Emily White', 27, 'Female', '505 Walnut St', 5550123, 'Single', 0, 'Italian', 'Rome', 'Analyst', 3700.00, 'Night'),
-            ('IDC9', 'Jack Taylor', 38, 'Male', '606 Pine St', 5554567, 'Married', 1, 'Chinese', 'Beijing', 'Designer', 4800.00, 'Day'),
-            ('IDC10', 'Sophie Clark', 29, 'Female', '707 Oak St', 5558901, 'Divorced', 0, 'Japanese', 'Tokyo', 'Engineer', 6200.00, 'Night'),
-            ('IDC11', 'Chris Lee', 33, 'Male', '808 Cedar St', 5552345, 'Single', 0, 'Korean', 'Seoul', 'Manager', 5800.00, 'Day'),
-            ('IDC12', 'Emma Johnson', 31, 'Female', '909 Elm St', 5556789, 'Married', 2, 'Russian', 'Moscow', 'Developer', 4300.00, 'Night'),
-            ('IDC13', 'Mark Brown', 42, 'Male', '111 Birch St', 5550123, 'Divorced', 1, 'Indian', 'Mumbai', 'Analyst', 3600.00, 'Day'),
-            ('IDC14', 'Laura Miller', 26, 'Female', '222 Maple St', 5554567, 'Single', 0, 'Brazilian', 'Rio de Janeiro', 'Designer', 4900.00, 'Night'),
-            ('IDC15', 'Daniel Davis', 34, 'Male', '333 Walnut St', 5558901, 'Married', 3, 'Mexican', 'Mexico City', 'Engineer', 6100.00, 'Day')
+            ('IDC1', 'John Doe', 30, 'Male', '123 Main St', 5551234, 'Single', 0, 'American', 'New York', 'Manager', 5000.00, 'Day', 'No'),
+            ('IDC2', 'Jane Smith', 25, 'Female', '456 Oak St', 5555678, 'Married', 2, 'Canadian', 'Toronto', 'Developer', 4000.00, 'Night', 'No'),
+            ('IDC3', 'Bob Johnson', 40, 'Male', '789 Pine St', 5559012, 'Divorced', 1, 'British', 'London', 'Analyst', 3500.00, 'Day', 'No'),
+            ('IDC4', 'Alice Brown', 28, 'Female', '101 Cedar St', 5553456, 'Single', 0, 'Australian', 'Sydney', 'Designer', 4500.00, 'Night', 'No'),
+            ('IDC5', 'Mike Miller', 35, 'Male', '202 Elm St', 5557890, 'Married', 3, 'German', 'Berlin', 'Engineer', 6000.00, 'Day', 'No'),
+            ('IDC6', 'Sara Davis', 32, 'Female', '303 Birch St', 5552345, 'Single', 0, 'French', 'Paris', 'Manager', 5500.00, 'Night', 'No'),
+            ('IDC7', 'Tom Wilson', 45, 'Male', '404 Maple St', 5556789, 'Married', 2, 'Spanish', 'Madrid', 'Developer', 4200.00, 'Day', 'No'),
+            ('IDC8', 'Emily White', 27, 'Female', '505 Walnut St', 5550123, 'Single', 0, 'Italian', 'Rome', 'Analyst', 3700.00, 'Night', 'No'),
+            ('IDC9', 'Jack Taylor', 38, 'Male', '606 Pine St', 5554567, 'Married', 1, 'Chinese', 'Beijing', 'Designer', 4800.00, 'Day', 'No'),
+            ('IDC10', 'Sophie Clark', 29, 'Female', '707 Oak St', 5558901, 'Divorced', 0, 'Japanese', 'Tokyo', 'Engineer', 6200.00, 'Night', 'No'),
+            ('IDC11', 'Chris Lee', 33, 'Male', '808 Cedar St', 5552345, 'Single', 0, 'Korean', 'Seoul', 'Manager', 5800.00, 'Day', 'No'),
+            ('IDC12', 'Emma Johnson', 31, 'Female', '909 Elm St', 5556789, 'Married', 2, 'Russian', 'Moscow', 'Developer', 4300.00, 'Night', 'No'),
+            ('IDC13', 'Mark Brown', 42, 'Male', '111 Birch St', 5550123, 'Divorced', 1, 'Indian', 'Mumbai', 'Analyst', 3600.00, 'Day', 'No'),
+            ('IDC14', 'Laura Miller', 26, 'Female', '222 Maple St', 5554567, 'Single', 0, 'Brazilian', 'Rio de Janeiro', 'Designer', 4900.00, 'Night', 'No'),
+            ('IDC15', 'Daniel Davis', 34, 'Male', '333 Walnut St', 5558901, 'Married', 3, 'Mexican', 'Mexico City', 'Engineer', 6100.00, 'Day', 'No')
         ]
     
-        insert_query = "INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        insert_query = "INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift, pay_situation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         # string da query
 
         for user_data in employees_list:                 # ciclo para iterar sobre a lista de dados
@@ -197,12 +219,12 @@ class Database(): # classe para o banco de dados
         
         return column_names # retorna os nomes das colunas
 
-    # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
-    table_name = 'tab_exemployees'
-    columns = fetch_column_names(table_name)
+        # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
+        table_name = 'tab_payment'
+        columns = fetch_column_names(table_name)
 
-    # Exibe o resultado
-    print(f"Colunas da tabela {table_name}: {columns}")
+        # Exibe o resultado
+        print(f"Colunas da tabela {table_name}: {columns}")
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
@@ -229,3 +251,4 @@ class Database(): # classe para o banco de dados
         self.close_conn()  # encerra a conexao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+Database()
