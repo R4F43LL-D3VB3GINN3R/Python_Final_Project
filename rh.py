@@ -462,7 +462,7 @@ class RHScreen(): # inicializa a classe RH
                 (self.in_idsearch.get(),)
             ).fetchall() # Busca apenas pelo ID se fornecido
             if lista:
-                self.bt_remove = Button(self.frame3, text='Remove', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'))
+                self.bt_remove = Button(self.frame3, text='Remove', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.remove_employee)
                 self.bt_remove.place(relx=0.03, rely=0.9, relwidth=0.2, relheight=0.07)
                 self.bt_change = Button(self.frame3, text='Change', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.changebutton)
                 self.bt_change.place(relx=0.03, rely=0.82, relwidth=0.2, relheight=0.07)
@@ -475,7 +475,7 @@ class RHScreen(): # inicializa a classe RH
                 (self.in_idsearch.get(), f'%{nome}%')
             ).fetchall()
             if lista:
-                self.bt_remove = Button(self.frame3, text='Remove', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'))
+                self.bt_remove = Button(self.frame3, text='Remove', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.remove_employee)
                 self.bt_remove.place(relx=0.03, rely=0.9, relwidth=0.2, relheight=0.07)
                 self.bt_change = Button(self.frame3, text='Change', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.changebutton)
                 self.bt_change.place(relx=0.03, rely=0.82, relwidth=0.2, relheight=0.07)
@@ -546,6 +546,42 @@ class RHScreen(): # inicializa a classe RH
         self.in_salary.insert(0, first_item[12])  # Salary
         self.in_turn.delete(0, END)
         self.in_turn.insert(0, first_item[13])  # Work Shift 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def remove_employee(self): # método para remover um funcionário da lista de funcionários
+
+        nome = self.in_namesearch.get() # variável recebe a entrada do nome
+        self.database.open_conn() # abre conexão com banco de dados
+
+        if self.in_idsearch.get(): # Se houver um ID inserido
+            self.database.cursor.execute( # insere o funcionário na tabela de ex-funcionários 
+            """INSERT INTO tab_exemployees (ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift)
+               SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift
+               FROM tab_employees
+               WHERE ID = ?""",
+            (self.in_idsearch.get(),))
+
+            self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no ID
+                """DELETE FROM tab_employees WHERE ID = ?""",
+                (self.in_idsearch.get(),))
+        else: # do contrário...
+            self.database.cursor.execute( # insere o funcionário na tabela de ex-funcionários 
+            """INSERT INTO tab_exemployees (ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift)
+               SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift
+               FROM tab_employees
+               WHERE name LIKE ?""",
+            (f'%{nome}%',))
+
+            self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no Nome
+                """DELETE FROM tab_employees WHERE name LIKE ?""",
+                (f'%{nome}%',))
+
+        self.database.conn.commit()  # Confirmar a operação de DELETE
+        self.database.close_conn()   # Fechar a conexão com o banco de dados
+
+        self.listEmplSearch.delete(*self.listEmplSearch.get_children()) # o objeto deleta os elementos desempacotados da lista por getchildren
+        messagebox.showinfo("Info", "Employee removed") # exibe a mensagem
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
