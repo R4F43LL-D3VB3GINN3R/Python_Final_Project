@@ -612,6 +612,10 @@ class RHScreen(): # inicializa a classe RH
             self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no ID
                 """DELETE FROM tab_employees WHERE ID = ?""",
                 (self.in_idsearch.get(),))
+            
+            self.database.cursor.execute( # remove o funcionário da tabela pagamentos baseado no ID
+                """DELETE FROM tab_payment WHERE ID = ?""",
+                (self.in_idsearch.get(),))
         else: # do contrário...
             self.database.cursor.execute( # insere o funcionário na tabela de ex-funcionários 
             """INSERT INTO tab_exemployees (ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift, pay_situation)
@@ -622,6 +626,10 @@ class RHScreen(): # inicializa a classe RH
 
             self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no Nome
                 """DELETE FROM tab_employees WHERE name LIKE ?""",
+                (f'%{nome}%',))
+            
+            self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no Nome
+                """DELETE FROM tab_payment WHERE name LIKE ?""",
                 (f'%{nome}%',))
 
         self.database.conn.commit()  # Confirmar a operação de DELETE
@@ -641,9 +649,17 @@ class RHScreen(): # inicializa a classe RH
             self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no ID
                 """DELETE FROM tab_employees WHERE ID = ?""",
                 (self.in_idsearch.get(),))
+            
+            self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no ID
+                """DELETE FROM tab_payment WHERE ID = ?""",
+                (self.in_idsearch.get(),))
         else: # do contrário...
             self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no Nome
                 """DELETE FROM tab_employees WHERE name LIKE ?""",
+                (f'%{nome}%',))
+            
+            self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no Nome
+                """DELETE FROM tab_payment WHERE name LIKE ?""",
                 (f'%{nome}%',))
 
         self.database.conn.commit()  # Confirmar a operação de DELETE
