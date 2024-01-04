@@ -81,6 +81,8 @@ class Database(): # classe para o banco de dados
 
         self.cursor.execute("""CREATE TABLE IF NOT EXISTS tab_payment (
                             ID INTEGER PRIMARY KEY,
+                            IDC TEXT,
+                            name TEXT,
                             brutesal DECIMAL (5.2),
                             saliq DECIMAL (5.2), 
                             plan_health TEXT,
@@ -145,11 +147,33 @@ class Database(): # classe para o banco de dados
             ('IDC15', 'Daniel Davis', 34, 'Male', '333 Walnut St', 5558901, 'Married', 3, 'Mexican', 'Mexico City', 'Engineer', 6100.00, 'Day', 'No')
         ]
     
-        insert_query = "INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift, pay_situation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        # string da query
+        insert_query = "INSERT INTO tab_employees (IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift, pay_situation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" # string da query
+
+        payment_list = [
+            ('IDC1','John Doe',),
+            ('IDC2','Jane Smith',),
+            ('IDC3','Bob Johnson',),
+            ('IDC4','Alice Brown',),
+            ('IDC5','Mike Miller',),
+            ('IDC6','Sara Davis',),
+            ('IDC7','Tom Wilson',),
+            ('IDC8','Emily White',),
+            ('IDC9','Jack Taylor',),
+            ('IDC10','Sophie Clark',),
+            ('IDC11','Chris Lee',),
+            ('IDC12','Emma Johnson',),
+            ('IDC13','Mark Brown',),
+            ('IDC14','Laura Miller',),
+            ('IDC15','Daniel Davis',)
+            ]
+        
+        insert_query2 = "INSERT INTO tab_payment (IDC, name) VALUES (?, ?)"
 
         for user_data in employees_list:                 # ciclo para iterar sobre a lista de dados
             self.cursor.execute(insert_query, user_data) # executa a query enquanto itera sobre a lista
+
+        for user_data2 in payment_list:
+            self.cursor.execute(insert_query2, user_data2)
 
         self.conn.commit() # insere o comando SQL
         self.close_conn()  # encerra a conexao~
@@ -191,14 +215,14 @@ class Database(): # classe para o banco de dados
         
         return rows # retorna as linhas da tabela
 
-        # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
-        table_name = 'tab_employees'
-        result = view_rows(table_name)
+    # Substitua 'tab_admins' pelo nome da tabela que deseja consultar
+    table_name = 'tab_payment'
+    result = view_rows(table_name)
 
-        # Exibe o resultado
-        print(f"Conteúdo da tabela {table_name}:")
-        for row in result:
-            print(row)
+    # Exibe o resultado
+    print(f"Conteúdo da tabela {table_name}:")
+    for row in result:
+        print(row)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -251,4 +275,3 @@ class Database(): # classe para o banco de dados
         self.close_conn()  # encerra a conexao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-Database()
