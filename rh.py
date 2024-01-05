@@ -16,7 +16,10 @@ class RHScreen(): # inicializa a classe RH
         self.rh_mainscreen()       # invoca o metodo de criacao e configuracao da tela de login
         self.rh_frame()            # invoca o metodo de criacao e configuracao do frame de tela
         self.rh_widgets()          # invoca o metodo de criacao e configuracao de widgets
-        self.rhroot.mainloop()
+
+        #---------------------
+
+        self.rhroot.mainloop() # Loop temporário
     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -41,14 +44,14 @@ class RHScreen(): # inicializa a classe RH
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def rh_frame(self): # configuracao do frame de tela
+    def rh_frame(self): # configuracao do frame de tela principal
 
         self.frame1 = Frame(self.rhroot, bd = 4, bg='white', highlightbackground='black', highlightthickness=3) # setup 
         self.frame1.place(relx=0.001, rely=0.001, relwidth=0.2, relheight=1)                                    # posicao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def rh_widgets(self): # insercao de widgets
+    def rh_widgets(self): # insercao de widgets de tela principal
 
         # Botões do Frame1
         self.bt_insert = Button(self.frame1, text='Insert', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_insert) # setup 
@@ -62,6 +65,27 @@ class RHScreen(): # inicializa a classe RH
         
         self.bt_exitmenu = Button(self.frame1, text='Exit', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.rhroot.destroy) # setup 
         self.bt_exitmenu.place(relx=0.01, rely=0.25, relwidth=1, relheight=0.07)                                                                                                                        # posicao
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def validate_fields(self, field, data_type, length, field_name): # método de verificacao de campos
+
+        # Verificar se o campo contém exatamente a quantidade correta de caracteres do tipo desejado
+        if data_type == 'numeric':
+            if not field.get().isdigit() or len(field.get()) != length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is numeric and has {length} digits.")
+                return False
+        elif data_type == 'alphanumeric':
+            if not field.get().isalnum() or len(field.get()) != length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is alphanumeric and has {length} characters.")
+                return False
+        elif data_type == 'text':
+            if len(field.get()) > length:
+                messagebox.showerror("Error", f"{field_name} invalid. Maximum length is {length} characters.")
+                return False
+        else:
+            messagebox.showerror("Error", f"Unsupported data type: {data_type}")
+            return False
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
@@ -290,7 +314,7 @@ class RHScreen(): # inicializa a classe RH
         self.city = self.in_city.get()               # objeto criado recebe o que for digitado na entrada
         self.pos = self.in_pos.get()                 # objeto criado recebe o que for digitado na entrada
         self.salary = self.in_salary.get()           # objeto criado recebe o que for digitado na entrada
-        self.turn = self.in_turn.get()             # objeto criado recebe o que for digitado na entrada
+        self.turn = self.in_turn.get()               # objeto criado recebe o que for digitado na entrada
         self.pay = 'No'                              # objeto criado recebe a string
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -299,6 +323,8 @@ class RHScreen(): # inicializa a classe RH
         
         self.get_client()         # invoca o metodo para receber os dados inseridos na entrada
         self.database.open_conn() # abre a conexao com a base de dados
+
+        self.validate_fields(self.in_sons, 'numeric', 3, 'Dependents')
 
         # Verifica se o empregado já existe na tabela
         existing_employee = self.database.cursor.execute(
@@ -448,18 +474,18 @@ class RHScreen(): # inicializa a classe RH
             self.listEmplSearch.column("#11", width=100) # tamanho da coluna
             self.listEmplSearch.column("#12", width=100) # tamanho da coluna
             self.listEmplSearch.column("#13", width=50)  # tamanho da coluna
-            self.listEmplSearch.column("#14", width=125)  # tamanho da coluna
-            self.listEmplSearch.column("#15", width=125)  # tamanho da coluna
+            self.listEmplSearch.column("#14", width=125) # tamanho da coluna
+            self.listEmplSearch.column("#15", width=125) # tamanho da coluna
 
             #--------------------------------------
 
             # Treeview Configuracoes
-            self.listEmplSearch.place(relx = 0.02, rely = 0.35, relwidth = 0.95, relheight = 0.4)    # insere a treeview com posicao e tamanho desejado
+            self.listEmplSearch.place(relx = 0.02, rely = 0.35, relwidth = 0.95, relheight = 0.4) # insere a treeview com posicao e tamanho desejado
 
             hsb = ttk.Scrollbar(self.frame3, orient="horizontal", command=self.listEmplSearch.xview)
-            hsb.place(relx=0.02, rely=0.7, relwidth=0.94)  # Posiciona a barra de rolagem horizontal
+            hsb.place(relx=0.02, rely=0.7, relwidth=0.94) # Posiciona a barra de rolagem horizontal
 
-            self.listEmplSearch.configure(xscrollcommand=hsb.set)  # Configura o comando de rolagem horizontal
+            self.listEmplSearch.configure(xscrollcommand=hsb.set) # Configura o comando de rolagem horizontal
                                                                                                                     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
             
@@ -467,7 +493,7 @@ class RHScreen(): # inicializa a classe RH
         
         self.listEmplSearch.delete(*self.listEmplSearch.get_children()) # Limpa os itens existentes na Treeview
         
-        nome = self.in_namesearch.get() if self.in_namesearch.get() else '%'  # Se a entrada de nome estiver vazia, use '%'
+        nome = self.in_namesearch.get() if self.in_namesearch.get() else '%' # Se a entrada de nome estiver vazia, use '%'
 
         self.database.open_conn() # Conecta ao banco de dados
 
@@ -515,7 +541,7 @@ class RHScreen(): # inicializa a classe RH
         for i in lista: # ciclo for para correr a pesquisa
             self.listEmplSearch.insert("", END, values=i) # insere cada item achado da pesquisa na lista
 
-        if not lista or (self.in_idsearch.get() == '' and self.in_namesearch.get() == ''):  # Exibe uma mensagem se nenhum registro for encontrado
+        if not lista or (self.in_idsearch.get() == '' and self.in_namesearch.get() == ''): # Exibe uma mensagem se nenhum registro for encontrado
             messagebox.showinfo("Info", "No records found for the search criteria.")
             self.listEmplSearch.delete(*self.listEmplSearch.get_children()) # Limpa os itens existentes na Treeview
             self.in_namesearch.delete(0, END)
