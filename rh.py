@@ -70,22 +70,54 @@ class RHScreen(): # inicializa a classe RH
         
     def validate_fields(self, field, data_type, length, field_name): # método de verificacao de campos
 
-        # Verificar se o campo contém exatamente a quantidade correta de caracteres do tipo desejado
-        if data_type == 'numeric':
-            if not field.get().isdigit() or len(field.get()) != length:
+        field_value = field.get() if hasattr(field, 'get') else str(field)
+
+        # Verificar se o campo contém as especificacoes desejadas
+        if data_type == 'numeric' and field_name == 'Salary':
+            if not field_value.isdigit() or len(field_value) > length:
                 messagebox.showerror("Error", f"{field_name} invalid. Make sure it is numeric and has {length} digits.")
                 return False
+        if data_type == 'numeric' and field_name == 'Age':
+            if not field_value.isdigit() or len(field_value) != length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is numeric and has {length} digits.")
+                return False
+        elif data_type == 'alphanumeric' and field_name == 'Address':
+            if not field_value.replace(" ", "").isalnum() or len(field_value) > length: # Remover espaços e verificar se o restante é alfanumérico
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is alphanumeric and has less than or equal to {length} characters.")
+                return False
         elif data_type == 'alphanumeric':
-            if not field.get().isalnum() or len(field.get()) != length:
+            if not field_value.isalnum() or len(field_value) != length:
                 messagebox.showerror("Error", f"{field_name} invalid. Make sure it is alphanumeric and has {length} characters.")
                 return False
-        elif data_type == 'text':
-            if len(field.get()) > length:
-                messagebox.showerror("Error", f"{field_name} invalid. Maximum length is {length} characters.")
+        elif data_type == 'text' and field_name == 'Name':
+            if not field_value.replace(" ", "").isalpha() or len(field_value) > length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is text and has less than or equal to {length} characters.")
                 return False
-        else:
-            messagebox.showerror("Error", f"Unsupported data type: {data_type}")
+        elif data_type == 'text' and field_name == 'Nationality':
+            if not field_value.replace(" ", "").isalpha() or len(field_value) > length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is text and has less than or equal to {length} characters.")
+                return False
+        elif data_type == 'text' and field_name == 'City':
+            if not field_value.replace(" ", "").isalpha() or len(field_value) > length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is text and has less than or equal to {length} characters.")
+                return False
+        elif data_type == 'text' and field_name == 'Job':
+            if not field_value.replace(" ", "").isalpha() or len(field_value) > length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is text and has less than or equal to {length} characters.")
+                return False
+        elif field_name == 'Marital' and field_value.lower() not in ['single', 'married', 'divorced', 'widower']:
+            messagebox.showerror("Error", f"{field_name} invalid. Please select 'single', 'married', 'divorced' or 'widower'.")
             return False
+        elif field_name == 'Sex' and field_value.lower() not in ['male', 'female']:
+            messagebox.showerror("Error", f"{field_name} invalid. Please select 'Male' or 'Female'.")
+            return False
+        elif field_name == 'WorkShift' and field_value.lower() not in ['day', 'night']:
+            messagebox.showerror("Error", f"{field_name} invalid. Please select 'day' or 'night'.")
+            return False
+        elif field_name == 'Age' and (not field_value.isdigit() or not 18 <= int(field_value) <= 99):
+            messagebox.showerror("Error", f"{field_name} invalid. Please enter a numeric value between 18 and 99.")
+            return False
+        return True
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
@@ -163,7 +195,7 @@ class RHScreen(): # inicializa a classe RH
         self.in_name = Entry(self.frame2, bd=4)                               # setup
         self.in_name.place(relx=0.23, rely=0.1, relwidth=0.7, relheight=0.05) # posicao
 
-        self.in_id = Entry(self.frame2, bd=4)                                 # setup
+        self.in_id = Entry(self.frame2, bd=4, bg='grey')                      # setup
         self.in_id.place(relx=0.23, rely=0.16, relwidth=0.05, relheight=0.05) # posicao
 
         self.in_idc = Entry(self.frame2, bd=4)                                 # setup
@@ -324,7 +356,44 @@ class RHScreen(): # inicializa a classe RH
         self.get_client()         # invoca o metodo para receber os dados inseridos na entrada
         self.database.open_conn() # abre a conexao com a base de dados
 
-        self.validate_fields(self.in_sons, 'numeric', 3, 'Dependents')
+        if not self.validate_fields(self.in_idc, 'text', 12, 'IDC'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_name, 'text', 50, 'Name'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_sex, 'text', 6, 'Sex'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_age, 'numeric', 2, 'Age'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_phone, 'numeric', 7, 'Phone'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_address, 'alphanumeric', 100, 'Address'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_marital, 'text', 9, 'Marital'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_nationality, 'text', 32, 'Nationality'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+
+        if not self.validate_fields(self.in_city, 'text', 49, 'City'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_sons, 'numeric', 1, 'Dependents'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_pos, 'text', 20, 'Job'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_salary, 'numeric', 20, 'Salary'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_turn, 'text', 5, 'WorkShift'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
 
         # Verifica se o empregado já existe na tabela
         existing_employee = self.database.cursor.execute(
