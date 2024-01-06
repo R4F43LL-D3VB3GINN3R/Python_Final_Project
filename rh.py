@@ -73,25 +73,31 @@ class RHScreen(): # inicializa a classe RH
         field_value = field.get() if hasattr(field, 'get') else str(field)
 
         # Verificar se o campo contém as especificacoes desejadas
-        if data_type == 'numeric' and field_name == 'Salary':
-            if not field_value.isdigit() or len(field_value) > length:
-                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is numeric and has {length} digits.")
+        if data_type == 'text' and field_name == 'Name':
+            if not field_value.replace(" ", "").isalpha() or len(field_value) > length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is text and has less than or equal to {length} characters.")
                 return False
-        if data_type == 'numeric' and field_name == 'Age':
-            if not field_value.isdigit() or len(field_value) != length:
-                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is numeric and has {length} digits.")
+        elif data_type == 'alphanumeric' and field_name == 'IDC':
+            if not field_value.replace(" ", "").isalnum() or len(field_value) > length: # Remover espaços e verificar se o restante é alfanumérico
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is alphanumeric and has less than or equal to {length} characters.")
                 return False
+        elif field_name == 'Sex' and field_value.lower() not in ['male', 'female']:
+            messagebox.showerror("Error", f"{field_name} invalid. Please select 'Male' or 'Female'.")
+            return False
+        elif field_name == 'Age' and (not field_value.isdigit() or not 18 <= int(field_value) <= 99):
+            messagebox.showerror("Error", f"{field_name} invalid. Please enter a numeric value between 18 and 99.")
+            return False
         elif data_type == 'alphanumeric' and field_name == 'Address':
             if not field_value.replace(" ", "").isalnum() or len(field_value) > length: # Remover espaços e verificar se o restante é alfanumérico
                 messagebox.showerror("Error", f"{field_name} invalid. Make sure it is alphanumeric and has less than or equal to {length} characters.")
                 return False
-        elif data_type == 'alphanumeric':
-            if not field_value.isalnum() or len(field_value) != length:
-                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is alphanumeric and has {length} characters.")
+        elif data_type == 'numeric' and field_name == 'Salary':
+            if not field_value.isdigit() or len(field_value) > length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is numeric and has less then {length} digits.")
                 return False
-        elif data_type == 'text' and field_name == 'Name':
-            if not field_value.replace(" ", "").isalpha() or len(field_value) > length:
-                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is text and has less than or equal to {length} characters.")
+        if data_type == 'numeric' and field_name == 'Phone':
+            if not field_value.isdigit() or len(field_value) > length:
+                messagebox.showerror("Error", f"{field_name} invalid. Make sure it is numeric and has less then {length} digits.")
                 return False
         elif data_type == 'text' and field_name == 'Nationality':
             if not field_value.replace(" ", "").isalpha() or len(field_value) > length:
@@ -108,14 +114,11 @@ class RHScreen(): # inicializa a classe RH
         elif field_name == 'Marital' and field_value.lower() not in ['single', 'married', 'divorced', 'widower']:
             messagebox.showerror("Error", f"{field_name} invalid. Please select 'single', 'married', 'divorced' or 'widower'.")
             return False
-        elif field_name == 'Sex' and field_value.lower() not in ['male', 'female']:
-            messagebox.showerror("Error", f"{field_name} invalid. Please select 'Male' or 'Female'.")
-            return False
         elif field_name == 'WorkShift' and field_value.lower() not in ['day', 'night']:
             messagebox.showerror("Error", f"{field_name} invalid. Please select 'day' or 'night'.")
             return False
-        elif field_name == 'Age' and (not field_value.isdigit() or not 18 <= int(field_value) <= 99):
-            messagebox.showerror("Error", f"{field_name} invalid. Please enter a numeric value between 18 and 99.")
+        elif field_name == 'Dependents' and (not field_value.isdigit() or not 0 <= int(field_value) <= 20):
+            messagebox.showerror("Error", f"{field_name} invalid. Please enter a valid numeric value")
             return False
         return True
 
@@ -355,11 +358,11 @@ class RHScreen(): # inicializa a classe RH
         
         self.get_client()         # invoca o metodo para receber os dados inseridos na entrada
         self.database.open_conn() # abre a conexao com a base de dados
-
-        if not self.validate_fields(self.in_idc, 'text', 12, 'IDC'): # invoca o método de validacao de campos
-            return # A validação falhou, não prossiga com o restante do código
         
         if not self.validate_fields(self.in_name, 'text', 50, 'Name'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+        
+        if not self.validate_fields(self.in_idc, 'alphanumeric', 12, 'IDC'): # invoca o método de validacao de campos
             return # A validação falhou, não prossiga com o restante do código
         
         if not self.validate_fields(self.in_sex, 'text', 6, 'Sex'): # invoca o método de validacao de campos
@@ -368,10 +371,10 @@ class RHScreen(): # inicializa a classe RH
         if not self.validate_fields(self.in_age, 'numeric', 2, 'Age'): # invoca o método de validacao de campos
             return # A validação falhou, não prossiga com o restante do código
         
-        if not self.validate_fields(self.in_phone, 'numeric', 7, 'Phone'): # invoca o método de validacao de campos
+        if not self.validate_fields(self.in_address, 'alphanumeric', 100, 'Address'): # invoca o método de validacao de campos
             return # A validação falhou, não prossiga com o restante do código
         
-        if not self.validate_fields(self.in_address, 'alphanumeric', 100, 'Address'): # invoca o método de validacao de campos
+        if not self.validate_fields(self.in_phone, 'numeric', 7, 'Phone'): # invoca o método de validacao de campos
             return # A validação falhou, não prossiga com o restante do código
         
         if not self.validate_fields(self.in_marital, 'text', 9, 'Marital'): # invoca o método de validacao de campos
@@ -379,11 +382,11 @@ class RHScreen(): # inicializa a classe RH
         
         if not self.validate_fields(self.in_nationality, 'text', 32, 'Nationality'): # invoca o método de validacao de campos
             return # A validação falhou, não prossiga com o restante do código
-
-        if not self.validate_fields(self.in_city, 'text', 49, 'City'): # invoca o método de validacao de campos
-            return # A validação falhou, não prossiga com o restante do código
         
         if not self.validate_fields(self.in_sons, 'numeric', 1, 'Dependents'): # invoca o método de validacao de campos
+            return # A validação falhou, não prossiga com o restante do código
+
+        if not self.validate_fields(self.in_city, 'text', 49, 'City'): # invoca o método de validacao de campos
             return # A validação falhou, não prossiga com o restante do código
         
         if not self.validate_fields(self.in_pos, 'text', 20, 'Job'): # invoca o método de validacao de campos
