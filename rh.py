@@ -860,6 +860,8 @@ class RHScreen(): # inicializa a classe RH
         
     def frame_paycheck(self):
 
+        # Tela Principal 
+
         self.frame4 = Frame(self.rhroot, bd = 4, bg='white', highlightbackground='black', highlightthickness=3) # setup 
         self.frame4.place(relx=0.2, rely=0.001, relwidth=0.8, relheight=1)                                      # posicao
 
@@ -867,19 +869,107 @@ class RHScreen(): # inicializa a classe RH
 
         # Widgets - [Molduras] 
 
-        self.canvas_bt = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
-        self.canvas_bt.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.98)                                                # posiciona a moldura
+        self.canvas_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas_frame4.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.3)                                                 # posiciona a moldura 
+
+        self.canvas2_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas2_frame4.place(relx=0.01, rely=0.33, relwidth=0.98, relheight=0.55)                                                # posiciona a moldura    
+
+        self.canvas3_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas3_frame4.place(relx=0.01, rely=0.9, relwidth=0.98, relheight=0.09)                                                # posiciona a moldura    
+
+        #--------------------------------------
+
+        # Widgets - [Labels] 
     
-        self.lb_title4 = Label(self.frame4, text = 'Generate Payment', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
-        self.lb_title4.place(relx=0.28, rely=0.03, relwidth=0.4, relheight=0.05)                                             # posicao
+        self.lb_title4 = Label(self.frame4, text = 'Search Employee', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
+        self.lb_title4.place(relx=0.28, rely=0.03, relwidth=0.4, relheight=0.05)                                            # posicao
 
-        self.in_idsearch = Entry(self.frame4, bd=4)                               # setup
-        self.in_idsearch.place(relx=0.14, rely=0.1, relwidth=0.1, relheight=0.05) # posicao
+        self.lb_id4 = Label(self.frame4, text = 'ID:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+        self.lb_id4.place(relx=0.09, rely=0.10, relwidth=0.04, relheight=0.05)                               # posicao
 
-        self.bt_removed = Button(self.frame4, text='Deleted', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_exemployees)
-        self.bt_removed.place(relx=0.77, rely=0.9, relwidth=0.2, relheight=0.07)
+        self.lb_name4 = Label(self.frame4, text = 'Name:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+        self.lb_name4.place(relx=0.24, rely=0.1, relwidth=0.1, relheight=0.05)                                   # posicao 
 
+        #--------------------------------------  
+
+        # Widgets - [Entradas] 
+
+        self.in_idsearch4 = Entry(self.frame4, bd=4)                               # setup
+        self.in_idsearch4.place(relx=0.14, rely=0.1, relwidth=0.1, relheight=0.05) # posicao
+
+        self.in_namesearch4 = Entry(self.frame4, bd=4)                               # setup
+        self.in_namesearch4.place(relx=0.34, rely=0.1, relwidth=0.6, relheight=0.05) # posicao
+
+        self.in_sal4 = Entry(self.frame4, bd=4)                                 # setup
+        self.in_sal4.place(relx=0.85, rely=0.92, relwidth=0.12, relheight=0.05) # posicao
+
+        #--------------------------------------
+
+        # Widgets - [Botões] 
+
+        self.bt_show_employee4 = Button(self.frame4, text='Start', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employee_salary) # setup 
+        self.bt_show_employee4.place(relx=0.4, rely=0.2, relwidth=0.2, relheight=0.07)                                                                                             # posicao
+
+        self.bt_gensal4 = Button(self.frame4, text='Generate', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
+        self.bt_gensal4.place(relx=0.65, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                              # posicao
+ 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def show_employee_salary(self): # método para capturar o salário de um funcionário e inseri-lo em outra entrada
+
+        employee_id = self.in_idsearch4.get()  # obter o ID da entrada
+        employee_name = self.in_namesearch4.get() # obter o nome da entrada 
+
+        # Verificar se os campos estão vazios
+        if not employee_id and not employee_name:
+            messagebox.showinfo("Info", "Please enter both ID or name.")
+            return
+
+        self.database.open_conn() # abre conexão com a base de dados
+
+        existing_employee = self.database.cursor.execute(
+            """SELECT salary FROM tab_employees WHERE ID = ?""",
+            (employee_id,)
+        ).fetchone() # executa a consulta para obter o salário do funcionário
+
+        existing_employee2 = self.database.cursor.execute(
+            """SELECT salary FROM tab_employees WHERE name LIKE ?""",
+            (f'%{employee_name}%',)
+        ).fetchone() # executa a consulta para obter o salário do funcionário
+
+        existing_employee3 = self.database.cursor.execute(
+            """SELECT MAX(ID) FROM tab_employees """,
+        ).fetchone() # executa a consulta para obter o salário do funcionário
+
+        existing_employee4 = self.database.cursor.execute(
+            """SELECT MIN(ID) FROM tab_employees """,
+        ).fetchone() # executa a consulta para obter o salário do funcionário
+
+        existing_employee3 = existing_employee3[0] if existing_employee3 and existing_employee3[0] is not None else 0
+        existing_employee4 = existing_employee4[0] if existing_employee4 and existing_employee4[0] is not None else 0
+
+        if int(employee_id) > existing_employee3:
+            messagebox.showinfo("Info", "This ID not exists")
+        elif int(employee_id) < existing_employee4:
+            messagebox.showinfo("Info", "This ID not exists")
+        else:
+            if existing_employee and existing_employee[0] is not None: # se houver um funcionário com salário associado...
+                salary = existing_employee[0] # guarda o valor do salário na variável
+                self.in_namesearch4.delete(0, 'end')
+                self.in_sal4.delete(0, 'end')  # limpar qualquer conteúdo anterior
+                self.in_sal4.insert(0, str(salary)) # insere o valor da variável na entrada
+            else: # do contrário...
+                if existing_employee2 and existing_employee2[0] is not None: # se houver um funcionário com salário associado...
+                    salary = existing_employee2[0] # guarda o valor do salário na variável
+                    self.in_sal4.delete(0, 'end')  # limpar qualquer conteúdo anterior
+                    self.in_sal4.insert(0, str(salary)) # insere o valor da variável na entrada
+                else: # do contrário...
+                    messagebox.showinfo("Info", f"No salary found for employee with name {employee_name}") # exibe mensagem
+
+        self.database.close_conn() # fecha conexão com a base de dados
+
+    #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
     def run(self): # metodo para rodar o loop do form
 
