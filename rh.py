@@ -898,7 +898,7 @@ class RHScreen(): # inicializa a classe RH
         self.in_idsearch4 = Entry(self.frame4, bd=4)                               # setup
         self.in_idsearch4.place(relx=0.14, rely=0.1, relwidth=0.1, relheight=0.05) # posicao
 
-        self.in_namesearch4 = Entry(self.frame4, bd=4)                               # setup
+        self.in_namesearch4 = Entry(self.frame4, bd=4, bg='grey')                    # setup
         self.in_namesearch4.place(relx=0.34, rely=0.1, relwidth=0.6, relheight=0.05) # posicao
 
         self.in_sal4 = Entry(self.frame4, bd=4)                                 # setup
@@ -919,53 +919,29 @@ class RHScreen(): # inicializa a classe RH
     def show_employee_salary(self): # método para capturar o salário de um funcionário e inseri-lo em outra entrada
 
         employee_id = self.in_idsearch4.get()  # obter o ID da entrada
-        employee_name = self.in_namesearch4.get() # obter o nome da entrada 
 
-        # Verificar se os campos estão vazios
-        if not employee_id and not employee_name:
-            messagebox.showinfo("Info", "Please enter both ID or name.")
-            return
+        if not employee_id: # se os campos estiverem vazios...
+            messagebox.showinfo("Info", "Please enter ID.") # exibe a mensagem
+            return # ignora o resto do codigo
 
         self.database.open_conn() # abre conexão com a base de dados
 
         existing_employee = self.database.cursor.execute(
-            """SELECT salary FROM tab_employees WHERE ID = ?""",
+            """SELECT salary, name FROM tab_employees WHERE ID = ?""",
             (employee_id,)
         ).fetchone() # executa a consulta para obter o salário do funcionário
-
-        existing_employee2 = self.database.cursor.execute(
-            """SELECT salary FROM tab_employees WHERE name LIKE ?""",
-            (f'%{employee_name}%',)
-        ).fetchone() # executa a consulta para obter o salário do funcionário
-
-        existing_employee3 = self.database.cursor.execute(
-            """SELECT MAX(ID) FROM tab_employees """,
-        ).fetchone() # executa a consulta para obter o salário do funcionário
-
-        existing_employee4 = self.database.cursor.execute(
-            """SELECT MIN(ID) FROM tab_employees """,
-        ).fetchone() # executa a consulta para obter o salário do funcionário
-
-        existing_employee3 = existing_employee3[0] if existing_employee3 and existing_employee3[0] is not None else 0
-        existing_employee4 = existing_employee4[0] if existing_employee4 and existing_employee4[0] is not None else 0
-
-        if int(employee_id) > existing_employee3:
-            messagebox.showinfo("Info", "This ID not exists")
-        elif int(employee_id) < existing_employee4:
-            messagebox.showinfo("Info", "This ID not exists")
-        else:
-            if existing_employee and existing_employee[0] is not None: # se houver um funcionário com salário associado...
-                salary = existing_employee[0] # guarda o valor do salário na variável
-                self.in_namesearch4.delete(0, 'end')
-                self.in_sal4.delete(0, 'end')  # limpar qualquer conteúdo anterior
-                self.in_sal4.insert(0, str(salary)) # insere o valor da variável na entrada
-            else: # do contrário...
-                if existing_employee2 and existing_employee2[0] is not None: # se houver um funcionário com salário associado...
-                    salary = existing_employee2[0] # guarda o valor do salário na variável
-                    self.in_sal4.delete(0, 'end')  # limpar qualquer conteúdo anterior
-                    self.in_sal4.insert(0, str(salary)) # insere o valor da variável na entrada
-                else: # do contrário...
-                    messagebox.showinfo("Info", f"No salary found for employee with name {employee_name}") # exibe mensagem
+        
+        if existing_employee and existing_employee[0] and existing_employee[1] is not None:    # se houver um funcionário com salário associado...
+            salary = existing_employee[0]                                                      # guarda o valor do salário na variável
+            employee_name = existing_employee[1]                                               # Obtém o nome do funcionário
+            self.in_namesearch4.delete(0, 'end')                                               # deleta o nome recém inserido na entrada
+            self.in_namesearch4.insert(0, str(employee_name))                                  # insere o valor da variável na entrada
+            self.in_sal4.delete(0, 'end')                                                      # limpar qualquer conteúdo anterior
+            self.in_sal4.insert(0, str(salary))                                                # insere o valor da variável na entrada
+        else:                                                                                  # do contrário...
+            messagebox.showinfo("Info", f"No salary found for employee with ID {employee_id}") # exibe mensagem
+            self.in_namesearch4.delete(0, 'end')                                               # deleta o nome recém inserido na entrada
+            self.in_sal4.delete(0, 'end')                                                      # limpar qualquer conteúdo anterior
 
         self.database.close_conn() # fecha conexão com a base de dados
 
