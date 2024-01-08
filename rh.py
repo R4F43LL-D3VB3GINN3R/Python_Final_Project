@@ -881,8 +881,8 @@ class RHScreen(): # inicializa a classe RH
         self.canvas4_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
         self.canvas4_frame4.place(relx=0.51, rely=0.33, relwidth=0.48, relheight=0.27)                                                # posiciona a moldura    
 
-        self.canvas4_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
-        self.canvas4_frame4.place(relx=0.01, rely=0.62, relwidth=0.98, relheight=0.12)                                                # posiciona a moldura    
+        self.canvas5_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas5_frame4.place(relx=0.01, rely=0.62, relwidth=0.98, relheight=0.12)                                                # posiciona a moldura    
 
         #--------------------------------------
 
@@ -941,9 +941,6 @@ class RHScreen(): # inicializa a classe RH
 
         # Canvas 2 ----------------------------
 
-        self.in_sal4 = Entry(self.frame4, bd=4)                                 # setup
-        self.in_sal4.place(relx=0.85, rely=0.92, relwidth=0.12, relheight=0.05) # posicao
-
         self.in_brutesal4 = Entry(self.frame4, bd=4)                                 # setup
         self.in_brutesal4.place(relx=0.28, rely=0.35, relwidth=0.12, relheight=0.05) # posicao
 
@@ -956,7 +953,10 @@ class RHScreen(): # inicializa a classe RH
         self.in_nopayleave4 = Entry(self.frame4, bd=4)                                # setup
         self.in_nopayleave4.place(relx=0.28, rely=0.53, relwidth=0.12, relheight=0.05) # posicao
 
-        #--------------------------------------
+        # Canvas 3 ----------------------------
+
+        self.in_sal4 = Entry(self.frame4, bd=4)                                 # setup
+        self.in_sal4.place(relx=0.85, rely=0.92, relwidth=0.12, relheight=0.05) # posicao
 
         # Widgets - [Botões] 
 
@@ -967,8 +967,9 @@ class RHScreen(): # inicializa a classe RH
         
         # Canvas 5 ----------------------------                                                                                                                          
 
-        self.bt_refresh4 = Button(self.frame4, text='Refresh', bd=5, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
-        self.bt_refresh4.place(relx=0.37, rely=0.65, relwidth=0.25, relheight=0.06)                                                                                            # posicao
+        self.bt_refresh4 = Button(self.frame4, text='Refresh', bd=5, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.calculate_sal) # setup 
+        self.bt_refresh4.place(relx=0.37, rely=0.65, relwidth=0.25, relheight=0.06)                                                                                                                        # posicao
+        
 
         self.bt_gensal4 = Button(self.frame4, text='Generate', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
         self.bt_gensal4.place(relx=0.65, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                              # posicao
@@ -979,17 +980,17 @@ class RHScreen(): # inicializa a classe RH
 
         # Canvas 4 ----------------------------           
 
-        self.cb_healthplan4 = Checkbutton(self.frame4, bg='grey')
-        self.cb_healthplan4.place(relx=0.86, rely=0.35, relwidth=0.04, relheight=0.06) 
+        self.cb_healthplan4 = Checkbutton(self.frame4, bg='grey')                      # setup
+        self.cb_healthplan4.place(relx=0.86, rely=0.35, relwidth=0.04, relheight=0.06) # posicao
 
-        self.cb_ticketrans4 = Checkbutton(self.frame4, bg='grey')
-        self.cb_ticketrans4.place(relx=0.86, rely=0.41, relwidth=0.04, relheight=0.06)  
+        self.cb_ticketrans4 = Checkbutton(self.frame4, bg='grey')                      # setup
+        self.cb_ticketrans4.place(relx=0.86, rely=0.41, relwidth=0.04, relheight=0.06) # posicao
 
-        self.cb_foodticket4 = Checkbutton(self.frame4, bg='grey')
-        self.cb_foodticket4.place(relx=0.86, rely=0.47, relwidth=0.04, relheight=0.06)   
+        self.cb_foodticket4 = Checkbutton(self.frame4, bg='grey')                      # setup
+        self.cb_foodticket4.place(relx=0.86, rely=0.47, relwidth=0.04, relheight=0.06) # posicao
 
-        self.cb_sindical_contr4 = Checkbutton(self.frame4, bg='grey')
-        self.cb_sindical_contr4.place(relx=0.86, rely=0.53, relwidth=0.04, relheight=0.06)   
+        self.cb_sindical_contr4 = Checkbutton(self.frame4, bg='grey')                      # setup
+        self.cb_sindical_contr4.place(relx=0.86, rely=0.53, relwidth=0.04, relheight=0.06) # posicao  
  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
@@ -1022,7 +1023,66 @@ class RHScreen(): # inicializa a classe RH
 
         self.database.close_conn() # fecha conexão com a base de dados
 
-    #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def calculate_sal(self):
+
+        # Variáveis de Trabalho 
+
+        self.lv_sal = 0         # salário base
+        self.lv_brutesal = 0    # salário bruto
+        self.lv_liqsal = 0      # salário líquido
+
+        self.lv_planhealth = 0  # plano de saúde
+        self.lv_sindicate = 0   # contribuicao sindical
+        self.lv_transticket = 0 # vale transporte
+        self.lv_foodticket = 0  # vale alimentacao
+
+        self.lv_extrahour = 0   # horas extras
+        self.lv_nopayleave = 0  # horas de falta
+
+        self.lv_secsocial = 0   # seguranca social
+        self.lv_irs = 0         # imposto de renda
+        self.lv_subdec = 0      # subsídio décimo terceiro
+
+        self.lv_deductions = 0  # deducoes totais
+        self.lv_salbonus = 0    # bonus total
+
+        # --------------------------------------------------------------------------------
+
+        # Validação de Campos [Futuramente um Método para isto]
+
+        employee_id = self.in_idsearch4.get() # variável recebe o id da entrada
+        self.lv_sal = self.in_sal4.get()      # variável recebe o salário da entrada
+
+        if not employee_id: # se os campos estiverem vazios...
+            messagebox.showinfo("Info", "Please enter a valid ID.") # exibe a mensagem
+            return # ignora o resto do codigo
+        
+        if not self.lv_sal: # se os campos estiverem vazios...
+            messagebox.showinfo("Info", "No Salary to Calculate") # exibe a mensagem
+            return # ignora o resto do codigo
+        
+        # ---------------------------------------------------------------------------------
+        
+        # Adicional Noturno [ Bônus Salarial + 25%]
+
+        self.database.open_conn() # abre conexão com a base de dados
+
+        work_shift_vf = self.database.cursor.execute(
+            """SELECT work_shift FROM tab_employees WHERE ID = ?""",
+            (employee_id,)
+        ).fetchone() # executa a consulta para obter o turno do funcionário
+
+        if work_shift_vf[0] == 'Day': # se o turno for dia...
+            self.lv_salbonus = 0 # nao há adicional noturno
+        else: # do contrario...
+            self.lv_salbonus = float(self.lv_sal) * 0.25 # bonus salarial recebe 25% do ordenado base
+        self.database.close_conn() # encerra conexao com base de dados
+
+        # ---------------------------------------------------------------------------------
+ 
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
     def run(self): # metodo para rodar o loop do form
 
