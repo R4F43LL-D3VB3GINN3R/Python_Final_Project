@@ -873,27 +873,65 @@ class RHScreen(): # inicializa a classe RH
         self.canvas_frame4.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.3)                                                 # posiciona a moldura 
 
         self.canvas2_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
-        self.canvas2_frame4.place(relx=0.01, rely=0.33, relwidth=0.98, relheight=0.55)                                                # posiciona a moldura    
+        self.canvas2_frame4.place(relx=0.01, rely=0.33, relwidth=0.48, relheight=0.27)                                                # posiciona a moldura    
 
         self.canvas3_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
-        self.canvas3_frame4.place(relx=0.01, rely=0.9, relwidth=0.98, relheight=0.09)                                                # posiciona a moldura    
+        self.canvas3_frame4.place(relx=0.01, rely=0.9, relwidth=0.98, relheight=0.09)                                                # posiciona a moldura   
+
+        self.canvas4_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas4_frame4.place(relx=0.51, rely=0.33, relwidth=0.48, relheight=0.27)                                                # posiciona a moldura    
+
+        self.canvas4_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas4_frame4.place(relx=0.01, rely=0.62, relwidth=0.98, relheight=0.12)                                                # posiciona a moldura    
 
         #--------------------------------------
 
         # Widgets - [Labels] 
+
+        # Canvas 1 ----------------------------
     
         self.lb_title4 = Label(self.frame4, text = 'Search Employee', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
         self.lb_title4.place(relx=0.28, rely=0.03, relwidth=0.4, relheight=0.05)                                            # posicao
 
         self.lb_id4 = Label(self.frame4, text = 'ID:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
-        self.lb_id4.place(relx=0.09, rely=0.10, relwidth=0.04, relheight=0.05)                               # posicao
+        self.lb_id4.place(relx=0.09, rely=0.1, relwidth=0.04, relheight=0.05)                                # posicao
 
         self.lb_name4 = Label(self.frame4, text = 'Name:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
-        self.lb_name4.place(relx=0.24, rely=0.1, relwidth=0.1, relheight=0.05)                                   # posicao 
+        self.lb_name4.place(relx=0.24, rely=0.1, relwidth=0.1, relheight=0.05)                                   # posicao
+
+        # Canvas 2 ----------------------------
+
+        self.lb_brutesal4 = Label(self.frame4, text = 'Brute Salary:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_brutesal4.place(relx=0.07, rely=0.35, relwidth=0.2, relheight=0.05)                                          # posicao 
+
+        self.lb_liqsal4 = Label(self.frame4, text = 'Liquid Salary:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_liqsal4.place(relx=0.07, rely=0.41, relwidth=0.2, relheight=0.05)                                           # posicao 
+
+        self.lb_nopayleave4 = Label(self.frame4, text = 'Nopay Leave:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_nopayleave4.place(relx=0.07, rely=0.47, relwidth=0.2, relheight=0.05)                                         # posicao 
+
+        self.lb_extrahour4 = Label(self.frame4, text = 'Extra - Hours:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_extrahour4.place(relx=0.07, rely=0.53, relwidth=0.2, relheight=0.05)                                           # posicao 
+
+        # Canvas 4 ----------------------------
+
+        self.lb_healthplan4 = Label(self.frame4, text = 'Health Plan:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_healthplan4.place(relx=0.6, rely=0.35, relwidth=0.17, relheight=0.05)                                        # posicao 
+
+        self.lb_ticketrans4 = Label(self.frame4, text = 'Transport Ticket:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_ticketrans4.place(relx=0.6, rely=0.41, relwidth=0.24, relheight=0.05)                                              # posicao 
+
+        self.lb_foodticket4 = Label(self.frame4, text = 'Food Ticket:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_foodticket4.place(relx=0.6, rely=0.47, relwidth=0.17, relheight=0.05)                                         # posicao 
+
+        self.lb_sindical_contr4 = Label(self.frame4, text = 'Sindical Contr:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_sindical_contr4.place(relx=0.59, rely=0.53, relwidth=0.22, relheight=0.05)                                           # posicao 
 
         #--------------------------------------  
 
         # Widgets - [Entradas] 
+
+        # Canvas 1 ----------------------------
 
         self.in_idsearch4 = Entry(self.frame4, bd=4)                               # setup
         self.in_idsearch4.place(relx=0.14, rely=0.1, relwidth=0.1, relheight=0.05) # posicao
@@ -901,18 +939,57 @@ class RHScreen(): # inicializa a classe RH
         self.in_namesearch4 = Entry(self.frame4, bd=4, bg='grey')                    # setup
         self.in_namesearch4.place(relx=0.34, rely=0.1, relwidth=0.6, relheight=0.05) # posicao
 
+        # Canvas 2 ----------------------------
+
         self.in_sal4 = Entry(self.frame4, bd=4)                                 # setup
         self.in_sal4.place(relx=0.85, rely=0.92, relwidth=0.12, relheight=0.05) # posicao
+
+        self.in_brutesal4 = Entry(self.frame4, bd=4)                                 # setup
+        self.in_brutesal4.place(relx=0.28, rely=0.35, relwidth=0.12, relheight=0.05) # posicao
+
+        self.in_liqsal4 = Entry(self.frame4, bd=4)                                 # setup
+        self.in_liqsal4.place(relx=0.28, rely=0.41, relwidth=0.12, relheight=0.05) # posicao
+
+        self.in_extrahour4 = Entry(self.frame4, bd=4)                                # setup
+        self.in_extrahour4.place(relx=0.28, rely=0.47, relwidth=0.12, relheight=0.05) # posicao
+
+        self.in_nopayleave4 = Entry(self.frame4, bd=4)                                # setup
+        self.in_nopayleave4.place(relx=0.28, rely=0.53, relwidth=0.12, relheight=0.05) # posicao
 
         #--------------------------------------
 
         # Widgets - [Botões] 
 
+        # Canvas 1 ----------------------------
+
         self.bt_show_employee4 = Button(self.frame4, text='Start', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employee_salary) # setup 
-        self.bt_show_employee4.place(relx=0.4, rely=0.2, relwidth=0.2, relheight=0.07)                                                                                             # posicao
+        self.bt_show_employee4.place(relx=0.39, rely=0.2, relwidth=0.2, relheight=0.07)                                                                                                                               # posicao
+        
+        # Canvas 5 ----------------------------                                                                                                                          
+
+        self.bt_refresh4 = Button(self.frame4, text='Refresh', bd=5, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
+        self.bt_refresh4.place(relx=0.37, rely=0.65, relwidth=0.25, relheight=0.06)                                                                                            # posicao
 
         self.bt_gensal4 = Button(self.frame4, text='Generate', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
         self.bt_gensal4.place(relx=0.65, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                              # posicao
+
+        #--------------------------------------
+
+        # Widgets - [Checkboxes]
+
+        # Canvas 4 ----------------------------           
+
+        self.cb_healthplan4 = Checkbutton(self.frame4, bg='grey')
+        self.cb_healthplan4.place(relx=0.86, rely=0.35, relwidth=0.04, relheight=0.06) 
+
+        self.cb_ticketrans4 = Checkbutton(self.frame4, bg='grey')
+        self.cb_ticketrans4.place(relx=0.86, rely=0.41, relwidth=0.04, relheight=0.06)  
+
+        self.cb_foodticket4 = Checkbutton(self.frame4, bg='grey')
+        self.cb_foodticket4.place(relx=0.86, rely=0.47, relwidth=0.04, relheight=0.06)   
+
+        self.cb_sindical_contr4 = Checkbutton(self.frame4, bg='grey')
+        self.cb_sindical_contr4.place(relx=0.86, rely=0.53, relwidth=0.04, relheight=0.06)   
  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
