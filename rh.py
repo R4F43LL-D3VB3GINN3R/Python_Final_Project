@@ -907,11 +907,11 @@ class RHScreen(): # inicializa a classe RH
         self.lb_liqsal4 = Label(self.frame4, text = 'Liquid Salary:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
         self.lb_liqsal4.place(relx=0.07, rely=0.41, relwidth=0.2, relheight=0.05)                                           # posicao 
 
-        self.lb_nopayleave4 = Label(self.frame4, text = 'Nopay Leave:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
-        self.lb_nopayleave4.place(relx=0.07, rely=0.47, relwidth=0.2, relheight=0.05)                                         # posicao 
-
         self.lb_extrahour4 = Label(self.frame4, text = 'Extra - Hours:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
-        self.lb_extrahour4.place(relx=0.07, rely=0.53, relwidth=0.2, relheight=0.05)                                           # posicao 
+        self.lb_extrahour4.place(relx=0.07, rely=0.47, relwidth=0.2, relheight=0.05)                                           # posicao 
+
+        self.lb_nopayleave4 = Label(self.frame4, text = 'Nopay Leave:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
+        self.lb_nopayleave4.place(relx=0.07, rely=0.53, relwidth=0.2, relheight=0.05)                                         # posicao 
 
         # Canvas 4 ----------------------------
 
@@ -947,7 +947,7 @@ class RHScreen(): # inicializa a classe RH
         self.in_liqsal4 = Entry(self.frame4, bd=4)                                 # setup
         self.in_liqsal4.place(relx=0.28, rely=0.41, relwidth=0.12, relheight=0.05) # posicao
 
-        self.in_extrahour4 = Entry(self.frame4, bd=4)                                # setup
+        self.in_extrahour4 = Entry(self.frame4, bd=4)                                 # setup
         self.in_extrahour4.place(relx=0.28, rely=0.47, relwidth=0.12, relheight=0.05) # posicao
 
         self.in_nopayleave4 = Entry(self.frame4, bd=4)                                # setup
@@ -1025,30 +1025,30 @@ class RHScreen(): # inicializa a classe RH
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def calculate_sal(self):
+    def calculate_sal(self): # método para calcular o salário do funcionário
 
         # Variáveis de Trabalho 
 
-        self.lv_sal = 0         # salário base
-        self.lv_brutesal = 0    # salário bruto
-        self.lv_liqsal = 0      # salário líquido
+        self.lv_sal = 0.0         # salário base
+        self.lv_brutesal = 0.0    # salário bruto
+        self.lv_liqsal = 0.0      # salário líquido
 
-        self.lv_planhealth = 0  # plano de saúde
-        self.lv_sindicate = 0   # contribuicao sindical
-        self.lv_transticket = 0 # vale transporte
-        self.lv_foodticket = 0  # vale alimentacao
+        self.lv_planhealth = 0.0  # plano de saúde
+        self.lv_sindicate = 0.0   # contribuicao sindical
+        self.lv_transticket = 0.0 # vale transporte
+        self.lv_foodticket = 0.0  # vale alimentacao
 
-        self.lv_extrahour = 0   # horas extras
-        self.lv_nopayleave = 0  # horas de falta
+        self.lv_extrahour = 0.0   # horas extras
+        self.lv_nopayleave = 0.0  # horas de falta
 
-        self.lv_secsocial = 0   # seguranca social
-        self.lv_irs = 0         # imposto de renda
-        self.lv_subdec = 0      # subsídio décimo terceiro
+        self.lv_secsocial = 0.0   # seguranca social
+        self.lv_irs = 0.0         # imposto de renda
+        self.lv_subdec = 0.0      # subsídio décimo terceiro
 
-        self.lv_deductions = 0  # deducoes totais
-        self.lv_salbonus = 0    # bonus total
+        self.lv_deductions = 0.0  # deducoes totais
+        self.lv_salbonus = 0.0    # bonus total
 
-        # --------------------------------------------------------------------------------
+        #--------------------------------------------------------------------------------
 
         # Validação de Campos [Futuramente um Método para isto]
 
@@ -1063,9 +1063,9 @@ class RHScreen(): # inicializa a classe RH
             messagebox.showinfo("Info", "No Salary to Calculate") # exibe a mensagem
             return # ignora o resto do codigo
         
-        # ---------------------------------------------------------------------------------
+        #---------------------------------------------------------------------------------
         
-        # Adicional Noturno [ Bônus Salarial + 25%]
+        # Adicional Noturno [Bônus Salarial + 25%]
 
         self.database.open_conn() # abre conexão com a base de dados
 
@@ -1080,7 +1080,28 @@ class RHScreen(): # inicializa a classe RH
             self.lv_salbonus = float(self.lv_sal) * 0.25 # bonus salarial recebe 25% do ordenado base
         self.database.close_conn() # encerra conexao com base de dados
 
-        # ---------------------------------------------------------------------------------
+        #---------------------------------------------------------------------------------
+
+        # Horas Extras [Valor da Hora = Salário / ( 8 horas trabalhadas * 22 dias úteis do mês)]
+
+        self.lv_extrahour = self.in_extrahour4.get() # variável recebe a quantidade de horas extras trabalhadas
+        self.lv_valhora = float(self.lv_sal) / (8 * 22) # valor da hora trabalhada
+
+        if work_shift_vf[0] == 'Day':  # se o turno for dia...
+            self.lv_valhora = self.lv_valhora * 2 # dobra o valor da hora extra
+        else:  # do contrario...
+            self.lv_valhora = self.lv_valhora * 3 # triplica o valor da hora extra
+        
+        self.lv_totalhours = round(float(self.lv_extrahour) * self.lv_valhora, 2) # O valor total recebe a quantidade de horas vezes o valor das horas extras
+        self.lv_brutesal = round(float(self.lv_sal) + self.lv_totalhours, 2) # o salário bruto recebe o salário base + o valor total das horas extras
+
+        #---------------------------------------------------------------------------------
+
+
+
+
+
+        #---------------------------------------------------------------------------------
  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
