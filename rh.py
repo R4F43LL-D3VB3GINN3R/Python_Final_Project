@@ -1087,19 +1087,22 @@ class RHScreen(): # inicializa a classe RH
         self.lv_extrahour = self.in_extrahour4.get() # variável recebe a quantidade de horas extras trabalhadas
         self.lv_valhora = float(self.lv_sal) / (8 * 22) # valor da hora trabalhada
 
-        if work_shift_vf[0] == 'Day':  # se o turno for dia...
-            self.lv_valhora = self.lv_valhora * 2 # dobra o valor da hora extra
-        else:  # do contrario...
-            self.lv_valhora = self.lv_valhora * 3 # triplica o valor da hora extra
-        
+        if not self.lv_extrahour:
+            self.lv_extrahour = 0.0
+        else:
+            if work_shift_vf[0] == 'Day': # se o turno for dia...
+                self.lv_valhora = self.lv_valhora * 2 # dobra o valor da hora extra
+            else: # do contrario...
+                self.lv_valhora = self.lv_valhora * 3 # triplica o valor da hora extra
+
         self.lv_totalhours = round(float(self.lv_extrahour) * self.lv_valhora, 2) # O valor total recebe a quantidade de horas vezes o valor das horas extras
         self.lv_brutesal = round(float(self.lv_sal) + self.lv_totalhours, 2) # o salário bruto recebe o salário base + o valor total das horas extras
 
         #---------------------------------------------------------------------------------
 
+        # Subsídio Décimo [subsídio décimo/ férias = salário bruto / 12 + salário / 12]
 
-
-
+        self.lv_subdec = round(self.lv_subdec + ((self.lv_brutesal / 12) + (float(self.lv_sal) / 12)), 2)
 
         #---------------------------------------------------------------------------------
  
