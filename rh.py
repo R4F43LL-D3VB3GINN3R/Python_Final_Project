@@ -1058,18 +1058,18 @@ class RHScreen(): # inicializa a classe RH
 
         self.database.close_conn() # fecha conexão com a base de dados
 
-        self.in_brutesal4.delete(0, END)
-        self.in_liqsal4.delete(0, END)
-        self.in_irs4.delete(0, END)
-        self.in_subdec4.delete(0, END)
-        self.in_deductions4.delete(0, END)
-        self.in_salbonus4.delete(0, END)
-        self.in_extrahour4.delete(0, END)
-        self.in_nopayleave4.delete(0, END)
-        self.healthplan_var.set(False)
-        self.ticketrans_var.set(False)
-        self.foodticket_var.set(False)
-        self.sindical_contr_var.set(False)
+        self.in_brutesal4.delete(0, END)   # deleta o que há na entrada
+        self.in_liqsal4.delete(0, END)     # deleta o que há na entrada
+        self.in_irs4.delete(0, END)        # deleta o que há na entrada
+        self.in_subdec4.delete(0, END)     # deleta o que há na entrada
+        self.in_deductions4.delete(0, END) # deleta o que há na entrada
+        self.in_salbonus4.delete(0, END)   # deleta o que há na entrada
+        self.in_extrahour4.delete(0, END)  # deleta o que há na entrada
+        self.in_nopayleave4.delete(0, END) # deleta o que há na entrada
+        self.healthplan_var.set(False)     # desmarca o checkbutton
+        self.ticketrans_var.set(False)     # desmarca o checkbutton
+        self.foodticket_var.set(False)     # desmarca o checkbutton
+        self.sindical_contr_var.set(False) # desmarca o checkbutton
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
@@ -1270,7 +1270,23 @@ class RHScreen(): # inicializa a classe RH
 
         self.lv_liqsal = self.lv_brutesal - self.lv_deductions + self.lv_salbonus # valor final do salário líquido
 
-        print(f"Employee ID: {employee_id}")
+        self.in_brutesal4.delete(0, END)                       # deleta o que há na entrada
+        self.in_brutesal4.insert(0, str(self.lv_brutesal))     # insere o valor da variavel na entrada
+        self.in_liqsal4.delete(0, END)                         # deleta o que há na entrada
+        self.in_liqsal4.insert(0, str(self.lv_liqsal))         # insere o valor da variavel na entrada
+        self.in_irs4.delete(0, END)                            # deleta o que há na entrada
+        self.in_irs4.insert(0, str(self.lv_irs))               # insere o valor da variavel na entrada
+        self.in_subdec4.delete(0, END)                         # deleta o que há na entrada
+        self.in_subdec4.insert(0, str(self.lv_subdec))         # insere o valor da variavel na entrada
+        self.in_deductions4.delete(0, END)                     # deleta o que há na entrada
+        self.in_deductions4.insert(0, str(self.lv_deductions)) # insere o valor da variavel na entrada
+        self.in_salbonus4.delete(0, END)                       # deleta o que há na entrada
+        self.in_salbonus4.insert(0, str(self.lv_salbonus))     # insere o valor da variavel na entrada
+        
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def generate_sal(self):
+
         print(f"Employee Name: {self.in_namesearch4.get()}")
         print(f"Brute Salary: {self.lv_brutesal}")
         print(f"Liquid Salary: {self.lv_liqsal}")
@@ -1286,25 +1302,6 @@ class RHScreen(): # inicializa a classe RH
         print(f"Nopay Leave: {self.lv_totalhours2}")
         print(f"Subdec: {self.lv_subdec}")
 
-        self.in_brutesal4.delete(0, END)
-        self.in_brutesal4.insert(0, str(self.lv_brutesal))
-        self.in_liqsal4.delete(0, END)
-        self.in_liqsal4.insert(0, str(self.lv_liqsal))
-        self.in_irs4.delete(0, END)
-        self.in_irs4.insert(0, str(self.lv_irs))
-        self.in_subdec4.delete(0, END)
-        self.in_subdec4.insert(0, str(self.lv_subdec))
-        self.in_deductions4.delete(0, END)
-        self.in_deductions4.insert(0, str(self.lv_deductions))
-        self.in_salbonus4.delete(0, END)
-        self.in_salbonus4.insert(0, str(self.lv_salbonus))
-        
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-        
-    def generate_sal(self):
-
-        pass
-
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
     def run(self): # metodo para rodar o loop do form
@@ -1312,5 +1309,7 @@ class RHScreen(): # inicializa a classe RH
         self.rhroot.mainloop() # loop do form
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
 RHScreen()
+
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
