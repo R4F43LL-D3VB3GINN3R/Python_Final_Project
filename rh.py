@@ -950,7 +950,7 @@ class RHScreen(): # inicializa a classe RH
         self.in_extrahour4 = Entry(self.frame4, bd=4)                                 # setup
         self.in_extrahour4.place(relx=0.28, rely=0.47, relwidth=0.12, relheight=0.05) # posicao
 
-        self.in_nopayleave4 = Entry(self.frame4, bd=4)                                # setup
+        self.in_nopayleave4 = Entry(self.frame4, bd=4)                                 # setup
         self.in_nopayleave4.place(relx=0.28, rely=0.53, relwidth=0.12, relheight=0.05) # posicao
 
         # Canvas 3 ----------------------------
@@ -1099,6 +1099,8 @@ class RHScreen(): # inicializa a classe RH
         self.lv_brutesal = round(float(self.lv_sal) + self.lv_totalhours, 2) # o salário bruto recebe o salário base + o valor total das horas extras
 
         #---------------------------------------------------------------------------------
+        #---------------------------------------------------------------------------------
+        #---------------------------------------------------------------------------------
 
         # Subsídio Décimo [subsídio décimo/ férias = salário bruto / 12 + salário / 12]
 
@@ -1112,42 +1114,135 @@ class RHScreen(): # inicializa a classe RH
         # [PLANO DE SAÚDE]
 
         if self.healthplan_var.get(): # se houver plano de saúde...
-            healthplan = True # variável boleana recebe True
-            self.lv_deductions = self.lv_deductions + 40 # as deducoes recebem o valor do preco do plano 
+            self.healthplan2 = True # variável boleana recebe True
+            self.lv_deductions = self.lv_deductions + 40 # as deducoes recebem o valor do preco do plano
         else: # do contrario...
-            healthplan = False # variável boleana recebe False  
+            self.healthplan2 = False # variável boleana recebe False
         
         #---------------------------------------------------------------------------------
             
         # [VALE TRANSPORTE]
         
         if self.ticketrans_var.get(): # se houver plano de vale transporte...
-            tickettrans = True # variável boleana recebe True
+            self.tickettrans2 = True # variável boleana recebe True
             self.lv_salbonus = self.lv_salbonus + 50 # os bonus recebem o valor do vale transporte
         else: # do contrário...
-            tickettrans = False # a variavel boleana recebe False
+            self.tickettrans2 = False # a variavel boleana recebe False
         
         #---------------------------------------------------------------------------------
 
         # [VALE REFEICAO]
 
         if self.foodticket_var.get(): # se houver ticket refeicao
-            foodticket = True # variável boleana recebe True
+            self.foodticket2 = True # variável boleana recebe True
             self.lv_salbonus = self.lv_salbonus + 132 # os bonus recebem o valor do ticket alimentacao
         else: # do contrario
-            foodticket = False # a variavel boleana recebe False
+            self.foodticket2 = False # a variavel boleana recebe False
 
         #---------------------------------------------------------------------------------
         
         # [CONTRIBUICAO SINDICAL]
 
         if self.sindical_contr_var.get(): # se houver contribuicao sindical
-            sindical = True # variável boleana recebe True
+            self.sindical2 = True # variável boleana recebe True
             self.lv_deductions = self.lv_deductions + 50 # os bonus recebem o valor do ticket alimentacao
         else: # do contrario
-            sindical = False # a variavel boleana recebe False
+            self.sindical2 = False # a variavel boleana recebe False
             
         #---------------------------------------------------------------------------------
+        #---------------------------------------------------------------------------------
+        #---------------------------------------------------------------------------------
+            
+        # Segurança Social
+        
+        if float(self.lv_sal) < 886:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+        elif float(self.lv_sal) >= 886 and float(self.lv_sal) < 932:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.06 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.06 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 932 and float(self.lv_sal) < 999:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.08 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.08 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 999 and float(self.lv_sal) < 1106:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.09 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.09 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 1106 and float(self.lv_sal) < 1600:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.11 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.11 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 1600 and float(self.lv_sal) < 1961:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.16 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.16 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 1961 and float(self.lv_sal) < 2529:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.19 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.19 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 2529 and float(self.lv_sal) < 3694:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.23 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.23 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 3694 and float(self.lv_sal) < 5469:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.28 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.28 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 5469 and float(self.lv_sal) < 6420:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.32 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.32 * float(self.lv_sal), 2)
+        elif float(self.lv_sal) >= 6420 and float(self.lv_sal) < 20064:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.33 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.33 * float(self.lv_sal), 2)
+        else:
+            self.lv_deductions = self.lv_deductions + (0.11 * float(self.lv_sal) + (0.41 * float(self.lv_sal)))
+            self.lv_secsocial = 0.11 * float(self.lv_sal)
+            self.lv_irs = round(0.41 * float(self.lv_sal), 2)
+
+        #--------------------------------------------------------------------------------
+
+        # Nopay Leave 
+            
+        self.lv_nopayleave = self.in_nopayleave4.get() # variável recebe a quantidade de horas extras trabalhadas
+        self.lv_valhora2 = float(self.lv_sal) / (8 * 22) # valor da hora trabalhada
+
+        if not self.lv_nopayleave: # se não houverem faltas do funcionário
+            self.lv_nopayleave = 0.0 # a variável recebe 0
+        else: # do contrario...
+            if work_shift_vf[0] == 'Day': # se o turno for dia...
+                self.lv_valhora2 = self.lv_valhora2 * 2 # dobra o valor da hora extra
+            else: # do contrario...
+                self.lv_valhora2 = self.lv_valhora2 * 3 # triplica o valor da hora extra
+
+        self.lv_totalhours2 = round(float(self.lv_nopayleave) * self.lv_valhora2, 2) # O valor total recebe a quantidade de horas vezes o valor das horas extras
+        self.lv_deductions = round(self.lv_deductions + self.lv_totalhours2, 2) # as deducoes recebem o valor das horas faltadas de trabalho
+
+        #---------------------------------------------------------------------------------
+
+        # Deductions & Bonus
+
+        self.lv_liqsal = self.lv_brutesal - self.lv_deductions + self.lv_salbonus # valor final do salário líquido
+
+        print(f"Employee ID: {employee_id}")
+        print(f"Employee Name: {self.in_namesearch4.get()}")
+        print(f"Brute Salary: {self.lv_brutesal}")
+        print(f"Liquid Salary: {self.lv_liqsal}")
+        print(f"Health Plan: {self.healthplan2}")
+        print(f"Contr Sindica: {self.sindical2}")
+        print(f"Ticket Transport: {self.tickettrans2}")
+        print(f"Food Ticket: {self.foodticket2}")
+        print(f"Extra Hours: {self.lv_totalhours}")
+        print(f"Deductions: {self.lv_deductions}")
+        print(f"Social Security: {self.lv_secsocial}")
+        print(f"IRS: {self.lv_irs}")
+        print(f"Bonus Salary: {self.lv_salbonus}")
+        print(f"Nopay Leave: {self.lv_totalhours2}")
+        print(f"Subdec: {self.lv_subdec}")
+        
  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
     
