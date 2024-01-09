@@ -978,20 +978,25 @@ class RHScreen(): # inicializa a classe RH
 
         # Widgets - [Checkboxes]
 
-        # Canvas 4 ----------------------------           
+        # Canvas 4 ----------------------------    
 
-        self.cb_healthplan4 = Checkbutton(self.frame4, bg='grey')                      # setup
-        self.cb_healthplan4.place(relx=0.86, rely=0.35, relwidth=0.04, relheight=0.06) # posicao
+        self.healthplan_var = BooleanVar()     # variável boleana para checkbutton
+        self.ticketrans_var = BooleanVar()     # variável boleana para checkbutton
+        self.foodticket_var = BooleanVar()     # variável boleana para checkbutton
+        self.sindical_contr_var = BooleanVar() # variável boleana para checkbutton
 
-        self.cb_ticketrans4 = Checkbutton(self.frame4, bg='grey')                      # setup
-        self.cb_ticketrans4.place(relx=0.86, rely=0.41, relwidth=0.04, relheight=0.06) # posicao
+        self.cb_healthplan4 = Checkbutton(self.frame4, bg='grey', variable=self.healthplan_var) # setup
+        self.cb_healthplan4.place(relx=0.86, rely=0.35, relwidth=0.04, relheight=0.06)          # posicao
 
-        self.cb_foodticket4 = Checkbutton(self.frame4, bg='grey')                      # setup
-        self.cb_foodticket4.place(relx=0.86, rely=0.47, relwidth=0.04, relheight=0.06) # posicao
+        self.cb_ticketrans4 = Checkbutton(self.frame4, bg='grey', variable=self.ticketrans_var) # setup
+        self.cb_ticketrans4.place(relx=0.86, rely=0.41, relwidth=0.04, relheight=0.06)          # posicao
 
-        self.cb_sindical_contr4 = Checkbutton(self.frame4, bg='grey')                      # setup
-        self.cb_sindical_contr4.place(relx=0.86, rely=0.53, relwidth=0.04, relheight=0.06) # posicao  
- 
+        self.cb_foodticket4 = Checkbutton(self.frame4, bg='grey', variable=self.foodticket_var) # setup
+        self.cb_foodticket4.place(relx=0.86, rely=0.47, relwidth=0.04, relheight=0.06)          # posicao
+
+        self.cb_sindical_contr4 = Checkbutton(self.frame4, bg='grey', variable=self.sindical_contr_var) # setup
+        self.cb_sindical_contr4.place(relx=0.86, rely=0.53, relwidth=0.04, relheight=0.06)              # posicao
+  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
     def show_employee_salary(self): # método para capturar o salário de um funcionário e inseri-lo em outra entrada
@@ -1032,11 +1037,6 @@ class RHScreen(): # inicializa a classe RH
         self.lv_sal = 0.0         # salário base
         self.lv_brutesal = 0.0    # salário bruto
         self.lv_liqsal = 0.0      # salário líquido
-
-        self.lv_planhealth = 0.0  # plano de saúde
-        self.lv_sindicate = 0.0   # contribuicao sindical
-        self.lv_transticket = 0.0 # vale transporte
-        self.lv_foodticket = 0.0  # vale alimentacao
 
         self.lv_extrahour = 0.0   # horas extras
         self.lv_nopayleave = 0.0  # horas de falta
@@ -1102,7 +1102,15 @@ class RHScreen(): # inicializa a classe RH
 
         # Subsídio Décimo [subsídio décimo/ férias = salário bruto / 12 + salário / 12]
 
-        self.lv_subdec = round(self.lv_subdec + ((self.lv_brutesal / 12) + (float(self.lv_sal) / 12)), 2)
+        self.lv_subdec = round(self.lv_subdec + ((self.lv_brutesal / 12) + (float(self.lv_sal) / 12)), 2) # alimenta a variável de décimo e férias
+        self.lv_salbonus = self.lv_salbonus + self.lv_subdec # acrescenta o subsídio décimo e férias ao bônus salarial
+
+        #---------------------------------------------------------------------------------
+
+        # Serviços [plano de saúde/ contribuição sindical/ vale transporte / vale refeicao]
+
+        if self.healthplan_var.get():
+            pass           
 
         #---------------------------------------------------------------------------------
  
