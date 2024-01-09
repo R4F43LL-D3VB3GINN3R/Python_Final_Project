@@ -1109,9 +1109,44 @@ class RHScreen(): # inicializa a classe RH
 
         # Serviços [plano de saúde/ contribuição sindical/ vale transporte / vale refeicao]
 
-        if self.healthplan_var.get():
-            pass           
+        # [PLANO DE SAÚDE]
 
+        if self.healthplan_var.get(): # se houver plano de saúde...
+            healthplan = True # variável boleana recebe True
+            self.lv_deductions = self.lv_deductions + 40 # as deducoes recebem o valor do preco do plano 
+        else: # do contrario...
+            healthplan = False # variável boleana recebe False  
+        
+        #---------------------------------------------------------------------------------
+            
+        # [VALE TRANSPORTE]
+        
+        if self.ticketrans_var.get(): # se houver plano de vale transporte...
+            tickettrans = True # variável boleana recebe True
+            self.lv_salbonus = self.lv_salbonus + 50 # os bonus recebem o valor do vale transporte
+        else: # do contrário...
+            tickettrans = False # a variavel boleana recebe False
+        
+        #---------------------------------------------------------------------------------
+
+        # [VALE REFEICAO]
+
+        if self.foodticket_var.get(): # se houver ticket refeicao
+            foodticket = True # variável boleana recebe True
+            self.lv_salbonus = self.lv_salbonus + 132 # os bonus recebem o valor do ticket alimentacao
+        else: # do contrario
+            foodticket = False # a variavel boleana recebe False
+
+        #---------------------------------------------------------------------------------
+        
+        # [CONTRIBUICAO SINDICAL]
+
+        if self.sindical_contr_var.get(): # se houver contribuicao sindical
+            sindical = True # variável boleana recebe True
+            self.lv_deductions = self.lv_deductions + 50 # os bonus recebem o valor do ticket alimentacao
+        else: # do contrario
+            sindical = False # a variavel boleana recebe False
+            
         #---------------------------------------------------------------------------------
  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
