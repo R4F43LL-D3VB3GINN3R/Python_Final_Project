@@ -882,7 +882,10 @@ class RHScreen(): # inicializa a classe RH
         self.canvas4_frame4.place(relx=0.51, rely=0.33, relwidth=0.48, relheight=0.27)                                                # posiciona a moldura    
 
         self.canvas5_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
-        self.canvas5_frame4.place(relx=0.01, rely=0.62, relwidth=0.98, relheight=0.12)                                                # posiciona a moldura    
+        self.canvas5_frame4.place(relx=0.01, rely=0.62, relwidth=0.98, relheight=0.12)                                                # posiciona a moldura   
+
+        self.canvas6_frame4 = Canvas(self.frame4, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas6_frame4.place(relx=0.01, rely=0.76, relwidth=0.98, relheight=0.12)                                                # posiciona a moldura    
 
         #--------------------------------------
 
@@ -901,22 +904,16 @@ class RHScreen(): # inicializa a classe RH
 
         # Canvas 2 ----------------------------
 
-        self.lb_brutesal4 = Label(self.frame4, text = 'Brute Salary:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
-        self.lb_brutesal4.place(relx=0.07, rely=0.35, relwidth=0.2, relheight=0.05)                                          # posicao 
-
-        self.lb_liqsal4 = Label(self.frame4, text = 'Liquid Salary:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
-        self.lb_liqsal4.place(relx=0.07, rely=0.41, relwidth=0.2, relheight=0.05)                                           # posicao 
-
         self.lb_extrahour4 = Label(self.frame4, text = 'Extra - Hours:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
-        self.lb_extrahour4.place(relx=0.07, rely=0.47, relwidth=0.2, relheight=0.05)                                           # posicao 
+        self.lb_extrahour4.place(relx=0.07, rely=0.39, relwidth=0.2, relheight=0.05)                                           # posicao 
 
         self.lb_nopayleave4 = Label(self.frame4, text = 'Nopay Leave:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
-        self.lb_nopayleave4.place(relx=0.07, rely=0.53, relwidth=0.2, relheight=0.05)                                         # posicao 
+        self.lb_nopayleave4.place(relx=0.07, rely=0.5, relwidth=0.2, relheight=0.05)                                         # posicao 
 
         # Canvas 4 ----------------------------
 
         self.lb_healthplan4 = Label(self.frame4, text = 'Health Plan:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
-        self.lb_healthplan4.place(relx=0.6, rely=0.35, relwidth=0.17, relheight=0.05)                                        # posicao 
+        self.lb_healthplan4.place(relx=0.6, rely=0.35, relwidth=0.17, relheight=0.05)                                         # posicao 
 
         self.lb_ticketrans4 = Label(self.frame4, text = 'Transport Ticket:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
         self.lb_ticketrans4.place(relx=0.6, rely=0.41, relwidth=0.24, relheight=0.05)                                              # posicao 
@@ -926,6 +923,26 @@ class RHScreen(): # inicializa a classe RH
 
         self.lb_sindical_contr4 = Label(self.frame4, text = 'Sindical Contr:', bg='grey', font=('comic-sans', 12, 'bold', 'italic')) # setup
         self.lb_sindical_contr4.place(relx=0.59, rely=0.53, relwidth=0.22, relheight=0.05)                                           # posicao 
+
+        # Canvas 6 ----------------------------
+
+        self.lb_brutesal4 = Label(self.frame4, text = 'Brute Salary:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+        self.lb_brutesal4.place(relx=0.025, rely=0.78, relwidth=0.2, relheight=0.04)                                         # posicao 
+
+        self.lb_liqsal4 = Label(self.frame4, text = 'Liquid Salary:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+        self.lb_liqsal4.place(relx=0.025, rely=0.82, relwidth=0.2, relheight=0.04)                                          # posicao 
+
+        self.lb_irs4 = Label(self.frame4, text = 'IRS:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+        self.lb_irs4.place(relx=0.32, rely=0.78, relwidth=0.2, relheight=0.04)                                 # posicao 
+
+        self.lb_subdec4 = Label(self.frame4, text = 'Sub 13th:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+        self.lb_subdec4.place(relx=0.32, rely=0.82, relwidth=0.2, relheight=0.04)                                      # posicao 
+
+        self.lb_deductions4 = Label(self.frame4, text = 'Deductions:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+        self.lb_deductions4.place(relx=0.6, rely=0.78, relwidth=0.2, relheight=0.04)                                 # posicao 
+
+        self.lb_salbonus4 = Label(self.frame4, text = 'Bonus:', bg='grey', font=('comic-sans', 10, 'bold', 'italic')) # setup
+        self.lb_salbonus4.place(relx=0.6, rely=0.82, relwidth=0.2, relheight=0.04)                                      # posicao
 
         #--------------------------------------  
 
@@ -941,22 +958,38 @@ class RHScreen(): # inicializa a classe RH
 
         # Canvas 2 ----------------------------
 
-        self.in_brutesal4 = Entry(self.frame4, bd=4)                                 # setup
-        self.in_brutesal4.place(relx=0.28, rely=0.35, relwidth=0.12, relheight=0.05) # posicao
-
-        self.in_liqsal4 = Entry(self.frame4, bd=4)                                 # setup
-        self.in_liqsal4.place(relx=0.28, rely=0.41, relwidth=0.12, relheight=0.05) # posicao
-
         self.in_extrahour4 = Entry(self.frame4, bd=4)                                 # setup
-        self.in_extrahour4.place(relx=0.28, rely=0.47, relwidth=0.12, relheight=0.05) # posicao
+        self.in_extrahour4.place(relx=0.28, rely=0.39, relwidth=0.12, relheight=0.05) # posicao
 
         self.in_nopayleave4 = Entry(self.frame4, bd=4)                                 # setup
-        self.in_nopayleave4.place(relx=0.28, rely=0.53, relwidth=0.12, relheight=0.05) # posicao
+        self.in_nopayleave4.place(relx=0.28, rely=0.5, relwidth=0.12, relheight=0.05) # posicao
 
         # Canvas 3 ----------------------------
 
         self.in_sal4 = Entry(self.frame4, bd=4)                                 # setup
         self.in_sal4.place(relx=0.85, rely=0.92, relwidth=0.12, relheight=0.05) # posicao
+
+        # Canvas 6 ----------------------------  
+
+        self.in_brutesal4 = Entry(self.frame4, bd=4)                                  # setup
+        self.in_brutesal4.place(relx=0.21, rely=0.78, relwidth=0.10, relheight=0.045) # posicao
+
+        self.in_liqsal4 = Entry(self.frame4, bd=4)                                  # setup
+        self.in_liqsal4.place(relx=0.21, rely=0.82, relwidth=0.10, relheight=0.045) # posicao
+
+        self.in_irs4 = Entry(self.frame4, bd=4)                                  # setup
+        self.in_irs4.place(relx=0.48, rely=0.78, relwidth=0.10, relheight=0.045) # posicao
+
+        self.in_subdec4 = Entry(self.frame4, bd=4)                                  # setup
+        self.in_subdec4.place(relx=0.48, rely=0.82, relwidth=0.10, relheight=0.045) # posicao
+
+        self.in_deductions4 = Entry(self.frame4, bd=4)                                  # setup
+        self.in_deductions4.place(relx=0.78, rely=0.78, relwidth=0.10, relheight=0.045) # posicao
+
+        self.in_salbonus4 = Entry(self.frame4, bd=4)                                  # setup
+        self.in_salbonus4.place(relx=0.78, rely=0.82, relwidth=0.10, relheight=0.045) # posicao
+
+        #--------------------------------------   
 
         # Widgets - [Botões] 
 
@@ -970,11 +1003,8 @@ class RHScreen(): # inicializa a classe RH
         self.bt_refresh4 = Button(self.frame4, text='Refresh', bd=5, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.calculate_sal) # setup 
         self.bt_refresh4.place(relx=0.37, rely=0.65, relwidth=0.25, relheight=0.06)                                                                                                                        # posicao
         
-
         self.bt_gensal4 = Button(self.frame4, text='Generate', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
         self.bt_gensal4.place(relx=0.65, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                              # posicao
-
-        #--------------------------------------
 
         # Widgets - [Checkboxes]
 
@@ -1027,6 +1057,19 @@ class RHScreen(): # inicializa a classe RH
             self.in_sal4.delete(0, 'end')                                                      # limpar qualquer conteúdo anterior
 
         self.database.close_conn() # fecha conexão com a base de dados
+
+        self.in_brutesal4.delete(0, END)
+        self.in_liqsal4.delete(0, END)
+        self.in_irs4.delete(0, END)
+        self.in_subdec4.delete(0, END)
+        self.in_deductions4.delete(0, END)
+        self.in_salbonus4.delete(0, END)
+        self.in_extrahour4.delete(0, END)
+        self.in_nopayleave4.delete(0, END)
+        self.healthplan_var.set(False)
+        self.ticketrans_var.set(False)
+        self.foodticket_var.set(False)
+        self.sindical_contr_var.set(False)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
@@ -1105,7 +1148,7 @@ class RHScreen(): # inicializa a classe RH
         # Subsídio Décimo [subsídio décimo/ férias = salário bruto / 12 + salário / 12]
 
         self.lv_subdec = round(self.lv_subdec + ((self.lv_brutesal / 12) + (float(self.lv_sal) / 12)), 2) # alimenta a variável de décimo e férias
-        self.lv_salbonus = self.lv_salbonus + self.lv_subdec # acrescenta o subsídio décimo e férias ao bônus salarial
+        self.lv_salbonus = round(self.lv_salbonus + self.lv_subdec, 2) # acrescenta o subsídio décimo e férias ao bônus salarial
 
         #---------------------------------------------------------------------------------
 
@@ -1242,10 +1285,28 @@ class RHScreen(): # inicializa a classe RH
         print(f"Bonus Salary: {self.lv_salbonus}")
         print(f"Nopay Leave: {self.lv_totalhours2}")
         print(f"Subdec: {self.lv_subdec}")
+
+        self.in_brutesal4.delete(0, END)
+        self.in_brutesal4.insert(0, str(self.lv_brutesal))
+        self.in_liqsal4.delete(0, END)
+        self.in_liqsal4.insert(0, str(self.lv_liqsal))
+        self.in_irs4.delete(0, END)
+        self.in_irs4.insert(0, str(self.lv_irs))
+        self.in_subdec4.delete(0, END)
+        self.in_subdec4.insert(0, str(self.lv_subdec))
+        self.in_deductions4.delete(0, END)
+        self.in_deductions4.insert(0, str(self.lv_deductions))
+        self.in_salbonus4.delete(0, END)
+        self.in_salbonus4.insert(0, str(self.lv_salbonus))
         
- 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-    
+        
+    def generate_sal(self):
+
+        pass
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
     def run(self): # metodo para rodar o loop do form
 
         self.rhroot.mainloop() # loop do form
