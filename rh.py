@@ -1003,8 +1003,8 @@ class RHScreen(): # inicializa a classe RH
         self.bt_refresh4 = Button(self.frame4, text='Refresh', bd=5, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.calculate_sal) # setup 
         self.bt_refresh4.place(relx=0.37, rely=0.65, relwidth=0.25, relheight=0.06)                                                                                                                        # posicao
         
-        self.bt_gensal4 = Button(self.frame4, text='Generate', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic')) # setup 
-        self.bt_gensal4.place(relx=0.65, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                              # posicao
+        self.bt_gensal4 = Button(self.frame4, text='Generate', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.generate_sal) # setup 
+        self.bt_gensal4.place(relx=0.65, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                                                         # posicao
 
         # Widgets - [Checkboxes]
 
@@ -1157,40 +1157,40 @@ class RHScreen(): # inicializa a classe RH
         # [PLANO DE SAÚDE]
 
         if self.healthplan_var.get(): # se houver plano de saúde...
-            self.healthplan2 = True # variável boleana recebe True
+            self.healthplan2 = 'Yes' # variável boleana recebe True
             self.lv_deductions = self.lv_deductions + 40 # as deducoes recebem o valor do preco do plano
         else: # do contrario...
-            self.healthplan2 = False # variável boleana recebe False
+            self.healthplan2 = 'No' # variável boleana recebe False
         
         #---------------------------------------------------------------------------------
             
         # [VALE TRANSPORTE]
         
         if self.ticketrans_var.get(): # se houver plano de vale transporte...
-            self.tickettrans2 = True # variável boleana recebe True
+            self.tickettrans2 = 'Yes' # variável boleana recebe True
             self.lv_salbonus = self.lv_salbonus + 50 # os bonus recebem o valor do vale transporte
         else: # do contrário...
-            self.tickettrans2 = False # a variavel boleana recebe False
+            self.tickettrans2 = 'No' # a variavel boleana recebe False
         
         #---------------------------------------------------------------------------------
 
         # [VALE REFEICAO]
 
         if self.foodticket_var.get(): # se houver ticket refeicao
-            self.foodticket2 = True # variável boleana recebe True
+            self.foodticket2 = 'Yes' # variável boleana recebe True
             self.lv_salbonus = self.lv_salbonus + 132 # os bonus recebem o valor do ticket alimentacao
         else: # do contrario
-            self.foodticket2 = False # a variavel boleana recebe False
+            self.foodticket2 = 'No' # a variavel boleana recebe False
 
         #---------------------------------------------------------------------------------
         
         # [CONTRIBUICAO SINDICAL]
 
         if self.sindical_contr_var.get(): # se houver contribuicao sindical
-            self.sindical2 = True # variável boleana recebe True
+            self.sindical2 = 'Yes' # variável boleana recebe True
             self.lv_deductions = self.lv_deductions + 50 # os bonus recebem o valor do ticket alimentacao
         else: # do contrario
-            self.sindical2 = False # a variavel boleana recebe False
+            self.sindical2 = 'No' # a variavel boleana recebe False
             
         #---------------------------------------------------------------------------------
         #---------------------------------------------------------------------------------
@@ -1285,23 +1285,36 @@ class RHScreen(): # inicializa a classe RH
         
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def generate_sal(self):
+    def generate_sal(self): # método para gerar pagamento
 
-        print(f"Employee Name: {self.in_namesearch4.get()}")
-        print(f"Brute Salary: {self.lv_brutesal}")
-        print(f"Liquid Salary: {self.lv_liqsal}")
-        print(f"Health Plan: {self.healthplan2}")
-        print(f"Contr Sindica: {self.sindical2}")
-        print(f"Ticket Transport: {self.tickettrans2}")
-        print(f"Food Ticket: {self.foodticket2}")
-        print(f"Extra Hours: {self.lv_totalhours}")
-        print(f"Deductions: {self.lv_deductions}")
-        print(f"Social Security: {self.lv_secsocial}")
-        print(f"IRS: {self.lv_irs}")
-        print(f"Bonus Salary: {self.lv_salbonus}")
-        print(f"Nopay Leave: {self.lv_totalhours2}")
-        print(f"Subdec: {self.lv_subdec}")
+        id_employee = self.in_idsearch4.get() # variável recebe o valor do id da entrada
+        pay_situation = 'Yes'                 # variável para receber situação de pagamento com sucesso
+        
+        if not self.in_brutesal4.get(): # se a entrada do salário bruto estiver vazia...
+            messagebox.showinfo('Info', 'No Salary to Generate') # exibe mensagem
+        else: # do contrario...
 
+            self.database.open_conn() # abre conexao com base de dados
+
+            self.database.cursor.execute("""UPDATE tab_employees 
+                                         SET pay_situation = ? 
+                                         WHERE ID = ?""", 
+                                        (pay_situation, id_employee)) # atualiza a situacao de pagamento da tabela de funcionários
+            
+            self.database.conn.commit() # insere a query sql
+
+            self.database.cursor.execute("""UPDATE tab_payment
+                                         SET brutesal = ?, saliq = ?, plan_health = ?, sindicate = ?, transticket = ?, foodticket = ?, extra_hour = ?, deductions = ?, secsocial = ?, irs = ?, salbonus = ?, nopay_leave = ?, subdec = ?
+                                         WHERE ID = ?""",
+                                         (self.lv_brutesal, self.lv_liqsal, self.healthplan2, self.sindical2, self.tickettrans2, self.foodticket2, self.lv_totalhours, self.lv_deductions, self.lv_secsocial, self.lv_irs, self.lv_salbonus, self.lv_totalhours2, self.lv_subdec, id_employee))
+                                        # atualiza os campos da tabela com os campos das entradas e de variáveis usadas para calcular o ordenado do funcionário
+            
+            self.database.conn.commit() # insere a query sql
+            
+            self.database.close_conn() # encerra conexao com base de dados
+
+            messagebox.showinfo('Info', 'Payment successfully processed') # exibe a mensagem
+             
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
     def run(self): # metodo para rodar o loop do form
@@ -1309,7 +1322,7 @@ class RHScreen(): # inicializa a classe RH
         self.rhroot.mainloop() # loop do form
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
+        
 RHScreen()
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
