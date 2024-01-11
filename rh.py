@@ -4,6 +4,13 @@ from tkinter import *          # importa a biblioteca tkinter
 from tkinter import ttk        # importa mais funcionalidades do tkinter
 from database import Database  # importa a biblioteca de base de dados
 from tkinter import messagebox # importa a caixa de mensagens do tkinter
+from reportlab.pdfgen import canvas                     # importa a biblioteca de gerador de pdfs
+from reportlab.lib.pagesizes import letter, A4          # importa os tipos de saídas do gerador de pdfs
+from reportlab.pdfbase import pdfmetrics                # importa a métrica de fontes do gerador de pdfs
+from reportlab.pdfbase.ttfonts import TTFont            # importa uma fonte True Type ao gerar documentos em pdf
+from reportlab.platypus import SimpleDocTemplate, Image # importa um criador de template de pdf básico
+import webbrowser                                       # importa a biblioteca para chamar o browser padrao
+from reportlab.lib import colors
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 class RHScreen(): # inicializa a classe RH
@@ -1009,6 +1016,9 @@ class RHScreen(): # inicializa a classe RH
         self.bt_display4 = Button(self.frame4, text='Display', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_payments) # setup 
         self.bt_display4.place(relx=0.03, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                                                         # posicao
 
+        self.bt_pdf4 = Button(self.frame4, text='Export', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.generatedoc) # setup 
+        self.bt_pdf4.place(relx=0.23, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                                                         # posicao
+
         # Widgets - [Checkboxes]
 
         # Canvas 4 ----------------------------    
@@ -1342,7 +1352,7 @@ class RHScreen(): # inicializa a classe RH
         self.listEmpl3.heading("#4", text="Brute Salary")      # texto de cabecalho
         self.listEmpl3.heading("#5", text="Liquid Salary")     # texto de cabecalho
         self.listEmpl3.heading("#6", text="Health Plan")       # texto de cabecalho
-        self.listEmpl3.heading("#7", text="Sindicatal Contr")  # texto de cabecalho
+        self.listEmpl3.heading("#7", text="Sindical Contr")  # texto de cabecalho
         self.listEmpl3.heading("#8", text="Transport Ticket")  # texto de cabecalho
         self.listEmpl3.heading("#9", text="Food Ticket")       # texto de cabecalho
         self.listEmpl3.heading("#10", text="Extra Hrs Worked") # texto de cabecalho
@@ -1381,7 +1391,7 @@ class RHScreen(): # inicializa a classe RH
 
         vsb = ttk.Scrollbar(self.subframe3, orient="vertical", command=self.listEmpl3.yview) # objeto barra de rolagem criado na tela2
         vsb.place(relx = 0.96, rely = 0.05, relheight = 0.85)                               # insere a barra de rolagem com posicao e tamanho desejado
-        self.listEmpl.configure(yscrollcommand=vsb.set)                                     # configuracao da barra de rolagem
+        self.listEmpl3.configure(yscrollcommand=vsb.set)                                     # configuracao da barra de rolagem
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
          
@@ -1400,10 +1410,73 @@ class RHScreen(): # inicializa a classe RH
         self.database.close_conn() # fecha conexão com o banco de dados
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def printpay(self): # método para abrir o browser
+
+        webbrowser.open("Payment_Employee") # funcao para abrir o browser e criar um arquivo chamado cliente.pdf
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def generatedoc(self): # método para geracao de relatórios
+
+        self.c = canvas.Canvas("Payment_Employee", pagesize=letter)
+        # Objeto que gera um texto gráfico num documento pdf
+
+        # Adiciona borda ao redor da página
+        self.c.setStrokeColor(colors.black)
+        self.c.rect(20, 20, 550, 800, stroke=1, fill=0)
+
+        # Adiciona cabeçalho
+        self.c.setFont("Helvetica-Bold", 16)
+        self.c.drawCentredString(300, 780, "Relatório de Pagamento de Funcionário")
+
+        # Adiciona logotipo
+        self.c.drawInlineImage("1.jpg", 50, 720, width=100, height=50)
+
+        # Campos
+        fields = [
+            (50, 670, 'ID: ', self.in_idsearch4.get()),
+            (50, 640, 'IDC: ', '...'),
+            (50, 610, 'Name: ', self.in_namesearch4.get()),
+            (50, 580, 'Brute Salary: ', self.lv_brutesal),
+            (50, 550, 'Liquid Salary: ', self.lv_liqsal),
+            (50, 520, 'Health Plan: ', self.healthplan2),
+            (50, 490, 'Sindical Contr: ', self.sindical2),
+            (50, 460, 'Transport Ticket: ', self.tickettrans2),
+            (50, 430, 'Food Ticket: ', self.foodticket2),
+            (50, 400, 'Extra Hrs Worked: ', self.lv_totalhours),
+            (50, 370, 'Deductions: ', self.lv_deductions),
+            (50, 340, 'Sec Social: ', self.lv_secsocial),
+            (50, 310, 'IRS: ', self.lv_irs),
+            (50, 280, 'Salarial Bonus: ', self.lv_salbonus),
+            (50, 250, 'No Pay Leave: ', self.lv_totalhours2),
+            (50, 220, '13th/Holydays: ', self.lv_subdec),
+        ]
+
+        # Adiciona borda ao redor de cada campo e desenha os campos
+        for x, y, label, value in fields:
+            self.c.setStrokeColor(colors.black)
+            self.c.rect(x, y - 15, 400, 29, stroke=1, fill=0)  # Borda ao redor de cada campo
+            self.c.drawString(x, y, label)
+            self.c.drawString(x + 200, y, str(value))
+
+        # Adiciona rodapé
+        self.c.setFont("Helvetica", 10)
+        self.c.drawCentredString(300, 30, "Este é um documento confidencial.")
+
+        # Salve o arquivo PDF
+        self.c.showPage()   # chama a funcao da biblioteca para exibir a pagina
+        self.c.save()
+        self.printpay()
+
+        #--------------------------------------
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
                     
     def run(self): # metodo para rodar o loop do form
 
         self.rhroot.mainloop() # loop do form
+        
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
