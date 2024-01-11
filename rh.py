@@ -240,7 +240,7 @@ class RHScreen(): # inicializa a classe RH
         #--------------------------------------
 
         # Widgets - [Botões]
-        self.bt_show_employee = Button(self.frame2, text='Show', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees) # setup 
+        self.bt_show_employee = Button(self.frame2, text='Display', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees) # setup 
         self.bt_show_employee.place(relx=0.77, rely=0.7, relwidth=0.2, relheight=0.07)                                                                                                                        # posicao
 
         self.bt_save_employee = Button(self.frame2, text='Save', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.insert_client) # setup 
@@ -584,7 +584,7 @@ class RHScreen(): # inicializa a classe RH
                 self.bt_change.place(relx=0.03, rely=0.84, relwidth=0.2, relheight=0.06)
                 self.bt_rgpd_remove = Button(self.frame3, text='RGPD Delete', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.remove_employee2)
                 self.bt_rgpd_remove.place(relx=0.03, rely=0.77, relwidth=0.2, relheight=0.06)
-                self.bt_show = Button(self.frame3, text='Show', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees)
+                self.bt_show = Button(self.frame3, text='Display', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees)
                 self.bt_show.place(relx=0.77, rely=0.82, relwidth=0.2, relheight=0.07)
                 self.bt_removed = Button(self.frame3, text='Deleted', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_exemployees)
                 self.bt_removed.place(relx=0.77, rely=0.9, relwidth=0.2, relheight=0.07)
@@ -605,7 +605,7 @@ class RHScreen(): # inicializa a classe RH
                 self.bt_change.place(relx=0.03, rely=0.84, relwidth=0.2, relheight=0.06)
                 self.bt_rgpd_remove = Button(self.frame3, text='RGPD Delete', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.remove_employee2)
                 self.bt_rgpd_remove.place(relx=0.03, rely=0.77, relwidth=0.2, relheight=0.06)
-                self.bt_show = Button(self.frame3, text='Show', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees)
+                self.bt_show = Button(self.frame3, text='Display', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employees)
                 self.bt_show.place(relx=0.77, rely=0.82, relwidth=0.2, relheight=0.07)
                 self.bt_removed = Button(self.frame3, text='Deleted', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_exemployees)
                 self.bt_removed.place(relx=0.77, rely=0.9, relwidth=0.2, relheight=0.07)
@@ -1006,6 +1006,9 @@ class RHScreen(): # inicializa a classe RH
         self.bt_gensal4 = Button(self.frame4, text='Generate', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.generate_sal) # setup 
         self.bt_gensal4.place(relx=0.65, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                                                         # posicao
 
+        self.bt_display4 = Button(self.frame4, text='Display', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_payments) # setup 
+        self.bt_display4.place(relx=0.03, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                                                         # posicao
+
         # Widgets - [Checkboxes]
 
         # Canvas 4 ----------------------------    
@@ -1316,7 +1319,88 @@ class RHScreen(): # inicializa a classe RH
             messagebox.showinfo('Info', 'Payment successfully processed') # exibe a mensagem
              
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-        
+            
+    def show_payments(self):
+
+        # Widgets 
+        self.subframe3 = Toplevel(self.rhroot)
+        self.subframe3.title("Employee Payments Details")
+        self.subframe3.geometry("1600x500")
+
+        #--------------------------------------
+
+        # Treeview
+        self.listEmpl3 = ttk.Treeview(self.subframe3, height = 3, column = ("col0","col1", "col2'", "col3", "col4", "col5", "col6'", "col7", "col8", "col9", "col10'", "col11", "col12", "col13", "col14", "col15", "col16")) # objeto treeview criado na tela2
+        self.insert_treeview3() # método para exibir os dados dentro da treeview
+        #--------------------------------------
+
+        # Cabecalhos
+        self.listEmpl3.heading("#0", text="")                  # texto de cabecalho
+        self.listEmpl3.heading("#1", text="ID")                # texto de cabecalho
+        self.listEmpl3.heading("#2", text="IDC")               # texto de cabecalho
+        self.listEmpl3.heading("#3", text="Name")              # texto de cabecalho.
+        self.listEmpl3.heading("#4", text="Brute Salary")      # texto de cabecalho
+        self.listEmpl3.heading("#5", text="Liquid Salary")     # texto de cabecalho
+        self.listEmpl3.heading("#6", text="Health Plan")       # texto de cabecalho
+        self.listEmpl3.heading("#7", text="Sindicatal Contr")  # texto de cabecalho
+        self.listEmpl3.heading("#8", text="Transport Ticket")  # texto de cabecalho
+        self.listEmpl3.heading("#9", text="Food Ticket")       # texto de cabecalho
+        self.listEmpl3.heading("#10", text="Extra Hrs Worked") # texto de cabecalho
+        self.listEmpl3.heading("#11", text="Deductions")       # texto de cabecalho
+        self.listEmpl3.heading("#12", text="Sec Social")       # texto de cabecalho
+        self.listEmpl3.heading("#13", text="IRS")              # texto de cabecalho
+        self.listEmpl3.heading("#14", text="Salarial Bonus")   # texto de cabecalho
+        self.listEmpl3.heading("#15", text="No Pay Leave")     # texto de cabecalho
+        self.listEmpl3.heading("#16", text="13th/Holydays")    # texto de cabecalho
+
+        #--------------------------------------
+
+        # Colunas
+        self.listEmpl3.column("#0", width=10)    # tamanho da coluna
+        self.listEmpl3.column("#1", width=50)    # tamanho da coluna
+        self.listEmpl3.column("#2", width=50)    # tamanho da coluna
+        self.listEmpl3.column("#3", width=100)   # tamanho da coluna
+        self.listEmpl3.column("#4", width=100)    # tamanho da coluna
+        self.listEmpl3.column("#5", width=100)    # tamanho da coluna
+        self.listEmpl3.column("#6", width=70)   # tamanho da coluna
+        self.listEmpl3.column("#7", width=100)    # tamanho da coluna
+        self.listEmpl3.column("#8", width=100)   # tamanho da coluna
+        self.listEmpl3.column("#9", width=70)    # tamanho da coluna
+        self.listEmpl3.column("#10", width=150)  # tamanho da coluna
+        self.listEmpl3.column("#11", width=100)  # tamanho da coluna
+        self.listEmpl3.column("#12", width=100)  # tamanho da coluna
+        self.listEmpl3.column("#13", width=50)   # tamanho da coluna
+        self.listEmpl3.column("#14", width=120)  # tamanho da coluna
+        self.listEmpl3.column("#15", width=120)  # tamanho da coluna
+        self.listEmpl3.column("#16", width=120)  # tamanho da coluna
+
+        #--------------------------------------
+
+        # Treeview Configuracoes
+        self.listEmpl3.place(relx = 0.01, rely = 0.05, relwidth = 0.95, relheight = 0.85)    # insere a treeview com posicao e tamanho desejado
+
+        vsb = ttk.Scrollbar(self.subframe3, orient="vertical", command=self.listEmpl3.yview) # objeto barra de rolagem criado na tela2
+        vsb.place(relx = 0.96, rely = 0.05, relheight = 0.85)                               # insere a barra de rolagem com posicao e tamanho desejado
+        self.listEmpl.configure(yscrollcommand=vsb.set)                                     # configuracao da barra de rolagem
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+         
+    def insert_treeview3(self): # método para inserir os dados das entradas na treeview
+
+        self.listEmpl3.delete(*self.listEmpl3.get_children()) # o objeto deleta os elementos desempacotados da lista por getchildren
+
+        self.database.open_conn() # abre conexão com banco de dados
+
+        lista = self.database.cursor.execute(""" SELECT ID, IDC, name, brutesal, saliq, plan_health, sindicate, transticket, foodticket, extra_hour, deductions, secsocial, irs, salbonus, nopay_leave, subdec FROM tab_payment ORDER BY name ASC; """)
+        # seleciona todos os campos da tabela na lista e os ordena pelos nomes dos empregados em ordem alfabetica
+
+        for i in lista:                              # percorre todos os itens da lista que guarda os resultados da consulta ao banco de dados 
+             self.listEmpl3.insert("", END, values=i) # os itens serão inseridos a lista do topo ao final
+
+        self.database.close_conn() # fecha conexão com o banco de dados
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+                    
     def run(self): # metodo para rodar o loop do form
 
         self.rhroot.mainloop() # loop do form
