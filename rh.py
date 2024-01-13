@@ -11,6 +11,7 @@ from reportlab.pdfbase.ttfonts import TTFont            # importa uma fonte True
 from reportlab.platypus import SimpleDocTemplate, Image # importa um criador de template de pdf básico
 import webbrowser                                       # importa a biblioteca para chamar o browser padrao
 from reportlab.lib import colors
+from datetime import datetime
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 class RHScreen(): # inicializa a classe RH
@@ -26,8 +27,8 @@ class RHScreen(): # inicializa a classe RH
 
         #---------------------
 
-        self.rhroot.mainloop() # Loop temporário
-    
+        self.run()
+        
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rh_mainscreen(self): # método de configuracao de tela principal
@@ -1016,9 +1017,6 @@ class RHScreen(): # inicializa a classe RH
         self.bt_display4 = Button(self.frame4, text='Display', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_payments) # setup 
         self.bt_display4.place(relx=0.03, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                                                         # posicao
 
-        self.bt_pdf4 = Button(self.frame4, text='Export', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.generatedoc) # setup 
-        self.bt_pdf4.place(relx=0.23, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                                                         # posicao
-
         # Widgets - [Checkboxes]
 
         # Canvas 4 ----------------------------    
@@ -1171,7 +1169,7 @@ class RHScreen(): # inicializa a classe RH
 
         if self.healthplan_var.get(): # se houver plano de saúde...
             self.healthplan2 = 'Yes' # variável boleana recebe True
-            self.lv_deductions = self.lv_deductions + 40 # as deducoes recebem o valor do preco do plano
+            self.lv_deductions = round(self.lv_deductions + 40, 2) # as deducoes recebem o valor do preco do plano
         else: # do contrario...
             self.healthplan2 = 'No' # variável boleana recebe False
         
@@ -1181,17 +1179,17 @@ class RHScreen(): # inicializa a classe RH
         
         if self.ticketrans_var.get(): # se houver plano de vale transporte...
             self.tickettrans2 = 'Yes' # variável boleana recebe True
-            self.lv_salbonus = self.lv_salbonus + 50 # os bonus recebem o valor do vale transporte
+            self.lv_salbonus = round(self.lv_salbonus + 50, 2) # os bonus recebem o valor do vale transporte
         else: # do contrário...
             self.tickettrans2 = 'No' # a variavel boleana recebe False
         
         #---------------------------------------------------------------------------------
 
-        # [VALE REFEICAO]
+        # [VALE REFEICAO]  
 
         if self.foodticket_var.get(): # se houver ticket refeicao
             self.foodticket2 = 'Yes' # variável boleana recebe True
-            self.lv_salbonus = self.lv_salbonus + 132 # os bonus recebem o valor do ticket alimentacao
+            self.lv_salbonus = round(self.lv_salbonus + 132, 2) # os bonus recebem o valor do ticket alimentacao
         else: # do contrario
             self.foodticket2 = 'No' # a variavel boleana recebe False
 
@@ -1201,7 +1199,7 @@ class RHScreen(): # inicializa a classe RH
 
         if self.sindical_contr_var.get(): # se houver contribuicao sindical
             self.sindical2 = 'Yes' # variável boleana recebe True
-            self.lv_deductions = self.lv_deductions + 50 # os bonus recebem o valor do ticket alimentacao
+            self.lv_deductions = round(self.lv_deductions + 50, 2) # os bonus recebem o valor do ticket alimentacao
         else: # do contrario
             self.sindical2 = 'No' # a variavel boleana recebe False
             
@@ -1281,7 +1279,7 @@ class RHScreen(): # inicializa a classe RH
 
         # Deductions & Bonus
 
-        self.lv_liqsal = self.lv_brutesal - self.lv_deductions + self.lv_salbonus # valor final do salário líquido
+        self.lv_liqsal = round(self.lv_brutesal - self.lv_deductions + self.lv_salbonus, 2) # valor final do salário líquido
 
         self.in_brutesal4.delete(0, END)                       # deleta o que há na entrada
         self.in_brutesal4.insert(0, str(self.lv_brutesal))     # insere o valor da variavel na entrada
@@ -1307,6 +1305,9 @@ class RHScreen(): # inicializa a classe RH
             messagebox.showinfo('Info', 'No Salary to Generate') # exibe mensagem
         else: # do contrario...
 
+            self.bt_pdf4 = Button(self.frame4, text='Export', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.generatedoc) # setup 
+            self.bt_pdf4.place(relx=0.23, rely=0.92, relwidth=0.2, relheight=0.06)                                                                                                                      # posicao
+
             self.database.open_conn() # abre conexao com base de dados
 
             self.database.cursor.execute("""UPDATE tab_employees 
@@ -1324,7 +1325,7 @@ class RHScreen(): # inicializa a classe RH
             
             self.database.conn.commit() # insere a query sql
             
-            self.database.close_conn() # encerra conexao com base de dados
+            self.database.close_conn() # encerra conexao com base de dadosp
 
             messagebox.showinfo('Info', 'Payment successfully processed') # exibe a mensagem
              
@@ -1370,10 +1371,10 @@ class RHScreen(): # inicializa a classe RH
         self.listEmpl3.column("#1", width=50)    # tamanho da coluna
         self.listEmpl3.column("#2", width=50)    # tamanho da coluna
         self.listEmpl3.column("#3", width=100)   # tamanho da coluna
-        self.listEmpl3.column("#4", width=100)    # tamanho da coluna
-        self.listEmpl3.column("#5", width=100)    # tamanho da coluna
-        self.listEmpl3.column("#6", width=70)   # tamanho da coluna
-        self.listEmpl3.column("#7", width=100)    # tamanho da coluna
+        self.listEmpl3.column("#4", width=100)   # tamanho da coluna
+        self.listEmpl3.column("#5", width=100)   # tamanho da coluna
+        self.listEmpl3.column("#6", width=70)    # tamanho da coluna
+        self.listEmpl3.column("#7", width=100)   # tamanho da coluna
         self.listEmpl3.column("#8", width=100)   # tamanho da coluna
         self.listEmpl3.column("#9", width=70)    # tamanho da coluna
         self.listEmpl3.column("#10", width=150)  # tamanho da coluna
@@ -1428,7 +1429,12 @@ class RHScreen(): # inicializa a classe RH
 
         # Adiciona cabeçalho
         self.c.setFont("Helvetica-Bold", 16)
-        self.c.drawCentredString(300, 780, "Relatório de Pagamento de Funcionário")
+        self.c.drawCentredString(300, 780, "Report Payment Employee")
+
+        # Adiciona hora e data de emissão
+        now = datetime.now()
+        formatted_date = now.strftime("%Y-%m-%d %H:%M:%S")
+        self.c.drawRightString(550, 30, f"Emitido em: {formatted_date}")
 
         # Adiciona logotipo
         self.c.drawInlineImage("1.jpg", 50, 720, width=100, height=50)
@@ -1456,18 +1462,23 @@ class RHScreen(): # inicializa a classe RH
         # Adiciona borda ao redor de cada campo e desenha os campos
         for x, y, label, value in fields:
             self.c.setStrokeColor(colors.black)
-            self.c.rect(x, y - 15, 400, 29, stroke=1, fill=0)  # Borda ao redor de cada campo
+            self.c.rect(x, y - 15, 420, 29, stroke=1, fill=0)  # Borda ao redor de cada campo
             self.c.drawString(x, y, label)
             self.c.drawString(x + 200, y, str(value))
 
-        # Adiciona rodapé
-        self.c.setFont("Helvetica", 10)
-        self.c.drawCentredString(300, 30, "Este é um documento confidencial.")
+        # Adiciona espaço para rubrica, data, local e assinatura
+        self.c.setStrokeColor(colors.black)
+        self.c.rect(50, 130, 420, 80, stroke=1, fill=0)  # Aumentei a largura e desci a posição
+        self.c.drawString(50, 180, "Date: ____________________")  # Espaço para data
+        self.c.drawString(250, 180, "Local: ___________________")  # Espaço para local
+        self.c.drawString(50, 150, "Signature: ________________")  # Espaço para assinatura
 
         # Salve o arquivo PDF
         self.c.showPage()   # chama a funcao da biblioteca para exibir a pagina
         self.c.save()
         self.printpay()
+
+        self.bt_pdf4.destroy() # Remove o botão de exportar em pdf
 
         #--------------------------------------
 
@@ -1475,8 +1486,7 @@ class RHScreen(): # inicializa a classe RH
                     
     def run(self): # metodo para rodar o loop do form
 
-        self.rhroot.mainloop() # loop do form
-        
+        self.rhroot.mainloop() # loop do form  
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
