@@ -19,11 +19,12 @@ class RHScreen(): # inicializa a classe RH
     
     def __init__(self):
   
-        self.rhroot = Tk()         # o objeto recebe a raiz da aplicacao 
-        self.database = Database() # instancia do banco de dados
-        self.rh_mainscreen()       # invoca o metodo de criacao e configuracao da tela de login
-        self.rh_frame()            # invoca o metodo de criacao e configuracao do frame de tela
-        self.rh_widgets()          # invoca o metodo de criacao e configuracao de widgets
+        self.rhroot = Tk()                                               # o objeto recebe a raiz da aplicacao 
+        self.database = Database()                                       # instancia do banco de dados
+        self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") # objeto recebe data e hora atuais
+        self.rh_mainscreen()                                             # invoca o metodo de criacao e configuracao da tela de login
+        self.rh_frame()                                                  # invoca o metodo de criacao e configuracao do frame de tela
+        self.rh_widgets()                                                # invoca o metodo de criacao e configuracao de widgets
 
         #---------------------
 
@@ -428,6 +429,14 @@ class RHScreen(): # inicializa a classe RH
                 SET name = ? WHERE IDC = ?""",
                 (self.name, self.idc)
             )
+
+            self.login_msg = f"[Time: {self.current_time}] - {self.name} Employee Data Has Been Updated." # mensagem para inserir data e horário atuais
+
+            self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                 VALUES (?)""", (self.login_msg,))                                             # insere a mensagem na tabela
+            
+            self.database.conn.commit()                                                                        # executa a query SQL
+
             messagebox.showinfo("Info", "Employee with IDC {} updated.".format(self.idc))
         else:
             # Empregado não existe, proceda com a inserção
@@ -442,6 +451,14 @@ class RHScreen(): # inicializa a classe RH
                 """INSERT INTO tab_payment (IDC, name)
                 VALUES (?, ?)""",
                 (self.idc, self.name))
+            
+            self.login_msg = f"[Time: {self.current_time}] - New Employee Data {self.name} Has Been Added." # mensagem para inserir data e horário atuais
+
+            self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                 VALUES (?)""", (self.login_msg,))                                             # insere a mensagem na tabela
+            
+            self.database.conn.commit()                                                                        # executa a query SQL
+
             messagebox.showinfo("Info", "Employee with IDC {} added.".format(self.idc))
 
         self.database.conn.commit() # executa a query SQL
