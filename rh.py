@@ -1365,6 +1365,13 @@ class RHScreen(): # inicializa a classe RH
 
             self.database.open_conn() # abre conexao com base de dados
 
+            self.login_msg = f"[Date: {self.current_time}] - The Employee ID: {id_employee} has had his salary updated." # mensagem para inserir data e horário atuais
+
+            self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                 VALUES (?)""", (self.login_msg,)) # insere a mensagem na tabela
+            
+            self.database.conn.commit() # executa a query SQL
+
             self.database.cursor.execute("""UPDATE tab_employees 
                                          SET pay_situation = ? 
                                          WHERE ID = ?""", 
@@ -1532,6 +1539,16 @@ class RHScreen(): # inicializa a classe RH
         self.c.showPage()   # chama a funcao da biblioteca para exibir a pagina
         self.c.save()
         self.printpay()
+
+        self.login_msg = f"[Date: {self.current_time}] - The Employee ID: {self.in_idsearch4.get()} has had his contract exported." # mensagem para inserir data e horário atuais
+
+        self.database.open_conn()
+
+        self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                VALUES (?)""", (self.login_msg,)) # insere a mensagem na tabela
+        
+        self.database.conn.commit() # executa a query SQL
+        self.database.close_conn()
 
         self.bt_pdf4.destroy() # Remove o botão de exportar em pdf
 
