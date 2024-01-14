@@ -809,6 +809,14 @@ class RHScreen(): # inicializa a classe RH
             self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no ID
                 """DELETE FROM tab_payment WHERE ID = ?""",
                 (self.in_idsearch.get(),))
+            
+            self.login_msg = f"[Time: {self.current_time}] - Employee Data ID:{self.in_idsearch.get()} Has Been Removed." # mensagem para inserir data e horário atuais
+
+            self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                 VALUES (?)""", (self.login_msg,)) # insere a mensagem na tabela
+            
+            self.database.conn.commit() # executa a query SQL
+
         else: # do contrário...
             self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no Nome
                 """DELETE FROM tab_employees WHERE name LIKE ?""",
@@ -817,6 +825,13 @@ class RHScreen(): # inicializa a classe RH
             self.database.cursor.execute( # remove o funcionário da tabela de funcionários baseado no Nome
                 """DELETE FROM tab_payment WHERE name LIKE ?""",
                 (f'%{nome}%',))
+            
+            self.login_msg = f"[Time: {self.current_time}] - Employee Data Name:{nome} Has Been Removed." # mensagem para inserir data e horário atuais
+
+            self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                 VALUES (?)""", (self.login_msg,)) # insere a mensagem na tabela
+            
+            self.database.conn.commit() # executa a query SQL
 
         self.database.conn.commit()  # Confirmar a operação de DELETE
         self.database.close_conn()   # Fechar a conexão com o banco de dados
