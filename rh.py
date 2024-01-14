@@ -725,6 +725,14 @@ class RHScreen(): # inicializa a classe RH
         self.database.open_conn() # abre conexão com banco de dados
 
         if self.in_idsearch.get(): # Se houver um ID inserido
+
+            self.login_msg = f"[Time: {self.current_time}] - Employee Data ID:{self.in_idsearch.get()} Has Been Moved to Ex-Employees Data." # mensagem para inserir data e horário atuais
+
+            self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                 VALUES (?)""", (self.login_msg,)) # insere a mensagem na tabela
+            
+            self.database.conn.commit() # executa a query SQL
+
             self.database.cursor.execute( # insere o funcionário na tabela de ex-funcionários 
             """INSERT INTO tab_exemployees (ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift, pay_situation)
                SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift, pay_situation
@@ -744,7 +752,22 @@ class RHScreen(): # inicializa a classe RH
                 """INSERT INTO tab_employees (ID) 
                 VALUES (?)""",
                 (self.in_idsearch.get(),))
+
         else: # do contrário...
+
+            self.database.open_conn() # abre conexão com banco de dados
+
+            IDremove = self.database.cursor.execute("""SELECT ID FROM tab_employees WHERE name LIKE ? """, (f'%{nome}%',)).fetchone() # A variável recebe o Id do resultado da consulta
+
+            self.database.conn.commit() # executa a query SQL
+
+            self.login_msg = f"[Time: {self.current_time}] - Employee Data {nome} Has Been Moved to Ex-Employees Data." # mensagem para inserir data e horário atuais
+
+            self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                 VALUES (?)""", (self.login_msg,)) # insere a mensagem na tabela
+            
+            self.database.conn.commit() # executa a query SQL
+
             self.database.cursor.execute( # insere o funcionário na tabela de ex-funcionários 
             """INSERT INTO tab_exemployees (ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift, pay_situation)
                SELECT ID, IDC, name, age, sex, address, phone, marital_status, dependents, nationality, city, job_position, salary, work_shift, pay_situation
@@ -763,7 +786,7 @@ class RHScreen(): # inicializa a classe RH
             self.database.cursor.execute( # insere a chave removida para evitar erros de duplicacâo de chaves
                 """INSERT INTO tab_employees (ID) 
                 VALUES (?)""",
-                (self.in_idsearch.get(),))
+                (IDremove))
 
         self.database.conn.commit()  # Confirmar a operação de DELETE
         self.database.close_conn()   # Fechar a conexão com o banco de dados
