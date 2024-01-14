@@ -6,6 +6,7 @@ from menu import MenuScreen    # importa a classe do menu
 from database import Database  # importa a classe do banco de dados
 import sqlite3                 # importa a biblioteca sqlite
 from tkinter import messagebox # importa a caixa de mensagens do tkinter
+from datetime import datetime
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -17,13 +18,15 @@ class Login(): # inicializa a classe Login
     
     def __init__(self): # inicializa os objetos da classe ao invocá-la
 
-        self.login = root          # o objeto recebe a raiz da aplicacao
-        self.database = Database() # instancia do banco de dados
-        self.login_screen()        # invoca o metodo de criacao e configuracao da tela de login
-        self.login_frame()         # invoca o metodo de criacao e configuracao do frame de tela
-        self.login_widgets()       # invoca o metodo de criacao e configuracao de widgets
-        self.count = 3             # contador de tentativas de login
-        root.mainloop()            # funcao para rodar o tkinter
+        self.login = root                                                # o objeto recebe a raiz da aplicacao
+        self.database = Database()                                       # instancia do banco de dados
+        self.login_screen()                                              # invoca o metodo de criacao e configuracao da tela de login
+        self.login_frame()                                               # invoca o metodo de criacao e configuracao do frame de tela
+        self.login_widgets()                                             # invoca o metodo de criacao e configuracao de widgets
+        self.count = 3                                                   # contador de tentativas de login
+        self.current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") # objeto recebe data e hora atuais
+        self.database = Database()
+        root.mainloop()                                                  # funcao para rodar o tkinter
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
@@ -65,7 +68,7 @@ class Login(): # inicializa a classe Login
         #--------------------------------------
 
         # Imagens
-        self.avatar = PhotoImage(file='images/001 - login_avatar.png')             # diretório
+        self.avatar = PhotoImage(file='C:/Rafael/Tkinter/icons/login_avatar1.png') # diretório
         self.label_avatar = Label(self.login, image=self.avatar, bg='white')       # setup
         self.label_avatar.place(relx=0.21, rely=0.12, relwidth=0.6, relheight=0.5) # posicao
 
@@ -105,26 +108,36 @@ class Login(): # inicializa a classe Login
         username = self.id.get()       # obtém a entrada do nome de usuário
         password = self.password.get() # obtém a entrada da senha
 
-        if self.database.verify_user_credentials(username, password):                        # se credenciais usando o método do banco de dados for verdadeiro...
-            self.login.destroy()                                                             # fecha a tela de login
-            menu = MenuScreen()                                                              # cria uma instância do menu
-            menu.run()                                                                       # roda a tela do menu
-        elif username == "" and password == "":                                              # se os campos estiverem vazios...
-            messagebox.showinfo("Aviso", "Preencha os campos.")                              # exibe pop-up com aviso                                         
-            self.count -= 1                                                                  # decrementa o contador                                                                              
-            self.try_login()                                                                 # chama a funcao para exibir as tentativas restantes
-        elif username == "":                                                                 # se o campo estiver vazio
-            messagebox.showinfo("Aviso", "Preencha o campo Username.")                       # exibe pop-up com aviso
-            self.count -= 1                                                                  # decrementa o contador    
-            self.try_login()                                                                 # chama a funcao para exibir as tentativas restantes
-        elif password == "":                                                                 # se o campo estiver vazio
-            messagebox.showinfo("Aviso", "Preencha o campo Password.")                       # exibe pop-up com aviso
-            self.count -= 1                                                                  # chama a funcao para exibir as tentativas restantes
-            self.try_login()                                                                 # do contrario...
-        else:                                                                                # exibe pop-up com aviso de acesso negado
-            messagebox.showwarning("Acesso Negado", "Credenciais inválidas. Acesso negado.") # exibe pop-up com aviso
-            self.count -= 1                                                                  # decrementa o contador
-            self.try_login()                                                                 # chama a funcao para exibir as tentativas restantes
+        if self.database.verify_user_credentials(username, password):                                          # se credenciais usando o método do banco de dados for verdadeiro...
+            self.login_msg = f"[Date: {self.current_time}] - The Admin {username} has logged into the system." # mensagem para inserir data e horário atuais
+
+            self.database.open_conn() # abre conexão com a base de dados
+
+            self.database.cursor.execute("""INSERT INTO tab_log (message)
+                                 VALUES (?)""", (self.login_msg,)) # insere a mensagem na tabela
+            
+            self.database.conn.commit() # executa a query SQL
+            self.database.close_conn()  # encerra a conexao
+
+            self.login.destroy()                                                                               # fecha a tela de login
+            menu = MenuScreen()                                                                                # cria uma instância do menu
+            menu.run()                                                                                         # roda a tela do menu
+        elif username == "" and password == "":                                                                # se os campos estiverem vazios...
+            messagebox.showinfo("Aviso", "Preencha os campos.")                                                # exibe pop-up com aviso                                         
+            self.count -= 1                                                                                    # decrementa o contador                                                                              
+            self.try_login()                                                                                   # chama a funcao para exibir as tentativas restantes
+        elif username == "":                                                                                   # se o campo estiver vazio
+            messagebox.showinfo("Aviso", "Preencha o campo Username.")                                         # exibe pop-up com aviso
+            self.count -= 1                                                                                    # decrementa o contador    
+            self.try_login()                                                                                   # chama a funcao para exibir as tentativas restantes
+        elif password == "":                                                                                   # se o campo estiver vazio
+            messagebox.showinfo("Aviso", "Preencha o campo Password.")                                         # exibe pop-up com aviso
+            self.count -= 1                                                                                    # chama a funcao para exibir as tentativas restantes
+            self.try_login()                                                                                   # do contrario...
+        else:                                                                                                  # exibe pop-up com aviso de acesso negado
+            messagebox.showwarning("Acesso Negado", "Credenciais inválidas. Acesso negado.")                   # exibe pop-up com aviso
+            self.count -= 1                                                                                    # decrementa o contador
+            self.try_login()                                                                                   # chama a funcao para exibir as tentativas restantes
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
