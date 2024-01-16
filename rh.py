@@ -1,17 +1,49 @@
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
-from tkinter import *          # importa a biblioteca tkinter
-from tkinter import ttk        # importa mais funcionalidades do tkinter
-from database import Database  # importa a biblioteca de base de dados
-from tkinter import messagebox # importa a caixa de mensagens do tkinter
+from tkinter import *                                   # importa a biblioteca tkinter
+from tkinter import ttk                                 # importa mais funcionalidades do tkinter
+from database import Database                           # importa a biblioteca de base de dados
+from tkinter import messagebox                          # importa a caixa de mensagens do tkinter
 from reportlab.pdfgen import canvas                     # importa a biblioteca de gerador de pdfs
 from reportlab.lib.pagesizes import letter, A4          # importa os tipos de saídas do gerador de pdfs
 from reportlab.pdfbase import pdfmetrics                # importa a métrica de fontes do gerador de pdfs
 from reportlab.pdfbase.ttfonts import TTFont            # importa uma fonte True Type ao gerar documentos em pdf
 from reportlab.platypus import SimpleDocTemplate, Image # importa um criador de template de pdf básico
 import webbrowser                                       # importa a biblioteca para chamar o browser padrao
-from reportlab.lib import colors
-from datetime import datetime
+from reportlab.lib import colors                        # importa as cores da biblioteca reportlab
+from datetime import datetime                           # importa a biblioteca de horas e datas
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+# CLASSE [RHSCREEN]
+
+# 001 - def __init__(self):                                              [inicializa os objetos da classe]
+# 002 - def rh_mainscreen(self):                                         [criacao e configuracao de tela principal]
+# 003 - def rh_frame(self):                                              [configuracao do frame de tela principal]
+# 004 - def rh_widgets(self):                                            [insercao de widgets de tela principal]
+# 005 - def validate_fields(self, field, data_type, length, field_name): [verificacao de campos do frame de cadastro]
+# 006 - def frame_insert(self):                                          [criacao do frame de cadastros]
+# 007 - def show_employees(self):                                        [inserção os dados cadastrados na Treeview]
+# 008 - def clear_fields(self):                                          [limpeza dos campos de entrada]
+# 009 - def get_client(self):                                            [armazenamento dos dados das entradas em variáveis]
+# 010 - def insert_client(self):                                         [insere os dados cadastrados na base de dados]
+# 011 - def insert_treeview(self):                                       [insercao dos dados cadastrados na treeview]
+# 012 - def frame_search(self):                                          [criacao de frame de pesquisa de funcionário]
+# 013 - def insert_treeview_search(self):                                [insercao dos dados do funcionário pesquisado na treeview]
+# 014 - def changebutton(self):                                          [1 -  self.frame_insert(), 2 - self.insert_entries()]
+# 015 - def insert_entries(self):                                        [insercao dos dados das entradas na treeview]
+# 016 - def remove_employee(self):                                       [remocao de um funcionário cadastrado para a tabela de ex-funcionarios]
+# 017 - def remove_employee2(self):                                      [remocao permanente de funcionario cadastrado]
+# 018 - def show_exemployees(self):                                      [exibicao dos funcionarios cadastradoe numa treeview de uma sub-tela]
+# 019 - def insert_treeview2(self):                                      [insercao dos dados das entradas na treeview da tela de pesquisa]
+# 020 - def frame_paycheck(self):                                        [criacao e configuracao da tela de pagamento]
+# 021 - def show_employee_salary(self):                                  [exibicao do salário de um funcionario pesquisado]
+# 022 - def calculate_sal(self):                                         [calculo de salário]
+# 023 - def generate_sal(self):                                          [gerador de pagamentos]
+# 024 - def show_payments(self):                                         [insercao de dados de pagamento numa treeview]
+# 025 - def insert_treeview3(self):                                      [exibicao dos dados da tabela de pagamentos numa treeview]
+# 026 - def printpay(self):                                              [abrir o browser]
+# 027 - def generatedoc(self):                                           [gerador de relatórios em pdfs]
+# 028 - def run(self):                                                   [metodo para rodar o loop do form]
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 class RHScreen(): # inicializa a classe RH
@@ -261,7 +293,7 @@ class RHScreen(): # inicializa a classe RH
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def show_employees(self):
+    def show_employees(self): # método para inserir os dados dos empregados na Treeview
          
         # Widgets 
         self.subframe2 = Toplevel(self.rhroot)
@@ -324,7 +356,7 @@ class RHScreen(): # inicializa a classe RH
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def clear_fields(self):
+    def clear_fields(self): # método para limpar os campos das entradas
 
         self.in_name.delete(0, END)        # limpa a entrada 
         self.in_id.delete(0, END)          # limpa a entrada
@@ -343,7 +375,7 @@ class RHScreen(): # inicializa a classe RH
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def get_client(self):
+    def get_client(self): # método para pegar o que está escrito nas entradas
          
         self.id = self.in_id.get()                   # objeto criado recebe o que for digitado na entrada
         self.idc = self.in_idc.get()                 # objeto criado recebe o que for digitado na entrada
@@ -586,7 +618,7 @@ class RHScreen(): # inicializa a classe RH
                                                                                                                     
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
             
-    def insert_treeview_search(self):
+    def insert_treeview_search(self): # inserir dados de funcionário pesquisado na treeview
         
         self.listEmplSearch.delete(*self.listEmplSearch.get_children()) # Limpa os itens existentes na Treeview
         
@@ -838,8 +870,10 @@ class RHScreen(): # inicializa a classe RH
 
         self.listEmplSearch.delete(*self.listEmplSearch.get_children()) # o objeto deleta os elementos desempacotados da lista por getchildren
         messagebox.showinfo("Info", "Employee removed") # exibe a mensagem
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def show_exemployees(self):
+    def show_exemployees(self): # insere os ex-funcionarios e os exibe numa treeview
          
         # Widgets 
         self.subframe2 = Toplevel(self.rhroot)
@@ -921,7 +955,7 @@ class RHScreen(): # inicializa a classe RH
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
-    def frame_paycheck(self):
+    def frame_paycheck(self): # criacao da tela de pagamento
 
         # Tela Principal 
 
@@ -1548,7 +1582,7 @@ class RHScreen(): # inicializa a classe RH
                                 VALUES (?)""", (self.login_msg,)) # insere a mensagem na tabela
         
         self.database.conn.commit() # executa a query SQL
-        self.database.close_conn()
+        self.database.close_conn() # encerra conexao com a base de dados
 
         self.bt_pdf4.destroy() # Remove o botão de exportar em pdf
 
