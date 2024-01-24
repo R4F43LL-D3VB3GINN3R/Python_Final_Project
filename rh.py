@@ -102,10 +102,13 @@ class RHScreen(): # inicializa a classe RH
         self.bt_remove.place(relx=0.01, rely=0.09, relwidth=1, relheight=0.07)                                                                                                                        # posicao
 
         self.bt_paycheck = Button(self.frame1, text='Paycheck', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_paycheck) # setup 
-        self.bt_paycheck.place(relx=0.01, rely=0.17, relwidth=1, relheight=0.07)                                                                                                                            # posicao
+        self.bt_paycheck.place(relx=0.01, rely=0.17, relwidth=1, relheight=0.07)   
+        
+        self.bt_historic = Button(self.frame1, text='Historic', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.frame_historycheck) # setup 
+        self.bt_historic.place(relx=0.01, rely=0.25, relwidth=1, relheight=0.07)                                                                                                                                       # posicao
         
         self.bt_exitmenu = Button(self.frame1, text='Exit', bd=4, bg='grey', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.rhroot.destroy) # setup 
-        self.bt_exitmenu.place(relx=0.01, rely=0.25, relwidth=1, relheight=0.07)                                                                                                                        # posicao
+        self.bt_exitmenu.place(relx=0.01, rely=0.33, relwidth=1, relheight=0.07)                                                                                                                        # posicao
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
@@ -1589,11 +1592,54 @@ class RHScreen(): # inicializa a classe RH
         #--------------------------------------
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-                    
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+        
+    def frame_historycheck(self): # criacao da tela de histórico
+
+        # Tela Principal 
+
+        self.frame5 = Frame(self.rhroot, bd = 4, bg='white', highlightbackground='black', highlightthickness=3) # setup 
+        self.frame5.place(relx=0.2, rely=0.001, relwidth=0.8, relheight=1)                                      # posicao
+
+        #--------------------------------------
+
+        # Widgets - [Molduras] 
+
+        self.canvas_frame5 = Canvas(self.frame5, bd=4, bg='grey', highlightbackground='grey', highlightthickness=3, relief='sunken') # objeto recebe uma moldura
+        self.canvas_frame5.place(relx=0.01, rely=0.01, relwidth=0.98, relheight=0.3)                                                 # posiciona a moldura 
+
+        #--------------------------------------
+
+        # Widgets - [Labels] 
+
+        # Canvas 1 ----------------------------
+    
+        self.lb_title5 = Label(self.frame5, text = 'Search Employee', bg='grey', font=('comic-sans', 15, 'bold', 'italic')) # setup
+        self.lb_title5.place(relx=0.28, rely=0.03, relwidth=0.4, relheight=0.05)                                            # posicao
+
+        # Widgets - [Entradas] 
+
+        # Canvas 1 ----------------------------
+
+        self.in_idsearch5 = Entry(self.frame5, bd=4)                               # setup
+        self.in_idsearch5.place(relx=0.14, rely=0.1, relwidth=0.1, relheight=0.05) # posicao
+
+        # Widgets - [Botões] 
+
+        # Canvas 1 ----------------------------
+
+        self.bt_show_employee5 = Button(self.frame5, text='Start', bd=4, bg='white', activebackground='white', activeforeground='black', font=('comic-sans', 8, 'bold', 'italic'), command=self.show_employee_salary) # setup 
+        self.bt_show_employee5.place(relx=0.39, rely=0.2, relwidth=0.2, relheight=0.07)                                                                                                                               # posicao
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
+
     def run(self): # metodo para rodar o loop do form
 
-        self.rhroot.mainloop() # loop do form  
-
+            self.rhroot.mainloop() # loop do form  
+  
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
         
 RHScreen()
